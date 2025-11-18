@@ -677,7 +677,7 @@
                 <button class="create-btn" id="createBtn">CREATE +</button>
                 <img src="" alt="Profile" class="profile-pic" id="profilePic">
                 <div class="profile-menu" id="profileMenu">
-                    <div class="profile-menu-header">
+                    <div class="profile-menu-header" id="profileMenuHeader">
                         <div class="profile-menu-name" id="profileName"></div>
                         <div class="profile-menu-email" id="profileEmail"></div>
                     </div>
@@ -820,6 +820,7 @@
         const profileContainer = document.getElementById('profileContainer');
         const profilePic = document.getElementById('profilePic');
         const profileMenu = document.getElementById('profileMenu');
+        const profileMenuHeader = document.getElementById('profileMenuHeader');
         const profileName = document.getElementById('profileName');
         const profileEmail = document.getElementById('profileEmail');
         const settingsBtn = document.getElementById('settingsBtn');
@@ -885,7 +886,7 @@
         });
         
         // Go to profile when clicking profile menu header
-        document.querySelector('.profile-menu-header').addEventListener('click', () => {
+        profileMenuHeader.addEventListener('click', () => {
             goToProfile();
         });
 
@@ -1233,53 +1234,63 @@
 
         // Listen for auth state changes
         onAuthStateChanged(auth, async (user) => {
+            console.log('Auth state changed:', user);
             currentUser = user;
             if (user) {
-                // Check if user has a channel ID in Firestore
-                const userDocRef = doc(db, 'users', user.uid);
-                const userDoc = await getDoc(userDocRef);
-                
-                if (userDoc.exists() && userDoc.data().channelId) {
-                    // Use existing channel ID
-                    userChannelId = userDoc.data().channelId;
-                } else {
-                    // Generate new channel ID and save it
-                    userChannelId = generateChannelId();
-                    await setDoc(userDocRef, {
+                try {
+                    // Check if user has a channel ID in Firestore
+                    const userDocRef = doc(db, 'users', user.uid);
+                    const userDoc = await getDoc(userDocRef);
+                    
+                    if (userDoc.exists() && userDoc.data().channelId) {
+                        // Use existing channel ID
+                        userChannelId = userDoc.data().channelId;
+                    } else {
+                        // Generate new channel ID and save it
+                        userChannelId = generateChannelId();
+                        await setDoc(userDocRef, {
+                            channelId: userChannelId,
+                            uid: user.uid
+                        });
+                    }
+                    
+                    // Save/update channel data
+                    const channelData = {
                         channelId: userChannelId,
-                        uid: user.uid
-                    });
-                }
-                
-                // Save/update channel data
-                const channelData = {
-                    channelId: userChannelId,
-                    displayName: user.displayName || 'User',
-                    handle: (user.displayName || 'user').replace(/\s+/g, '').toLowerCase(),
-                    photoURL: user.photoURL || '',
-                    email: user.email || '',
-                    banner: defaultBanner,
-                    subscribers: 0,
-                    videoCount: 0,
-                    createdAt: new Date().toISOString()
-                };
-                
-                await setDoc(doc(db, 'channels', userChannelId), channelData, { merge: true });
-                
-                // Update UI
-                signInBtn.style.display = 'none';
-                profileContainer.classList.add('active');
-                profilePic.src = user.photoURL || 'https://via.placeholder.com/40';
-                profilePic.alt = user.displayName || 'User';
-                profileName.textContent = user.displayName || 'User';
-                profileEmail.textContent = user.email || '';
-                
-                if (isStudioMode) {
-                    sidebarProfilePic.src = user.photoURL || 'https://via.placeholder.com/80';
-                    sidebarProfileName.textContent = user.displayName || 'User';
+                        displayName: user.displayName || 'User',
+                        handle: (user.displayName || 'user').replace(/\s+/g, '').toLowerCase(),
+                        photoURL: user.photoURL || '',
+                        email: user.email || '',
+                        banner: defaultBanner,
+                        subscribers: 0,
+                        videoCount: 0,
+                        createdAt: new Date().toISOString()
+                    };
+                    
+                    await setDoc(doc(db, 'channels', userChannelId), channelData, { merge: true });
+                    
+                    console.log('Channel ID:', userChannelId);
+                    
+                    // Update UI
+                    signInBtn.style.display = 'none';
+                    profileContainer.classList.add('active');
+                    profilePic.src = user.photoURL || 'https://via.placeholder.com/40';
+                    profilePic.alt = user.displayName || 'User';
+                    profileName.textContent = user.displayName || 'User';
+                    profileEmail.textContent = user.email || '';
+                    
+                    console.log('UI updated - profile pic:', profilePic.src);
+                    
+                    if (isStudioMode) {
+                        sidebarProfilePic.src = user.photoURL || 'https://via.placeholder.com/80';
+                        sidebarProfileName.textContent = user.displayName || 'User';
+                    }
+                } catch (error) {
+                    console.error('Error setting up user:', error);
                 }
             } else {
                 // User is signed out
+                console.log('User signed out');
                 signInBtn.style.display = 'block';
                 profileContainer.classList.remove('active');
                 userChannelId = null;
