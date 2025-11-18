@@ -550,6 +550,44 @@
             margin: 0;
         }
         
+        .profile-video-count {
+            margin: 0;
+        }
+        
+        .profile-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .subscribe-btn {
+            background: white;
+            border: none;
+            color: #0D47A1;
+            font-family: 'Roboto', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 10px 16px;
+            cursor: pointer;
+            border-radius: 18px;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .subscribe-btn:hover {
+            background: #f0f0f0;
+        }
+        
+        .subscribe-btn.subscribed {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .subscribe-btn.subscribed:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
         .customize-channel-btn {
             background: transparent;
             border: 1px solid rgba(255, 255, 255, 0.3);
@@ -561,7 +599,6 @@
             cursor: pointer;
             border-radius: 18px;
             transition: all 0.2s;
-            align-self: flex-start;
         }
         
         .customize-channel-btn:hover {
@@ -670,9 +707,14 @@
                         <p class="profile-handle" id="profileHandle">@username</p>
                         <span>•</span>
                         <p class="profile-subscribers" id="profilePageSubscribers">0 subscribers</p>
+                        <span>•</span>
+                        <p class="profile-video-count" id="profileVideoCount">0 videos</p>
                     </div>
                 </div>
-                <button class="customize-channel-btn" id="customizeChannelBtn" style="display: none;">Customize channel</button>
+                <div class="profile-actions">
+                    <button class="subscribe-btn" id="subscribeBtn" style="display: none;">Subscribe</button>
+                    <button class="customize-channel-btn" id="customizeChannelBtn" style="display: none;">Customize channel</button>
+                </div>
             </div>
             <div class="profile-tabs">
                 <button class="profile-tab active">Home</button>
@@ -756,6 +798,7 @@
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
         import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js';
+        import { getFirestore, doc, setDoc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
         const firebaseConfig = {
             apiKey: "AIzaSyDCV9yTXFJ0yj1m9hZijs8OxIcfdK95nG8",
@@ -770,6 +813,7 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const analytics = getAnalytics(app);
+        const db = getFirestore(app);
         const provider = new GoogleAuthProvider();
 
         const signInBtn = document.getElementById('signInBtn');
@@ -799,11 +843,15 @@
         const profilePictureLarge = document.getElementById('profilePictureLarge');
         const profilePageName = document.getElementById('profilePageName');
         const profilePageSubscribers = document.getElementById('profilePageSubscribers');
+        const profileHandle = document.getElementById('profileHandle');
+        const profileVideoCount = document.getElementById('profileVideoCount');
         const customizeChannelBtn = document.getElementById('customizeChannelBtn');
+        const subscribeBtn = document.getElementById('subscribeBtn');
 
         let isStudioMode = false;
         let currentUser = null;
         let userChannelId = null;
+        let subscribedChannels = new Set();
         const defaultBanner = 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/1a989815-8731-4b08-8124-db03acb4ada8/di7xmh0-8c21639f-8b54-4c3b-bed0-b50b6fbc8d8b.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiIvZi8xYTk4OTgxNS04NzMxLTRiMDgtODEyNC1kYjAzYWNiNGFkYTgvZGk3eG1oMC04YzIxNjM5Zi04YjU0LTRjM2ItYmVkMC1iNTBiNmZiYzhkOGIucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.OWTlOXrVlOcGk3DkNyh2X5etCjhDxJ98O53I6vGzMpU';
         
         // Generate a random channel ID
@@ -826,7 +874,7 @@
                 profilePage.style.display = 'none';
                 searchBar.value = '';
                 document.title = 'Kwive';
-                window.history.pushState({ page: 'home' }, 'Kwive', '/');
+                window.history.pushState({ page: 'home' }, 'Kwive', '#/');
             }
         });
 
@@ -919,7 +967,7 @@
                 showPage('dashboardPage', 'Channel dashboard');
                 
                 // Update URL
-                window.history.pushState({ page: 'studio' }, 'Kwive Studio', '/studio');
+                window.history.pushState({ page: 'studio' }, 'Kwive Studio', '#/studio');
                 
                 loadingOverlay.classList.remove('show');
                 profileMenu.classList.remove('show');
@@ -944,7 +992,7 @@
                 
                 // Update URL and title
                 document.title = 'Kwive';
-                window.history.pushState({ page: 'home' }, 'Kwive', '/');
+                window.history.pushState({ page: 'home' }, 'Kwive', '#/');
                 
                 loadingOverlay.classList.remove('show');
                 profileMenu.classList.remove('show');
@@ -962,7 +1010,7 @@
             // Update URL for studio pages
             if (isStudioMode) {
                 const pageName = pageId.replace('Page', '');
-                window.history.pushState({ page: pageName }, title, `/studio/${pageName}`);
+                window.history.pushState({ page: pageName }, title, `#/studio/${pageName}`);
             }
         }
 
@@ -1015,32 +1063,90 @@
             }, 2000);
         });
         
+        // Subscribe button
+        subscribeBtn.addEventListener('click', async () => {
+            const viewingChannelId = profilePage.dataset.channelId;
+            if (!viewingChannelId || !currentUser) return;
+            
+            const isSubscribed = subscribedChannels.has(viewingChannelId);
+            
+            if (isSubscribed) {
+                // Unsubscribe
+                subscribedChannels.delete(viewingChannelId);
+                subscribeBtn.textContent = 'Subscribe';
+                subscribeBtn.classList.remove('subscribed');
+            } else {
+                // Subscribe
+                subscribedChannels.add(viewingChannelId);
+                subscribeBtn.textContent = 'Subscribed';
+                subscribeBtn.classList.add('subscribed');
+            }
+        });
+        
         // Go to profile page
-        function goToProfile() {
-            if (!currentUser) return;
+        async function goToProfile(channelId = null) {
+            const targetChannelId = channelId || userChannelId;
+            if (!targetChannelId) return;
             
             loadingOverlay.classList.add('show');
             profileMenu.classList.remove('show');
             
-            setTimeout(() => {
-                noResults.style.display = 'none';
-                profilePage.style.display = 'block';
+            try {
+                // Fetch channel data from Firestore
+                const channelDoc = await getDoc(doc(db, 'channels', targetChannelId));
                 
-                // Set profile data
-                profileBanner.style.backgroundImage = `url('${defaultBanner}')`;
-                profilePictureLarge.src = currentUser.photoURL || 'https://via.placeholder.com/120';
-                profilePageName.textContent = currentUser.displayName || 'User';
-                profilePageSubscribers.textContent = '0 subscribers';
-                
-                // Show customize button only for own profile
-                customizeChannelBtn.style.display = 'block';
-                
-                // Update page title and URL
-                document.title = `${currentUser.displayName || 'User'} - Kwive`;
-                window.history.pushState({ page: 'profile', channelId: userChannelId }, document.title, `/c/${userChannelId}`);
-                
-                loadingOverlay.classList.remove('show');
-            }, 2000);
+                if (channelDoc.exists()) {
+                    const channelData = channelDoc.data();
+                    
+                    setTimeout(() => {
+                        noResults.style.display = 'none';
+                        profilePage.style.display = 'block';
+                        profilePage.dataset.channelId = targetChannelId;
+                        
+                        // Set profile data
+                        profileBanner.style.backgroundImage = `url('${channelData.banner || defaultBanner}')`;
+                        profilePictureLarge.src = channelData.photoURL || 'https://via.placeholder.com/80';
+                        profilePageName.textContent = channelData.displayName || 'User';
+                        profileHandle.textContent = `@${channelData.handle || 'user'}`;
+                        profilePageSubscribers.textContent = `${channelData.subscribers || 0} subscribers`;
+                        profileVideoCount.textContent = `${channelData.videoCount || 0} videos`;
+                        
+                        // Show correct button based on if it's own profile
+                        const isOwnProfile = targetChannelId === userChannelId;
+                        customizeChannelBtn.style.display = isOwnProfile ? 'block' : 'none';
+                        subscribeBtn.style.display = isOwnProfile ? 'none' : 'block';
+                        
+                        // Set subscribe button state
+                        if (!isOwnProfile) {
+                            const isSubscribed = subscribedChannels.has(targetChannelId);
+                            subscribeBtn.textContent = isSubscribed ? 'Subscribed' : 'Subscribe';
+                            if (isSubscribed) {
+                                subscribeBtn.classList.add('subscribed');
+                            } else {
+                                subscribeBtn.classList.remove('subscribed');
+                            }
+                        }
+                        
+                        // Update page title and URL
+                        document.title = `${channelData.displayName || 'User'} - Kwive`;
+                        window.history.pushState({ page: 'profile', channelId: targetChannelId }, document.title, `#/c/${targetChannelId}`);
+                        
+                        loadingOverlay.classList.remove('show');
+                    }, 2000);
+                } else {
+                    // Channel not found
+                    setTimeout(() => {
+                        alert('Channel not found');
+                        loadingOverlay.classList.remove('show');
+                    }, 2000);
+                }
+            } catch (error) {
+                console.error('Error loading profile:', error);
+                setTimeout(() => {
+                    alert('Error loading channel');
+                    loadingOverlay.classList.remove('show');
+                }, 2000);
+            }
         }
 
         function setActiveSidebarItem(activeId) {
@@ -1092,16 +1198,75 @@
             }
         });
 
+        // Handle initial page load based on URL
+        window.addEventListener('DOMContentLoaded', () => {
+            const hash = window.location.hash;
+            
+            // Check if it's a channel URL
+            if (hash.startsWith('#/c/')) {
+                const channelId = hash.substring(4); // Remove '#/c/'
+                goToProfile(channelId);
+            } else if (hash.startsWith('#/studio')) {
+                // Studio URLs - wait for auth then switch
+                const checkAuth = setInterval(() => {
+                    if (currentUser) {
+                        clearInterval(checkAuth);
+                        switchToStudio();
+                    }
+                }, 100);
+            }
+        });
+        
+        // Also handle hash changes
+        window.addEventListener('hashchange', () => {
+            const hash = window.location.hash;
+            
+            if (hash.startsWith('#/c/')) {
+                const channelId = hash.substring(4);
+                goToProfile(channelId);
+            } else if (hash === '#/' || hash === '') {
+                if (isStudioMode) {
+                    switchToKwive();
+                }
+            }
+        });
+
         // Listen for auth state changes
-        onAuthStateChanged(auth, (user) => {
+        onAuthStateChanged(auth, async (user) => {
             currentUser = user;
             if (user) {
-                // Generate or retrieve channel ID for user
-                if (!userChannelId) {
+                // Check if user has a channel ID in Firestore
+                const userDocRef = doc(db, 'users', user.uid);
+                const userDoc = await getDoc(userDocRef);
+                
+                if (userDoc.exists() && userDoc.data().channelId) {
+                    // Use existing channel ID
+                    userChannelId = userDoc.data().channelId;
+                } else {
+                    // Generate new channel ID and save it
                     userChannelId = generateChannelId();
+                    await setDoc(userDocRef, {
+                        channelId: userChannelId,
+                        uid: user.uid
+                    });
                 }
                 
-                // User is signed in
+                // Save/update channel data
+                const channelData = {
+                    channelId: userChannelId,
+                    displayName: user.displayName || 'User',
+                    handle: (user.displayName || 'user').replace(/\s+/g, '').toLowerCase(),
+                    photoURL: user.photoURL || '',
+                    email: user.email || '',
+                    banner: defaultBanner,
+                    subscribers: 0,
+                    videoCount: 0,
+                    createdAt: new Date().toISOString()
+                };
+                
+                await setDoc(doc(db, 'channels', userChannelId), channelData, { merge: true });
+                
+                // Update UI
                 signInBtn.style.display = 'none';
                 profileContainer.classList.add('active');
                 profilePic.src = user.photoURL || 'https://via.placeholder.com/40';
