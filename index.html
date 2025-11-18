@@ -524,7 +524,7 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 8px;
         }
         
         .profile-name {
@@ -532,6 +532,10 @@
             font-weight: 400;
             color: white;
             margin: 0;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 16px;
+            border-radius: 2px;
+            width: fit-content;
         }
         
         .profile-meta {
@@ -540,10 +544,6 @@
             gap: 8px;
             color: rgba(255, 255, 255, 0.6);
             font-size: 14px;
-        }
-        
-        .profile-handle {
-            margin: 0;
         }
         
         .profile-subscribers {
@@ -555,21 +555,22 @@
         }
         
         .customize-channel-btn {
-            background: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: white;
+            background: white;
+            border: none;
+            color: #0D47A1;
             font-family: 'Roboto', sans-serif;
             font-size: 14px;
             font-weight: 500;
-            padding: 10px 16px;
+            padding: 12px 24px;
             cursor: pointer;
-            border-radius: 18px;
+            border-radius: 2px;
             transition: all 0.2s;
-            align-self: flex-start;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
         .customize-channel-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: #f5f5f5;
         }
         
         .subscribe-btn {
@@ -579,11 +580,12 @@
             font-family: 'Roboto', sans-serif;
             font-size: 14px;
             font-weight: 500;
-            padding: 10px 16px;
+            padding: 12px 24px;
             cursor: pointer;
-            border-radius: 18px;
+            border-radius: 2px;
             transition: all 0.2s;
-            align-self: flex-start;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
         .subscribe-btn:hover {
@@ -739,26 +741,21 @@
             <div class="profile-header">
                 <img src="" alt="Profile" class="profile-picture-large" id="profilePictureLarge">
                 <div class="profile-info-container">
-                    <h1 class="profile-name" id="profilePageName"></h1>
+                    <h1 class="profile-name" id="profilePageName">CHANNEL NAME</h1>
                     <div class="profile-meta">
-                        <p class="profile-handle" id="profileHandle">@username</p>
+                        <p class="profile-subscribers" id="profilePageSubscribers">0 SUBSCRIBERS</p>
                         <span>•</span>
-                        <p class="profile-subscribers" id="profilePageSubscribers">0 subscribers</p>
-                        <span>•</span>
-                        <p class="profile-videos" id="profilePageVideos">0 videos</p>
+                        <p class="profile-videos" id="profilePageVideos">0 VIDEOS</p>
+                    </div>
+                    <div class="profile-buttons">
+                        <button class="customize-channel-btn" id="customizeChannelBtn" style="display: none;">CUSTOMIZE CHANNEL</button>
+                        <button class="subscribe-btn" id="subscribeBtn" style="display: none;">SUBSCRIBE</button>
                     </div>
                 </div>
-                <button class="customize-channel-btn" id="customizeChannelBtn" style="display: none;">Customize channel</button>
-                <button class="subscribe-btn" id="subscribeBtn" style="display: none;">Subscribe</button>
             </div>
             <div class="profile-tabs">
-                <button class="profile-tab active" data-tab="home">Home</button>
-                <button class="profile-tab" data-tab="videos">Videos</button>
-                <button class="profile-tab" data-tab="shorts">Shorts</button>
-                <button class="profile-tab" data-tab="live">Live</button>
-                <button class="profile-tab" data-tab="playlists">Playlists</button>
-                <button class="profile-tab" data-tab="community">Community</button>
-                <button class="profile-tab" data-tab="about">About</button>
+                <button class="profile-tab active" data-tab="home">HOME</button>
+                <button class="profile-tab" data-tab="videos">VIDEOS</button>
             </div>
             <div class="profile-content">
                 <div class="profile-empty" id="homeTabContent">
@@ -767,36 +764,6 @@
                 </div>
                 <div class="videos-grid" id="videosTabContent" style="display: none;">
                     <!-- Videos will be populated here -->
-                </div>
-                <div id="shortsTabContent" style="display: none;">
-                    <div class="profile-empty">
-                        <h2 class="profile-empty-title">No Shorts yet</h2>
-                        <p class="profile-empty-text">This channel hasn't uploaded any Shorts</p>
-                    </div>
-                </div>
-                <div id="liveTabContent" style="display: none;">
-                    <div class="profile-empty">
-                        <h2 class="profile-empty-title">No live streams</h2>
-                        <p class="profile-empty-text">This channel hasn't done any live streams</p>
-                    </div>
-                </div>
-                <div id="playlistsTabContent" style="display: none;">
-                    <div class="profile-empty">
-                        <h2 class="profile-empty-title">No playlists</h2>
-                        <p class="profile-empty-text">This channel hasn't created any playlists</p>
-                    </div>
-                </div>
-                <div id="communityTabContent" style="display: none;">
-                    <div class="profile-empty">
-                        <h2 class="profile-empty-title">No community posts</h2>
-                        <p class="profile-empty-text">This channel hasn't posted anything to the community tab</p>
-                    </div>
-                </div>
-                <div id="aboutTabContent" style="display: none;">
-                    <div class="profile-empty">
-                        <h2 class="profile-empty-title">No description</h2>
-                        <p class="profile-empty-text">This channel hasn't provided any information</p>
-                    </div>
                 </div>
             </div>
         </div>
@@ -912,7 +879,6 @@
         const profilePageName = document.getElementById('profilePageName');
         const profilePageSubscribers = document.getElementById('profilePageSubscribers');
         const profilePageVideos = document.getElementById('profilePageVideos');
-        const profileHandle = document.getElementById('profileHandle');
         const customizeChannelBtn = document.getElementById('customizeChannelBtn');
         const subscribeBtn = document.getElementById('subscribeBtn');
         const profileTabs = document.querySelectorAll('.profile-tab');
@@ -924,38 +890,6 @@
         let viewingOwnProfile = false;
         let isSubscribed = false;
         const defaultBanner = 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/1a989815-8731-4b08-8124-db03acb4ada8/di7xmh0-8c21639f-8b54-4c3b-bed0-b50b6fbc8d8b.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiIvZi8xYTk4OTgxNS04NzMxLTRiMDgtODEyNC1kYjAzYWNiNGFkYTgvZGk3eG1oMC04YzIxNjM5Zi04YjU0LTRjM2ItYmVkMC1iNTBiNmZiYzhkOGIucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.OWTlOXrVlOcGk3DkNyh2X5etCjhDxJ98O53I6vGzMpU';
-        
-        // Sample videos for demonstration
-        const sampleVideos = [
-            {
-                id: 1,
-                title: "How to build a YouTube clone",
-                thumbnail: "https://i.imgur.com/8ZvJw3m.jpeg",
-                views: "1.2K",
-                date: "2 days ago"
-            },
-            {
-                id: 2,
-                title: "JavaScript tutorial for beginners",
-                thumbnail: "https://i.imgur.com/8ZvJw3m.jpeg",
-                views: "3.4K",
-                date: "1 week ago"
-            },
-            {
-                id: 3,
-                title: "CSS Grid vs Flexbox - Which to use?",
-                thumbnail: "https://i.imgur.com/8ZvJw3m.jpeg",
-                views: "5.7K",
-                date: "2 weeks ago"
-            },
-            {
-                id: 4,
-                title: "React Hooks explained",
-                thumbnail: "https://i.imgur.com/8ZvJw3m.jpeg",
-                views: "8.9K",
-                date: "1 month ago"
-            }
-        ];
         
         // Generate a random channel ID
         function generateChannelId() {
@@ -1171,17 +1105,17 @@
         subscribeBtn.addEventListener('click', () => {
             isSubscribed = !isSubscribed;
             if (isSubscribed) {
-                subscribeBtn.textContent = 'Subscribed';
+                subscribeBtn.textContent = 'SUBSCRIBED';
                 subscribeBtn.classList.add('subscribed');
                 // In a real app, you would update the subscriber count here
                 const currentSubs = parseInt(profilePageSubscribers.textContent);
-                profilePageSubscribers.textContent = (currentSubs + 1) + ' subscribers';
+                profilePageSubscribers.textContent = (currentSubs + 1) + ' SUBSCRIBERS';
             } else {
-                subscribeBtn.textContent = 'Subscribe';
+                subscribeBtn.textContent = 'SUBSCRIBE';
                 subscribeBtn.classList.remove('subscribed');
                 // In a real app, you would update the subscriber count here
                 const currentSubs = parseInt(profilePageSubscribers.textContent);
-                profilePageSubscribers.textContent = (currentSubs - 1) + ' subscribers';
+                profilePageSubscribers.textContent = (currentSubs - 1) + ' SUBSCRIBERS';
             }
         });
         
@@ -1201,31 +1135,8 @@
                 // Show the selected tab content
                 const tabName = tab.getAttribute('data-tab');
                 document.getElementById(tabName + 'TabContent').style.display = 'block';
-                
-                // If videos tab is selected, populate with videos
-                if (tabName === 'videos') {
-                    populateVideosTab();
-                }
             });
         });
-        
-        // Populate videos tab with sample videos
-        function populateVideosTab() {
-            videosTabContent.innerHTML = '';
-            
-            sampleVideos.forEach(video => {
-                const videoCard = document.createElement('div');
-                videoCard.className = 'video-card';
-                videoCard.innerHTML = `
-                    <div class="video-thumbnail" style="background-image: url('${video.thumbnail}')"></div>
-                    <div class="video-info">
-                        <h3 class="video-title">${video.title}</h3>
-                        <div class="video-meta">${video.views} views • ${video.date}</div>
-                    </div>
-                `;
-                videosTabContent.appendChild(videoCard);
-            });
-        }
         
         // Go to profile page
         function goToProfile() {
@@ -1241,10 +1152,9 @@
                 // Set profile data
                 profileBanner.style.backgroundImage = `url('${defaultBanner}')`;
                 profilePictureLarge.src = currentUser.photoURL || 'https://via.placeholder.com/80';
-                profilePageName.textContent = currentUser.displayName || 'User';
-                profileHandle.textContent = `@${(currentUser.displayName || 'user').replace(/\s+/g, '').toLowerCase()}`;
-                profilePageSubscribers.textContent = '1.2K subscribers';
-                profilePageVideos.textContent = '4 videos';
+                profilePageName.textContent = (currentUser.displayName || 'USER').toUpperCase();
+                profilePageSubscribers.textContent = '0 SUBSCRIBERS';
+                profilePageVideos.textContent = '0 VIDEOS';
                 
                 // Show appropriate button based on whether it's own profile or someone else's
                 if (viewingOwnProfile) {
@@ -1253,7 +1163,7 @@
                 } else {
                     customizeChannelBtn.style.display = 'none';
                     subscribeBtn.style.display = 'block';
-                    subscribeBtn.textContent = 'Subscribe';
+                    subscribeBtn.textContent = 'SUBSCRIBE';
                     subscribeBtn.classList.remove('subscribed');
                     isSubscribed = false;
                 }
@@ -1285,16 +1195,15 @@
                 
                 // Set profile data for other channel
                 profileBanner.style.backgroundImage = `url('${defaultBanner}')`;
-                profilePictureLarge.src = 'https://i.imgur.com/8ZvJw3m.jpeg'; // Different profile picture
-                profilePageName.textContent = 'Tech Tutorials';
-                profileHandle.textContent = '@techtutorials';
-                profilePageSubscribers.textContent = '15.7K subscribers';
-                profilePageVideos.textContent = '42 videos';
+                profilePictureLarge.src = 'https://via.placeholder.com/80'; // Different profile picture
+                profilePageName.textContent = 'OTHER CHANNEL';
+                profilePageSubscribers.textContent = '0 SUBSCRIBERS';
+                profilePageVideos.textContent = '0 VIDEOS';
                 
                 // Show subscribe button (not customize)
                 customizeChannelBtn.style.display = 'none';
                 subscribeBtn.style.display = 'block';
-                subscribeBtn.textContent = 'Subscribe';
+                subscribeBtn.textContent = 'SUBSCRIBE';
                 subscribeBtn.classList.remove('subscribed');
                 isSubscribed = false;
                 
@@ -1307,7 +1216,7 @@
                 document.getElementById('homeTabContent').style.display = 'block';
                 
                 // Update page title and URL
-                document.title = 'Tech Tutorials - Kwive';
+                document.title = 'Other Channel - Kwive';
                 window.history.pushState({ page: 'profile', channelId: channelId }, document.title, `/c/${channelId}`);
                 
                 loadingOverlay.classList.remove('show');
@@ -1423,28 +1332,6 @@
                 }
             }
         });
-        
-        // Demo: Add a way to view other channels
-        // In a real app, this would be triggered by clicking on a channel from search results, etc.
-        setTimeout(() => {
-            // Create a demo button to view another channel
-            const demoButton = document.createElement('button');
-            demoButton.textContent = 'View Tech Tutorials Channel';
-            demoButton.style.position = 'fixed';
-            demoButton.style.bottom = '20px';
-            demoButton.style.right = '20px';
-            demoButton.style.zIndex = '1000';
-            demoButton.style.padding = '10px 15px';
-            demoButton.style.backgroundColor = '#1976D2';
-            demoButton.style.color = 'white';
-            demoButton.style.border = 'none';
-            demoButton.style.borderRadius = '4px';
-            demoButton.style.cursor = 'pointer';
-            demoButton.addEventListener('click', () => {
-                viewOtherChannel('techtutorials123');
-            });
-            document.body.appendChild(demoButton);
-        }, 3000);
     </script>
 </body>
 </html>
