@@ -138,6 +138,10 @@
             background-color: rgba(255, 255, 255, 0.2);
         }
         
+        .create-btn.hidden {
+            display: none;
+        }
+        
         .profile-pic {
             width: 40px;
             height: 40px;
@@ -366,7 +370,119 @@
             font-size: 32px;
             font-weight: 500;
             color: white;
-            margin: 0 0 24px 0;
+            margin: 0 0 32px 0;
+        }
+        
+        .dashboard-container {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            max-width: 1200px;
+        }
+        
+        .stats-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            padding: 24px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+        
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .stat-label {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        
+        .stat-value {
+            color: white;
+            font-size: 28px;
+            font-weight: 500;
+        }
+        
+        .analytics-btn {
+            background: white;
+            border: none;
+            color: #1976D2;
+            font-family: 'Roboto', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            text-transform: uppercase;
+            padding: 10px 24px;
+            cursor: pointer;
+            border-radius: 2px;
+            transition: background-color 0.2s;
+            letter-spacing: 0.5px;
+            align-self: flex-start;
+        }
+        
+        .analytics-btn:hover {
+            background: #f5f5f5;
+        }
+        
+        .analytics-btn:active {
+            background: #eeeeee;
+        }
+        
+        .upload-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            padding: 32px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .upload-card-title {
+            color: white;
+            font-size: 24px;
+            font-weight: 500;
+            margin: 0;
+        }
+        
+        .upload-btn {
+            background: white;
+            border: none;
+            color: #1976D2;
+            font-family: 'Roboto', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            text-transform: uppercase;
+            padding: 12px 32px;
+            cursor: pointer;
+            border-radius: 2px;
+            transition: background-color 0.2s;
+            letter-spacing: 0.5px;
+        }
+        
+        .upload-btn:hover {
+            background: #f5f5f5;
+        }
+        
+        .upload-btn:active {
+            background: #eeeeee;
+        }
+        
+        .page-content {
+            display: none;
+        }
+        
+        .page-content.active {
+            display: block;
         }
     </style>
 </head>
