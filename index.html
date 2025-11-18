@@ -179,6 +179,12 @@
         .profile-menu-header {
             padding: 16px;
             border-bottom: 1px solid #e0e0e0;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .profile-menu-header:hover {
+            background-color: #f5f5f5;
         }
         
         .profile-menu-name {
@@ -484,6 +490,83 @@
         .page-content.active {
             display: block;
         }
+        
+        /* Profile Page Styles */
+        .profile-page {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .profile-banner {
+            width: 100%;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 4px;
+            margin-bottom: -60px;
+        }
+        
+        .profile-info {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            padding: 80px 32px 32px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: flex-start;
+            gap: 32px;
+        }
+        
+        .profile-picture-large {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid #0D47A1;
+            flex-shrink: 0;
+        }
+        
+        .profile-details {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .profile-name {
+            font-size: 32px;
+            font-weight: 500;
+            color: white;
+            margin: 0;
+        }
+        
+        .profile-subscribers {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.8);
+            margin: 0;
+        }
+        
+        .customize-channel-btn {
+            background: white;
+            border: none;
+            color: #1976D2;
+            font-family: 'Roboto', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            text-transform: uppercase;
+            padding: 10px 24px;
+            cursor: pointer;
+            border-radius: 2px;
+            transition: background-color 0.2s;
+            letter-spacing: 0.5px;
+            align-self: flex-start;
+        }
+        
+        .customize-channel-btn:hover {
+            background: #f5f5f5;
+        }
+        
+        .customize-channel-btn:active {
+            background: #eeeeee;
+        }
     </style>
 </head>
 <body>
@@ -520,6 +603,18 @@
             <h2 class="no-results-title">No results found</h2>
             <p class="no-results-subtitle">Try searching something else up!</p>
             <p class="no-results-suggestion">(Cat videos)</p>
+        </div>
+        
+        <div class="profile-page" id="profilePage" style="display: none;">
+            <div class="profile-banner" id="profileBanner"></div>
+            <div class="profile-info">
+                <img src="" alt="Profile" class="profile-picture-large" id="profilePictureLarge">
+                <div class="profile-details">
+                    <h1 class="profile-name" id="profilePageName"></h1>
+                    <p class="profile-subscribers" id="profilePageSubscribers">0 subscribers</p>
+                    <button class="customize-channel-btn" id="customizeChannelBtn" style="display: none;">Customize channel</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -625,9 +720,27 @@
         const studioTitle = document.getElementById('studioTitle');
         const goToAnalyticsBtn = document.getElementById('goToAnalyticsBtn');
         const uploadFromDashboardBtn = document.getElementById('uploadFromDashboardBtn');
+        const profilePage = document.getElementById('profilePage');
+        const profileBanner = document.getElementById('profileBanner');
+        const profilePictureLarge = document.getElementById('profilePictureLarge');
+        const profilePageName = document.getElementById('profilePageName');
+        const profilePageSubscribers = document.getElementById('profilePageSubscribers');
+        const customizeChannelBtn = document.getElementById('customizeChannelBtn');
 
         let isStudioMode = false;
         let currentUser = null;
+        let userChannelId = null;
+        const defaultBanner = 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/1a989815-8731-4b08-8124-db03acb4ada8/di7xmh0-8c21639f-8b54-4c3b-bed0-b50b6fbc8d8b.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiIvZi8xYTk4OTgxNS04NzMxLTRiMDgtODEyNC1kYjAzYWNiNGFkYTgvZGk3eG1oMC04YzIxNjM5Zi04YjU0LTRjM2ItYmVkMC1iNTBiNmZiYzhkOGIucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.OWTlOXrVlOcGk3DkNyh2X5etCjhDxJ98O53I6vGzMpU';
+        
+        // Generate a random channel ID
+        function generateChannelId() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let result = '';
+            for (let i = 0; i < 15; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
 
         // Click logo to go home
         logo.addEventListener('click', () => {
@@ -635,7 +748,11 @@
                 switchToKwive();
             } else {
                 noResults.classList.remove('show');
+                noResults.style.display = '';
+                profilePage.style.display = 'none';
                 searchBar.value = '';
+                document.title = 'Kwive';
+                window.history.pushState({ page: 'home' }, 'Kwive', '/');
             }
         });
 
@@ -643,6 +760,11 @@
         profilePic.addEventListener('click', (e) => {
             e.stopPropagation();
             profileMenu.classList.toggle('show');
+        });
+        
+        // Go to profile when clicking profile menu header
+        document.querySelector('.profile-menu-header').addEventListener('click', () => {
+            goToProfile();
         });
 
         // Close menu when clicking outside
@@ -742,9 +864,12 @@
                 studioLayout.classList.remove('active');
                 returnToKwiveBtn.style.display = 'none';
                 noResults.classList.remove('show');
+                noResults.style.display = '';
+                profilePage.style.display = 'none';
                 searchBar.value = '';
                 
-                // Update URL
+                // Update URL and title
+                document.title = 'Kwive';
                 window.history.pushState({ page: 'home' }, 'Kwive', '/');
                 
                 loadingOverlay.classList.remove('show');
@@ -804,6 +929,45 @@
             showPage('uploadPage', 'Upload');
             setActiveSidebarItem('uploadBtn');
         });
+        
+        // Customize channel button
+        customizeChannelBtn.addEventListener('click', () => {
+            loadingOverlay.classList.add('show');
+            setTimeout(() => {
+                switchToStudio();
+                showPage('customizationPage', 'Customization');
+                setActiveSidebarItem('customizationBtn');
+                loadingOverlay.classList.remove('show');
+            }, 2000);
+        });
+        
+        // Go to profile page
+        function goToProfile() {
+            if (!currentUser) return;
+            
+            loadingOverlay.classList.add('show');
+            profileMenu.classList.remove('show');
+            
+            setTimeout(() => {
+                noResults.style.display = 'none';
+                profilePage.style.display = 'block';
+                
+                // Set profile data
+                profileBanner.style.backgroundImage = `url('${defaultBanner}')`;
+                profilePictureLarge.src = currentUser.photoURL || 'https://via.placeholder.com/120';
+                profilePageName.textContent = currentUser.displayName || 'User';
+                profilePageSubscribers.textContent = '0 subscribers';
+                
+                // Show customize button only for own profile
+                customizeChannelBtn.style.display = 'block';
+                
+                // Update page title and URL
+                document.title = `${currentUser.displayName || 'User'} - Kwive`;
+                window.history.pushState({ page: 'profile', channelId: userChannelId }, document.title, `/c/${userChannelId}`);
+                
+                loadingOverlay.classList.remove('show');
+            }, 2000);
+        }
 
         function setActiveSidebarItem(activeId) {
             document.querySelectorAll('.sidebar-item').forEach(item => {
@@ -812,10 +976,57 @@
             document.getElementById(activeId).classList.add('active');
         }
 
+        // Handle browser back/forward buttons
+        window.addEventListener('popstate', (event) => {
+            if (event.state) {
+                if (event.state.page === 'home') {
+                    if (isStudioMode) {
+                        switchToKwive();
+                    } else {
+                        noResults.style.display = '';
+                        profilePage.style.display = 'none';
+                        document.title = 'Kwive';
+                    }
+                } else if (event.state.page === 'profile') {
+                    if (!isStudioMode) {
+                        goToProfile();
+                    }
+                } else if (event.state.page === 'studio') {
+                    if (!isStudioMode) {
+                        switchToStudio();
+                    }
+                } else if (isStudioMode) {
+                    // Handle studio sub-pages
+                    const pageMap = {
+                        'dashboard': { id: 'dashboardPage', title: 'Channel dashboard', btn: 'dashboardBtn' },
+                        'content': { id: 'contentPage', title: 'Content', btn: 'contentBtn' },
+                        'analytics': { id: 'analyticsPage', title: 'Analytics', btn: 'analyticsBtn' },
+                        'customization': { id: 'customizationPage', title: 'Customization', btn: 'customizationBtn' },
+                        'upload': { id: 'uploadPage', title: 'Upload', btn: 'uploadBtn' }
+                    };
+                    
+                    const pageInfo = pageMap[event.state.page];
+                    if (pageInfo) {
+                        document.querySelectorAll('.page-content').forEach(page => {
+                            page.classList.remove('active');
+                        });
+                        document.getElementById(pageInfo.id).classList.add('active');
+                        studioTitle.textContent = pageInfo.title;
+                        setActiveSidebarItem(pageInfo.btn);
+                    }
+                }
+            }
+        });
+
         // Listen for auth state changes
         onAuthStateChanged(auth, (user) => {
             currentUser = user;
             if (user) {
+                // Generate or retrieve channel ID for user
+                if (!userChannelId) {
+                    userChannelId = generateChannelId();
+                }
+                
                 // User is signed in
                 signInBtn.style.display = 'none';
                 profileContainer.classList.add('active');
@@ -832,6 +1043,7 @@
                 // User is signed out
                 signInBtn.style.display = 'block';
                 profileContainer.classList.remove('active');
+                userChannelId = null;
                 
                 // Return to Kwive if signed out while in studio
                 if (isStudioMode) {
