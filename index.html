@@ -532,10 +532,7 @@
             font-weight: 400;
             color: white;
             margin: 0;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 8px 16px;
-            border-radius: 2px;
-            width: fit-content;
+            /* Removed background styling */
         }
         
         .profile-meta {
@@ -1038,11 +1035,11 @@
             <div class="profile-header">
                 <img src="" alt="Profile" class="profile-picture-large" id="profilePictureLarge">
                 <div class="profile-info-container">
-                    <h1 class="profile-name" id="profilePageName">CHANNEL NAME</h1>
+                    <h1 class="profile-name" id="profilePageName">Channel Name</h1>
                     <div class="profile-meta">
-                        <p class="profile-subscribers" id="profilePageSubscribers">0 SUBSCRIBERS</p>
+                        <p class="profile-subscribers" id="profilePageSubscribers">0 subscribers</p>
                         <span>•</span>
-                        <p class="profile-videos" id="profilePageVideos">0 VIDEOS</p>
+                        <p class="profile-videos" id="profilePageVideos">0 videos</p>
                     </div>
                     <div class="profile-buttons">
                         <button class="customize-channel-btn" id="customizeChannelBtn" style="display: none;">CUSTOMIZE CHANNEL</button>
@@ -1519,13 +1516,13 @@
                 subscribeBtn.classList.add('subscribed');
                 // In a real app, you would update the subscriber count here
                 const currentSubs = parseInt(profilePageSubscribers.textContent);
-                profilePageSubscribers.textContent = (currentSubs + 1) + ' SUBSCRIBERS';
+                profilePageSubscribers.textContent = (currentSubs + 1) + ' subscribers';
             } else {
                 subscribeBtn.textContent = 'SUBSCRIBE';
                 subscribeBtn.classList.remove('subscribed');
                 // In a real app, you would update the subscriber count here
                 const currentSubs = parseInt(profilePageSubscribers.textContent);
-                profilePageSubscribers.textContent = (currentSubs - 1) + ' SUBSCRIBERS';
+                profilePageSubscribers.textContent = (currentSubs - 1) + ' subscribers';
             }
         });
         
@@ -1581,9 +1578,9 @@
                 // Set profile data
                 profileBanner.style.backgroundImage = `url('${defaultBanner}')`;
                 profilePictureLarge.src = currentUser.photoURL || 'https://via.placeholder.com/80';
-                profilePageName.textContent = (currentUser.displayName || 'USER').toUpperCase();
-                profilePageSubscribers.textContent = '0 SUBSCRIBERS';
-                profilePageVideos.textContent = '0 VIDEOS';
+                profilePageName.textContent = currentUser.displayName || 'User';
+                profilePageSubscribers.textContent = '0 subscribers';
+                profilePageVideos.textContent = '0 videos';
                 
                 // Show appropriate button based on whether it's own profile or someone else's
                 if (viewingOwnProfile) {
@@ -1625,9 +1622,9 @@
                 // Set profile data for other channel
                 profileBanner.style.backgroundImage = `url('${defaultBanner}')`;
                 profilePictureLarge.src = 'https://via.placeholder.com/80'; // Different profile picture
-                profilePageName.textContent = 'OTHER CHANNEL';
-                profilePageSubscribers.textContent = '0 SUBSCRIBERS';
-                profilePageVideos.textContent = '0 VIDEOS';
+                profilePageName.textContent = 'Other Channel';
+                profilePageSubscribers.textContent = '0 subscribers';
+                profilePageVideos.textContent = '0 videos';
                 
                 // Show subscribe button (not customize)
                 customizeChannelBtn.style.display = 'none';
@@ -1724,7 +1721,7 @@
         });
 
         // Listen for auth state changes
-        onAuthStateChanged(auth, (user) => {
+        onAuthStateChanged(aauth, (user) => {
             currentUser = user;
             if (user) {
                 // Generate or retrieve channel ID for user
