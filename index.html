@@ -62,11 +62,36 @@
         .profile-container {
             display: none;
             align-items: center;
-            gap: 12px;
+            gap: 16px;
+            position: relative;
         }
         
         .profile-container.active {
             display: flex;
+        }
+        
+        .create-btn {
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.7);
+            color: white;
+            font-family: 'Roboto', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            text-transform: uppercase;
+            padding: 8px 16px;
+            cursor: pointer;
+            border-radius: 2px;
+            transition: all 0.2s;
+            letter-spacing: 0.5px;
+        }
+        
+        .create-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: white;
+        }
+        
+        .create-btn:active {
+            background-color: rgba(255, 255, 255, 0.2);
         }
         
         .profile-pic {
@@ -82,6 +107,74 @@
             border-color: rgba(255, 255, 255, 0.6);
         }
         
+        .profile-menu {
+            position: absolute;
+            top: 55px;
+            right: 0;
+            background: white;
+            border-radius: 2px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            min-width: 250px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.2s ease;
+            z-index: 1000;
+        }
+        
+        .profile-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .profile-menu-header {
+            padding: 16px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .profile-menu-name {
+            color: #212121;
+            font-size: 16px;
+            font-weight: 500;
+            margin: 0;
+        }
+        
+        .profile-menu-email {
+            color: #757575;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+        
+        .profile-menu-divider {
+            height: 1px;
+            background: #e0e0e0;
+            margin: 0;
+        }
+        
+        .profile-menu-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            color: #212121;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border: none;
+            background: transparent;
+            width: 100%;
+            text-align: left;
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        .profile-menu-item:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .profile-menu-item:active {
+            background-color: #eeeeee;
+        }
+        
         .content {
             padding: 24px;
             color: white;
@@ -93,11 +186,22 @@
         <h1>Kwive</h1>
         <button class="sign-in-btn" id="signInBtn">Sign In</button>
         <div class="profile-container" id="profileContainer">
+            <button class="create-btn" id="createBtn">CREATE +</button>
             <img src="" alt="Profile" class="profile-pic" id="profilePic">
+            <div class="profile-menu" id="profileMenu">
+                <div class="profile-menu-header">
+                    <div class="profile-menu-name" id="profileName"></div>
+                    <div class="profile-menu-email" id="profileEmail"></div>
+                </div>
+                <hr class="profile-menu-divider">
+                <button class="profile-menu-item" id="settingsBtn">Settings</button>
+                <button class="profile-menu-item" id="signOutBtn">Sign out</button>
+            </div>
         </div>
     </header>
     
     <div class="content">
+        <!-- Your content goes here -->
     </div>
 
     <script type="module">
@@ -123,6 +227,25 @@
         const signInBtn = document.getElementById('signInBtn');
         const profileContainer = document.getElementById('profileContainer');
         const profilePic = document.getElementById('profilePic');
+        const profileMenu = document.getElementById('profileMenu');
+        const profileName = document.getElementById('profileName');
+        const profileEmail = document.getElementById('profileEmail');
+        const settingsBtn = document.getElementById('settingsBtn');
+        const signOutBtn = document.getElementById('signOutBtn');
+        const createBtn = document.getElementById('createBtn');
+
+        // Toggle profile menu
+        profilePic.addEventListener('click', (e) => {
+            e.stopPropagation();
+            profileMenu.classList.toggle('show');
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!profileContainer.contains(e.target)) {
+                profileMenu.classList.remove('show');
+            }
+        });
 
         // Sign in with Google
         signInBtn.addEventListener('click', async () => {
@@ -136,24 +259,40 @@
             }
         });
 
-        profilePic.addEventListener('click', async () => {
-            if (confirm('Do you want to sign out?')) {
-                try {
-                    await signOut(auth);
-                    console.log('User signed out');
-                } catch (error) {
-                    console.error('Error signing out:', error);
-                }
+        // Settings button
+        settingsBtn.addEventListener('click', () => {
+            alert('Settings clicked! (Add your settings page here)');
+            profileMenu.classList.remove('show');
+        });
+
+        // Create button
+        createBtn.addEventListener('click', () => {
+            alert('Create clicked! (Add your create functionality here)');
+        });
+
+        // Sign out
+        signOutBtn.addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+                console.log('User signed out');
+                profileMenu.classList.remove('show');
+            } catch (error) {
+                console.error('Error signing out:', error);
             }
         });
 
+        // Listen for auth state changes
         onAuthStateChanged(auth, (user) => {
             if (user) {
+                // User is signed in
                 signInBtn.style.display = 'none';
                 profileContainer.classList.add('active');
                 profilePic.src = user.photoURL || 'https://via.placeholder.com/40';
                 profilePic.alt = user.displayName || 'User';
+                profileName.textContent = user.displayName || 'User';
+                profileEmail.textContent = user.email || '';
             } else {
+                // User is signed out
                 signInBtn.style.display = 'block';
                 profileContainer.classList.remove('active');
             }
