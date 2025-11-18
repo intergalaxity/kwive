@@ -36,6 +36,12 @@
             font-weight: 500;
             letter-spacing: 0.5px;
             flex-shrink: 0;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        
+        .header h1:hover {
+            opacity: 0.8;
         }
         
         .search-container {
@@ -256,7 +262,7 @@
 </head>
 <body>
     <header class="header">
-        <h1>Kwive</h1>
+        <h1 id="logo">Kwive</h1>
         <div class="search-container">
             <input type="text" class="search-bar" placeholder="Search..." id="searchBar">
         </div>
@@ -316,6 +322,14 @@
         const createBtn = document.getElementById('createBtn');
         const searchBar = document.getElementById('searchBar');
         const noResults = document.getElementById('noResults');
+        const logo = document.getElementById('logo');
+
+        // Click logo to go home
+        logo.addEventListener('click', () => {
+            console.log('Logo clicked!');
+            noResults.classList.remove('show');
+            searchBar.value = '';
+        });
 
         // Search functionality
         searchBar.addEventListener('keypress', (e) => {
