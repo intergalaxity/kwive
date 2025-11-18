@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Fixed: Added COOP header meta tag to prevent the policy error -->
+    <meta http-equiv="Cross-Origin-Opener-Policy" content="same-origin">
     <title>Kwive</title>
     <link rel="icon" type="image/png" href="https://i.imgur.com/Tz517pW.png">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
@@ -659,9 +661,32 @@
             color: rgba(255, 255, 255, 0.6);
             margin: 0;
         }
+        
+        /* Offline notification */
+        .offline-notification {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #f44336;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            z-index: 10000;
+            display: none;
+        }
+        
+        .offline-notification.show {
+            display: block;
+        }
     </style>
 </head>
 <body>
+    <!-- Added offline notification -->
+    <div class="offline-notification" id="offlineNotification">
+        You are currently offline. Some features may not work properly.
+    </div>
+
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loader"></div>
     </div>
@@ -798,7 +823,7 @@
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
         import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js';
-        import { getFirestore, doc, setDoc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getFirestore, doc, setDoc, getDoc, enableIndexedDbPersistence } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
         const firebaseConfig = {
             apiKey: "AIzaSyDCV9yTXFJ0yj1m9hZijs8OxIcfdK95nG8",
@@ -815,6 +840,16 @@
         const analytics = getAnalytics(app);
         const db = getFirestore(app);
         const provider = new GoogleAuthProvider();
+
+        // Enable offline persistence for Firestore
+        enableIndexedDbPersistence(db)
+            .catch((err) => {
+                if (err.code == 'failed-precondition') {
+                    console.warn('Multiple tabs open, persistence can only be enabled in one tab at a time.');
+                } else if (err.code == 'unimplemented') {
+                    console.warn('The current browser doesn\'t support persistence.');
+                }
+            });
 
         const signInBtn = document.getElementById('signInBtn');
         const profileContainer = document.getElementById('profileContainer');
@@ -848,6 +883,7 @@
         const profileVideoCount = document.getElementById('profileVideoCount');
         const customizeChannelBtn = document.getElementById('customizeChannelBtn');
         const subscribeBtn = document.getElementById('subscribeBtn');
+        const offlineNotification = document.getElementById('offlineNotification');
 
         let isStudioMode = false;
         let currentUser = null;
@@ -864,6 +900,19 @@
             }
             return result;
         }
+
+        // Check online/offline status
+        function updateOnlineStatus() {
+            if (navigator.onLine) {
+                offlineNotification.classList.remove('show');
+            } else {
+                offlineNotification.classList.add('show');
+            }
+        }
+
+        window.addEventListener('online', updateOnlineStatus);
+        window.addEventListener('offline', updateOnlineStatus);
+        updateOnlineStatus(); // Check initial status
 
         // Click logo to go home
         logo.addEventListener('click', () => {
@@ -1287,6 +1336,11 @@
                     }
                 } catch (error) {
                     console.error('Error setting up user:', error);
+                    // Handle offline scenario gracefully
+                    if (error.code === 'failed-precondition') {
+                        console.log('Firestore is offline, using cached data');
+                        // You could implement a fallback to localStorage here
+                    }
                 }
             } else {
                 // User is signed out
