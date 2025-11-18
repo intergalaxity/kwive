@@ -28,12 +28,49 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 24px;
         }
         
         .header h1 {
             font-size: 24px;
             font-weight: 500;
             letter-spacing: 0.5px;
+            flex-shrink: 0;
+        }
+        
+        .search-container {
+            flex: 1;
+            max-width: 600px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .search-bar {
+            width: 100%;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 2px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #212121;
+            transition: background-color 0.2s;
+        }
+        
+        .search-bar:focus {
+            outline: none;
+            background: white;
+        }
+        
+        .search-bar::placeholder {
+            color: #757575;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-shrink: 0;
         }
         
         .sign-in-btn {
@@ -184,10 +221,14 @@
 <body>
     <header class="header">
         <h1>Kwive</h1>
-        <button class="sign-in-btn" id="signInBtn">Sign In</button>
-        <div class="profile-container" id="profileContainer">
-            <button class="create-btn" id="createBtn">CREATE +</button>
-            <img src="" alt="Profile" class="profile-pic" id="profilePic">
+        <div class="search-container">
+            <input type="text" class="search-bar" placeholder="Search..." id="searchBar">
+        </div>
+        <div class="header-right">
+            <button class="sign-in-btn" id="signInBtn">Sign In</button>
+            <div class="profile-container" id="profileContainer">
+                <button class="create-btn" id="createBtn">CREATE +</button>
+                <img src="" alt="Profile" class="profile-pic" id="profilePic">
             <div class="profile-menu" id="profileMenu">
                 <div class="profile-menu-header">
                     <div class="profile-menu-name" id="profileName"></div>
