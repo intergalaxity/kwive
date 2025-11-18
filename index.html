@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kwive</title>
+    <link rel="icon" type="image/png" href="https://i.imgur.com/Tz517pW.png">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <style>
         * {
@@ -258,12 +259,125 @@
             color: rgba(255, 255, 255, 0.7);
             margin: 0;
         }
+        
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(13, 71, 161, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        
+        .loading-overlay.show {
+            display: flex;
+        }
+        
+        .loader {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Studio Mode Styles */
+        .studio-layout {
+            display: none;
+        }
+        
+        .studio-layout.active {
+            display: flex;
+            height: calc(100vh - 72px);
+        }
+        
+        .sidebar {
+            width: 240px;
+            background: #1565C0;
+            padding: 24px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .sidebar-profile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 16px 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 16px;
+        }
+        
+        .sidebar-profile-pic {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-bottom: 12px;
+        }
+        
+        .sidebar-profile-name {
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            text-align: center;
+        }
+        
+        .sidebar-item {
+            padding: 12px 24px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            background: transparent;
+            text-align: left;
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        .sidebar-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        .sidebar-item.active {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-weight: 500;
+        }
+        
+        .studio-content {
+            flex: 1;
+            padding: 48px;
+            overflow-y: auto;
+        }
+        
+        .studio-title {
+            font-size: 32px;
+            font-weight: 500;
+            color: white;
+            margin: 0 0 24px 0;
+        }
     </style>
 </head>
 <body>
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loader"></div>
+    </div>
+
     <header class="header">
         <h1 id="logo">Kwive</h1>
-        <div class="search-container">
+        <div class="search-container" id="searchContainer">
             <input type="text" class="search-bar" placeholder="Search..." id="searchBar">
         </div>
         <div class="header-right">
@@ -271,23 +385,43 @@
             <div class="profile-container" id="profileContainer">
                 <button class="create-btn" id="createBtn">CREATE +</button>
                 <img src="" alt="Profile" class="profile-pic" id="profilePic">
-            <div class="profile-menu" id="profileMenu">
-                <div class="profile-menu-header">
-                    <div class="profile-menu-name" id="profileName"></div>
-                    <div class="profile-menu-email" id="profileEmail"></div>
+                <div class="profile-menu" id="profileMenu">
+                    <div class="profile-menu-header">
+                        <div class="profile-menu-name" id="profileName"></div>
+                        <div class="profile-menu-email" id="profileEmail"></div>
+                    </div>
+                    <hr class="profile-menu-divider">
+                    <button class="profile-menu-item" id="returnToKwiveBtn" style="display: none;">Return to Kwive</button>
+                    <button class="profile-menu-item" id="settingsBtn">Settings</button>
+                    <button class="profile-menu-item" id="signOutBtn">Sign out</button>
                 </div>
-                <hr class="profile-menu-divider">
-                <button class="profile-menu-item" id="settingsBtn">Settings</button>
-                <button class="profile-menu-item" id="signOutBtn">Sign out</button>
             </div>
         </div>
     </header>
     
-    <div class="content">
+    <div class="content" id="mainContent">
         <div class="no-results" id="noResults">
             <h2 class="no-results-title">No results found</h2>
             <p class="no-results-subtitle">Try searching something else up!</p>
             <p class="no-results-suggestion">(Cat videos)</p>
+        </div>
+    </div>
+
+    <div class="studio-layout" id="studioLayout">
+        <div class="sidebar">
+            <div class="sidebar-profile">
+                <img src="" alt="Profile" class="sidebar-profile-pic" id="sidebarProfilePic">
+                <div class="sidebar-profile-name" id="sidebarProfileName"></div>
+            </div>
+            <button class="sidebar-item active" id="dashboardBtn">Dashboard</button>
+            <button class="sidebar-item" id="contentBtn">Content</button>
+            <button class="sidebar-item" id="analyticsBtn">Analytics</button>
+            <button class="sidebar-item" id="customizationBtn">Customization</button>
+            <button class="sidebar-item" id="uploadBtn">Upload</button>
+        </div>
+        <div class="studio-content">
+            <h1 class="studio-title">Channel dashboard</h1>
+            <!-- Dashboard content will go here -->
         </div>
     </div>
 
@@ -323,23 +457,24 @@
         const searchBar = document.getElementById('searchBar');
         const noResults = document.getElementById('noResults');
         const logo = document.getElementById('logo');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const mainContent = document.getElementById('mainContent');
+        const studioLayout = document.getElementById('studioLayout');
+        const searchContainer = document.getElementById('searchContainer');
+        const returnToKwiveBtn = document.getElementById('returnToKwiveBtn');
+        const sidebarProfilePic = document.getElementById('sidebarProfilePic');
+        const sidebarProfileName = document.getElementById('sidebarProfileName');
+
+        let isStudioMode = false;
+        let currentUser = null;
 
         // Click logo to go home
         logo.addEventListener('click', () => {
-            console.log('Logo clicked!');
-            noResults.classList.remove('show');
-            searchBar.value = '';
-        });
-
-        // Search functionality
-        searchBar.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                const searchQuery = searchBar.value.trim();
-                if (searchQuery) {
-                    noResults.classList.add('show');
-                } else {
-                    noResults.classList.remove('show');
-                }
+            if (isStudioMode) {
+                switchToKwive();
+            } else {
+                noResults.classList.remove('show');
+                searchBar.value = '';
             }
         });
 
@@ -353,6 +488,18 @@
         document.addEventListener('click', (e) => {
             if (!profileContainer.contains(e.target)) {
                 profileMenu.classList.remove('show');
+            }
+        });
+
+        // Search functionality
+        searchBar.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const searchQuery = searchBar.value.trim();
+                if (searchQuery) {
+                    noResults.classList.add('show');
+                } else {
+                    noResults.classList.remove('show');
+                }
             }
         });
 
@@ -374,9 +521,14 @@
             profileMenu.classList.remove('show');
         });
 
-        // Create button
+        // Create button - switch to studio
         createBtn.addEventListener('click', () => {
-            alert('Create clicked! (Add your create functionality here)');
+            switchToStudio();
+        });
+
+        // Return to Kwive button
+        returnToKwiveBtn.addEventListener('click', () => {
+            switchToKwive();
         });
 
         // Sign out
@@ -390,8 +542,81 @@
             }
         });
 
+        // Switch to Studio mode
+        function switchToStudio() {
+            loadingOverlay.classList.add('show');
+            setTimeout(() => {
+                isStudioMode = true;
+                logo.textContent = 'Kwive Studio';
+                searchContainer.style.display = 'none';
+                mainContent.style.display = 'none';
+                studioLayout.classList.add('active');
+                returnToKwiveBtn.style.display = 'block';
+                
+                if (currentUser) {
+                    sidebarProfilePic.src = currentUser.photoURL || 'https://via.placeholder.com/80';
+                    sidebarProfileName.textContent = currentUser.displayName || 'User';
+                }
+                
+                loadingOverlay.classList.remove('show');
+                profileMenu.classList.remove('show');
+            }, 2000);
+        }
+
+        // Switch back to Kwive
+        function switchToKwive() {
+            loadingOverlay.classList.add('show');
+            setTimeout(() => {
+                isStudioMode = false;
+                logo.textContent = 'Kwive';
+                searchContainer.style.display = 'flex';
+                mainContent.style.display = 'flex';
+                studioLayout.classList.remove('active');
+                returnToKwiveBtn.style.display = 'none';
+                noResults.classList.remove('show');
+                searchBar.value = '';
+                
+                loadingOverlay.classList.remove('show');
+                profileMenu.classList.remove('show');
+            }, 2000);
+        }
+
+        // Sidebar navigation
+        document.getElementById('dashboardBtn').addEventListener('click', () => {
+            document.querySelector('.studio-title').textContent = 'Channel dashboard';
+            setActiveSidebarItem('dashboardBtn');
+        });
+
+        document.getElementById('contentBtn').addEventListener('click', () => {
+            document.querySelector('.studio-title').textContent = 'Content';
+            setActiveSidebarItem('contentBtn');
+        });
+
+        document.getElementById('analyticsBtn').addEventListener('click', () => {
+            document.querySelector('.studio-title').textContent = 'Analytics';
+            setActiveSidebarItem('analyticsBtn');
+        });
+
+        document.getElementById('customizationBtn').addEventListener('click', () => {
+            document.querySelector('.studio-title').textContent = 'Customization';
+            setActiveSidebarItem('customizationBtn');
+        });
+
+        document.getElementById('uploadBtn').addEventListener('click', () => {
+            document.querySelector('.studio-title').textContent = 'Upload';
+            setActiveSidebarItem('uploadBtn');
+        });
+
+        function setActiveSidebarItem(activeId) {
+            document.querySelectorAll('.sidebar-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.getElementById(activeId).classList.add('active');
+        }
+
         // Listen for auth state changes
         onAuthStateChanged(auth, (user) => {
+            currentUser = user;
             if (user) {
                 // User is signed in
                 signInBtn.style.display = 'none';
@@ -400,10 +625,25 @@
                 profilePic.alt = user.displayName || 'User';
                 profileName.textContent = user.displayName || 'User';
                 profileEmail.textContent = user.email || '';
+                
+                if (isStudioMode) {
+                    sidebarProfilePic.src = user.photoURL || 'https://via.placeholder.com/80';
+                    sidebarProfileName.textContent = user.displayName || 'User';
+                }
             } else {
                 // User is signed out
                 signInBtn.style.display = 'block';
                 profileContainer.classList.remove('active');
+                
+                // Return to Kwive if signed out while in studio
+                if (isStudioMode) {
+                    isStudioMode = false;
+                    logo.textContent = 'Kwive';
+                    searchContainer.style.display = 'flex';
+                    mainContent.style.display = 'flex';
+                    studioLayout.classList.remove('active');
+                    returnToKwiveBtn.style.display = 'none';
+                }
             }
         });
     </script>
