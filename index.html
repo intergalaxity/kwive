@@ -698,6 +698,303 @@
             color: rgba(255, 255, 255, 0.6);
             font-size: 12px;
         }
+        
+        /* Content Page Styles */
+        .content-filters {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .filter-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            font-family: 'Roboto', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 8px 16px;
+            cursor: pointer;
+            border-radius: 16px;
+            transition: all 0.2s;
+        }
+        
+        .filter-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .filter-btn.active {
+            background: white;
+            color: #0D47A1;
+        }
+        
+        .content-empty {
+            text-align: center;
+            padding: 80px 20px;
+        }
+        
+        .content-empty-title {
+            font-size: 20px;
+            font-weight: 400;
+            color: white;
+            margin: 0 0 8px 0;
+        }
+        
+        .content-empty-text {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            margin: 0;
+        }
+        
+        /* Analytics Page Styles */
+        .analytics-container {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            max-width: 1200px;
+        }
+        
+        .analytics-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            padding: 24px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .analytics-card-title {
+            color: white;
+            font-size: 18px;
+            font-weight: 500;
+            margin: 0 0 16px 0;
+        }
+        
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+        }
+        
+        .analytics-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .analytics-label {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        
+        .analytics-value {
+            color: white;
+            font-size: 24px;
+            font-weight: 500;
+        }
+        
+        .graph-container {
+            height: 200px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            margin-top: 16px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            padding: 16px;
+        }
+        
+        .graph-bar {
+            width: 30px;
+            background: #1976D2;
+            border-radius: 2px 2px 0 0;
+            transition: height 0.3s;
+        }
+        
+        /* Customization Page Styles */
+        .customization-container {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            max-width: 1200px;
+        }
+        
+        .customization-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            padding: 24px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .customization-card-title {
+            color: white;
+            font-size: 18px;
+            font-weight: 500;
+            margin: 0 0 16px 0;
+        }
+        
+        .upload-area {
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .upload-area:hover {
+            border-color: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .upload-icon {
+            font-size: 48px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 16px;
+        }
+        
+        .upload-text {
+            color: white;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        
+        .upload-subtext {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        .form-label {
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-family: 'Roboto', sans-serif;
+            font-size: 14px;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: white;
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-family: 'Roboto', sans-serif;
+            font-size: 14px;
+        }
+        
+        .form-select:focus {
+            outline: none;
+            border-color: white;
+        }
+        
+        .form-textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-family: 'Roboto', sans-serif;
+            font-size: 14px;
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .form-textarea:focus {
+            outline: none;
+            border-color: white;
+        }
+        
+        .save-btn {
+            background: white;
+            border: none;
+            color: #0D47A1;
+            font-family: 'Roboto', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 12px 24px;
+            cursor: pointer;
+            border-radius: 2px;
+            transition: background-color 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .save-btn:hover {
+            background: #f5f5f5;
+        }
+        
+        /* Upload Page Styles */
+        .upload-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 60px 0;
+        }
+        
+        .upload-icon-large {
+            font-size: 80px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .upload-title {
+            color: white;
+            font-size: 24px;
+            font-weight: 500;
+            margin: 0;
+        }
+        
+        .upload-subtitle {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 16px;
+            margin: 0;
+        }
+        
+        .upload-file-btn {
+            background: white;
+            border: none;
+            color: #0D47A1;
+            font-family: 'Roboto', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 12px 32px;
+            cursor: pointer;
+            border-radius: 2px;
+            transition: background-color 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .upload-file-btn:hover {
+            background: #f5f5f5;
+        }
+        
+        .upload-file-input {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -812,19 +1109,129 @@
             </div>
             
             <div class="page-content" id="contentPage">
-                <!-- Content page content will go here -->
+                <div class="content-filters">
+                    <button class="filter-btn active">All videos</button>
+                    <button class="filter-btn">Public</button>
+                    <button class="filter-btn">Private</button>
+                    <button class="filter-btn">Scheduled</button>
+                </div>
+                <div class="content-empty">
+                    <h2 class="content-empty-title">No videos uploaded yet</h2>
+                    <p class="content-empty-text">Upload your first video to get started</p>
+                </div>
             </div>
             
             <div class="page-content" id="analyticsPage">
-                <!-- Analytics page content will go here -->
+                <div class="analytics-container">
+                    <div class="analytics-card">
+                        <h2 class="analytics-card-title">Overview</h2>
+                        <div class="analytics-grid">
+                            <div class="analytics-item">
+                                <div class="analytics-label">Subscribers</div>
+                                <div class="analytics-value">0</div>
+                            </div>
+                            <div class="analytics-item">
+                                <div class="analytics-label">Views</div>
+                                <div class="analytics-value">0</div>
+                            </div>
+                            <div class="analytics-item">
+                                <div class="analytics-label">Watch time (hours)</div>
+                                <div class="analytics-value">0</div>
+                            </div>
+                            <div class="analytics-item">
+                                <div class="analytics-label">Likes</div>
+                                <div class="analytics-value">0</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="analytics-card">
+                        <h2 class="analytics-card-title">Watch time</h2>
+                        <div class="graph-container">
+                            <div class="graph-bar" style="height: 40%;"></div>
+                            <div class="graph-bar" style="height: 60%;"></div>
+                            <div class="graph-bar" style="height: 80%;"></div>
+                            <div class="graph-bar" style="height: 30%;"></div>
+                            <div class="graph-bar" style="height: 70%;"></div>
+                            <div class="graph-bar" style="height: 50%;"></div>
+                            <div class="graph-bar" style="height: 90%;"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="analytics-card">
+                        <h2 class="analytics-card-title">Subscribers</h2>
+                        <div class="graph-container">
+                            <div class="graph-bar" style="height: 20%;"></div>
+                            <div class="graph-bar" style="height: 30%;"></div>
+                            <div class="graph-bar" style="height: 40%;"></div>
+                            <div class="graph-bar" style="height: 60%;"></div>
+                            <div class="graph-bar" style="height: 50%;"></div>
+                            <div class="graph-bar" style="height: 70%;"></div>
+                            <div class="graph-bar" style="height: 80%;"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
             
             <div class="page-content" id="customizationPage">
-                <!-- Customization page content will go here -->
+                <div class="customization-container">
+                    <div class="customization-card">
+                        <h2 class="customization-card-title">Profile Picture</h2>
+                        <div class="upload-area" id="profilePictureUpload">
+                            <div class="upload-icon">📷</div>
+                            <div class="upload-text">Upload Profile Picture</div>
+                            <div class="upload-subtext">Recommended: 800x800 pixels</div>
+                        </div>
+                    </div>
+                    
+                    <div class="customization-card">
+                        <h2 class="customization-card-title">Channel Banner</h2>
+                        <div class="upload-area" id="bannerUpload">
+                            <div class="upload-icon">🖼️</div>
+                            <div class="upload-text">Upload Channel Banner</div>
+                            <div class="upload-subtext">Recommended: 2560x1440 pixels</div>
+                        </div>
+                    </div>
+                    
+                    <div class="customization-card">
+                        <h2 class="customization-card-title">Basic Info</h2>
+                        <div class="form-group">
+                            <label class="form-label">Channel Name</label>
+                            <input type="text" class="form-input" placeholder="Enter channel name">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Description</label>
+                            <textarea class="form-textarea" placeholder="Tell viewers about your channel"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Country</label>
+                            <select class="form-select">
+                                <option value="">Select a country</option>
+                                <option value="US">United States</option>
+                                <option value="CA">Canada</option>
+                                <option value="UK">United Kingdom</option>
+                                <option value="AU">Australia</option>
+                                <option value="DE">Germany</option>
+                                <option value="FR">France</option>
+                                <option value="JP">Japan</option>
+                                <option value="BR">Brazil</option>
+                                <option value="IN">India</option>
+                                <option value="MX">Mexico</option>
+                            </select>
+                        </div>
+                        <button class="save-btn">Save Changes</button>
+                    </div>
+                </div>
             </div>
             
             <div class="page-content" id="uploadPage">
-                <!-- Upload page content will go here -->
+                <div class="upload-container">
+                    <div class="upload-icon-large">+</div>
+                    <h2 class="upload-title">Upload Video</h2>
+                    <p class="upload-subtitle">Upload a video to your channel</p>
+                    <button class="upload-file-btn" id="uploadFileBtn">SELECT FILES</button>
+                    <input type="file" class="upload-file-input" id="uploadFileInput" accept="video/*">
+                </div>
             </div>
         </div>
     </div>
@@ -883,6 +1290,9 @@
         const subscribeBtn = document.getElementById('subscribeBtn');
         const profileTabs = document.querySelectorAll('.profile-tab');
         const videosTabContent = document.getElementById('videosTabContent');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const uploadFileBtn = document.getElementById('uploadFileBtn');
+        const uploadFileInput = document.getElementById('uploadFileInput');
 
         let isStudioMode = false;
         let currentUser = null;
@@ -1138,6 +1548,25 @@
             });
         });
         
+        // Content filter buttons
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+        
+        // Upload file button
+        uploadFileBtn.addEventListener('click', () => {
+            uploadFileInput.click();
+        });
+        
+        uploadFileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                alert('Video selected: ' + e.target.files[0].name + '\n\nIn a real app, this would start the upload process.');
+            }
+        });
+
         // Go to profile page
         function goToProfile() {
             if (!currentUser) return;
