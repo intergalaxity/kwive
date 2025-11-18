@@ -536,8 +536,50 @@
             <button class="sidebar-item" id="uploadBtn">Upload</button>
         </div>
         <div class="studio-content">
-            <h1 class="studio-title">Channel dashboard</h1>
-            <!-- Dashboard content will go here -->
+            <h1 class="studio-title" id="studioTitle">Channel dashboard</h1>
+            
+            <div class="page-content active" id="dashboardPage">
+                <div class="dashboard-container">
+                    <div class="stats-card">
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-label">Subscribers</div>
+                                <div class="stat-value">0</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">Views</div>
+                                <div class="stat-value">0</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">Watch hours</div>
+                                <div class="stat-value">0</div>
+                            </div>
+                        </div>
+                        <button class="analytics-btn" id="goToAnalyticsBtn">Go to channel analytics</button>
+                    </div>
+                    
+                    <div class="upload-card">
+                        <h2 class="upload-card-title">Upload your first video here!</h2>
+                        <button class="upload-btn" id="uploadFromDashboardBtn">Upload</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="page-content" id="contentPage">
+                <!-- Content page content will go here -->
+            </div>
+            
+            <div class="page-content" id="analyticsPage">
+                <!-- Analytics page content will go here -->
+            </div>
+            
+            <div class="page-content" id="customizationPage">
+                <!-- Customization page content will go here -->
+            </div>
+            
+            <div class="page-content" id="uploadPage">
+                <!-- Upload page content will go here -->
+            </div>
         </div>
     </div>
 
@@ -580,6 +622,9 @@
         const returnToKwiveBtn = document.getElementById('returnToKwiveBtn');
         const sidebarProfilePic = document.getElementById('sidebarProfilePic');
         const sidebarProfileName = document.getElementById('sidebarProfileName');
+        const studioTitle = document.getElementById('studioTitle');
+        const goToAnalyticsBtn = document.getElementById('goToAnalyticsBtn');
+        const uploadFromDashboardBtn = document.getElementById('uploadFromDashboardBtn');
 
         let isStudioMode = false;
         let currentUser = null;
@@ -665,6 +710,7 @@
                 isStudioMode = true;
                 logo.textContent = 'Kwive Studio';
                 searchContainer.style.display = 'none';
+                createBtn.classList.add('hidden');
                 mainContent.style.display = 'none';
                 studioLayout.classList.add('active');
                 returnToKwiveBtn.style.display = 'block';
@@ -673,6 +719,11 @@
                     sidebarProfilePic.src = currentUser.photoURL || 'https://via.placeholder.com/80';
                     sidebarProfileName.textContent = currentUser.displayName || 'User';
                 }
+                
+                showPage('dashboardPage', 'Channel dashboard');
+                
+                // Update URL
+                window.history.pushState({ page: 'studio' }, 'Kwive Studio', '/studio');
                 
                 loadingOverlay.classList.remove('show');
                 profileMenu.classList.remove('show');
@@ -686,40 +737,71 @@
                 isStudioMode = false;
                 logo.textContent = 'Kwive';
                 searchContainer.style.display = 'flex';
+                createBtn.classList.remove('hidden');
                 mainContent.style.display = 'flex';
                 studioLayout.classList.remove('active');
                 returnToKwiveBtn.style.display = 'none';
                 noResults.classList.remove('show');
                 searchBar.value = '';
                 
+                // Update URL
+                window.history.pushState({ page: 'home' }, 'Kwive', '/');
+                
                 loadingOverlay.classList.remove('show');
                 profileMenu.classList.remove('show');
             }, 2000);
         }
 
+        // Show specific page
+        function showPage(pageId, title) {
+            document.querySelectorAll('.page-content').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+            studioTitle.textContent = title;
+            
+            // Update URL for studio pages
+            if (isStudioMode) {
+                const pageName = pageId.replace('Page', '');
+                window.history.pushState({ page: pageName }, title, `/studio/${pageName}`);
+            }
+        }
+
         // Sidebar navigation
         document.getElementById('dashboardBtn').addEventListener('click', () => {
-            document.querySelector('.studio-title').textContent = 'Channel dashboard';
+            showPage('dashboardPage', 'Channel dashboard');
             setActiveSidebarItem('dashboardBtn');
         });
 
         document.getElementById('contentBtn').addEventListener('click', () => {
-            document.querySelector('.studio-title').textContent = 'Content';
+            showPage('contentPage', 'Content');
             setActiveSidebarItem('contentBtn');
         });
 
         document.getElementById('analyticsBtn').addEventListener('click', () => {
-            document.querySelector('.studio-title').textContent = 'Analytics';
+            showPage('analyticsPage', 'Analytics');
             setActiveSidebarItem('analyticsBtn');
         });
 
         document.getElementById('customizationBtn').addEventListener('click', () => {
-            document.querySelector('.studio-title').textContent = 'Customization';
+            showPage('customizationPage', 'Customization');
             setActiveSidebarItem('customizationBtn');
         });
 
         document.getElementById('uploadBtn').addEventListener('click', () => {
-            document.querySelector('.studio-title').textContent = 'Upload';
+            showPage('uploadPage', 'Upload');
+            setActiveSidebarItem('uploadBtn');
+        });
+
+        // Go to Analytics button
+        goToAnalyticsBtn.addEventListener('click', () => {
+            showPage('analyticsPage', 'Analytics');
+            setActiveSidebarItem('analyticsBtn');
+        });
+
+        // Upload from dashboard button
+        uploadFromDashboardBtn.addEventListener('click', () => {
+            showPage('uploadPage', 'Upload');
             setActiveSidebarItem('uploadBtn');
         });
 
