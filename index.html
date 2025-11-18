@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kwive</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #0D47A1;
+            min-height: 100vh;
+        }
+        
+        .header {
+            background-color: #1976D2;
+            color: white;
+            padding: 16px 24px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 10;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+        
+        .sign-in-btn {
+            background: transparent;
+            border: none;
+            color: white;
+            font-family: 'Roboto', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            text-transform: uppercase;
+            padding: 8px 16px;
+            cursor: pointer;
+            border-radius: 2px;
+            transition: background-color 0.2s;
+            letter-spacing: 0.5px;
+        }
+        
+        .sign-in-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .sign-in-btn:active {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .profile-container {
+            display: none;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .profile-container.active {
+            display: flex;
+        }
+        
+        .profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+        
+        .profile-pic:hover {
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .content {
+            padding: 24px;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Kwive</h1>
+        <button class="sign-in-btn" id="signInBtn">Sign In</button>
+        <div class="profile-container" id="profileContainer">
+            <img src="" alt="Profile" class="profile-pic" id="profilePic">
+        </div>
+    </header>
+    
+    <div class="content">
+    </div>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDCV9yTXFJ0yj1m9hZijs8OxIcfdK95nG8",
+            authDomain: "kwive0.firebaseapp.com",
+            projectId: "kwive0",
+            storageBucket: "kwive0.firebasestorage.app",
+            messagingSenderId: "314643228056",
+            appId: "1:314643228056:web:d74237b3066993eaa0f7ed",
+            measurementId: "G-61G51M1F21"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const analytics = getAnalytics(app);
+        const provider = new GoogleAuthProvider();
+
+        const signInBtn = document.getElementById('signInBtn');
+        const profileContainer = document.getElementById('profileContainer');
+        const profilePic = document.getElementById('profilePic');
+
+        // Sign in with Google
+        signInBtn.addEventListener('click', async () => {
+            try {
+                const result = await signInWithPopup(auth, provider);
+                const user = result.user;
+                console.log('User signed in:', user);
+            } catch (error) {
+                console.error('Error signing in:', error);
+                alert('Sign in failed: ' + error.message);
+            }
+        });
+
+        profilePic.addEventListener('click', async () => {
+            if (confirm('Do you want to sign out?')) {
+                try {
+                    await signOut(auth);
+                    console.log('User signed out');
+                } catch (error) {
+                    console.error('Error signing out:', error);
+                }
+            }
+        });
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                signInBtn.style.display = 'none';
+                profileContainer.classList.add('active');
+                profilePic.src = user.photoURL || 'https://via.placeholder.com/40';
+                profilePic.alt = user.displayName || 'User';
+            } else {
+                signInBtn.style.display = 'block';
+                profileContainer.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
