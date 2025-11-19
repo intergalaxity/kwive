@@ -24,19 +24,44 @@
             color: white;
             padding: 16px 24px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-            position: relative;
-            z-index: 10;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
             display: flex;
             justify-content: space-between;
             align-items: center;
             gap: 24px;
         }
         
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .menu-btn {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .menu-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+        
         .header h1 {
             font-size: 24px;
             font-weight: 500;
             letter-spacing: 0.5px;
-            flex-shrink: 0;
             cursor: pointer;
             transition: opacity 0.2s;
         }
@@ -77,7 +102,6 @@
             display: flex;
             align-items: center;
             gap: 16px;
-            flex-shrink: 0;
         }
         
         .sign-in-btn {
@@ -97,10 +121,6 @@
         
         .sign-in-btn:hover {
             background-color: rgba(255, 255, 255, 0.1);
-        }
-        
-        .sign-in-btn:active {
-            background-color: rgba(255, 255, 255, 0.2);
         }
         
         .profile-container {
@@ -132,10 +152,6 @@
         .create-btn:hover {
             background-color: rgba(255, 255, 255, 0.1);
             border-color: white;
-        }
-        
-        .create-btn:active {
-            background-color: rgba(255, 255, 255, 0.2);
         }
         
         .create-btn.hidden {
@@ -191,19 +207,12 @@
             color: #212121;
             font-size: 16px;
             font-weight: 500;
-            margin: 0;
         }
         
         .profile-menu-email {
             color: #757575;
             font-size: 14px;
             margin-top: 4px;
-        }
-        
-        .profile-menu-divider {
-            height: 1px;
-            background: #e0e0e0;
-            margin: 0;
         }
         
         .profile-menu-item {
@@ -225,8 +234,72 @@
             background-color: #f5f5f5;
         }
         
-        .profile-menu-item:active {
-            background-color: #eeeeee;
+        /* Sidebar Styles */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 72px;
+            width: 240px;
+            height: calc(100vh - 72px);
+            background: #1565C0;
+            overflow-y: auto;
+            transition: transform 0.3s;
+            z-index: 90;
+        }
+        
+        .sidebar.collapsed {
+            transform: translateX(-240px);
+        }
+        
+        .sidebar.hidden {
+            display: none;
+        }
+        
+        .sidebar-item {
+            padding: 12px 24px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            background: transparent;
+            text-align: left;
+            width: 100%;
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        .sidebar-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.2);
+            margin: 12px 0;
+        }
+        
+        .sidebar-label {
+            padding: 12px 24px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* Main Content */
+        .main-wrapper {
+            margin-top: 72px;
+            margin-left: 240px;
+            transition: margin-left 0.3s;
+            min-height: calc(100vh - 72px);
+        }
+        
+        .main-wrapper.expanded {
+            margin-left: 0;
+        }
+        
+        .main-wrapper.no-sidebar {
+            margin-left: 0;
         }
         
         .content {
@@ -236,7 +309,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: calc(100vh - 72px);
+            min-height: calc(100vh - 120px);
         }
         
         .no-results {
@@ -254,20 +327,17 @@
         .no-results-title {
             font-size: 32px;
             font-weight: 500;
-            margin: 0;
             color: white;
         }
         
         .no-results-subtitle {
             font-size: 18px;
             color: rgba(255, 255, 255, 0.9);
-            margin: 0;
         }
         
         .no-results-suggestion {
             font-size: 16px;
             color: rgba(255, 255, 255, 0.7);
-            margin: 0;
         }
         
         .loading-overlay {
@@ -301,197 +371,7 @@
             100% { transform: rotate(360deg); }
         }
         
-        /* Studio Mode Styles */
-        .studio-layout {
-            display: none;
-        }
-        
-        .studio-layout.active {
-            display: flex;
-            height: calc(100vh - 72px);
-        }
-        
-        .sidebar {
-            width: 240px;
-            background: #1565C0;
-            padding: 24px 0;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        
-        .sidebar-profile {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 0 16px 24px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            margin-bottom: 16px;
-        }
-        
-        .sidebar-profile-pic {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            margin-bottom: 12px;
-        }
-        
-        .sidebar-profile-name {
-            color: white;
-            font-size: 16px;
-            font-weight: 500;
-            text-align: center;
-        }
-        
-        .sidebar-item {
-            padding: 12px 24px;
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: none;
-            background: transparent;
-            text-align: left;
-            font-family: 'Roboto', sans-serif;
-        }
-        
-        .sidebar-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-        }
-        
-        .sidebar-item.active {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            font-weight: 500;
-        }
-        
-        .studio-content {
-            flex: 1;
-            padding: 48px;
-            overflow-y: auto;
-        }
-        
-        .studio-title {
-            font-size: 32px;
-            font-weight: 500;
-            color: white;
-            margin: 0 0 32px 0;
-        }
-        
-        .dashboard-container {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-            max-width: 1200px;
-        }
-        
-        .stats-card {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-            padding: 24px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 24px;
-            margin-bottom: 24px;
-        }
-        
-        .stat-item {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .stat-label {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 14px;
-            margin-bottom: 8px;
-        }
-        
-        .stat-value {
-            color: white;
-            font-size: 28px;
-            font-weight: 500;
-        }
-        
-        .analytics-btn {
-            background: white;
-            border: none;
-            color: #1976D2;
-            font-family: 'Roboto', sans-serif;
-            font-size: 14px;
-            font-weight: 500;
-            text-transform: uppercase;
-            padding: 10px 24px;
-            cursor: pointer;
-            border-radius: 2px;
-            transition: background-color 0.2s;
-            letter-spacing: 0.5px;
-            align-self: flex-start;
-        }
-        
-        .analytics-btn:hover {
-            background: #f5f5f5;
-        }
-        
-        .analytics-btn:active {
-            background: #eeeeee;
-        }
-        
-        .upload-card {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-            padding: 32px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 16px;
-        }
-        
-        .upload-card-title {
-            color: white;
-            font-size: 24px;
-            font-weight: 500;
-            margin: 0;
-        }
-        
-        .upload-btn {
-            background: white;
-            border: none;
-            color: #1976D2;
-            font-family: 'Roboto', sans-serif;
-            font-size: 14px;
-            font-weight: 500;
-            text-transform: uppercase;
-            padding: 12px 32px;
-            cursor: pointer;
-            border-radius: 2px;
-            transition: background-color 0.2s;
-            letter-spacing: 0.5px;
-        }
-        
-        .upload-btn:hover {
-            background: #f5f5f5;
-        }
-        
-        .upload-btn:active {
-            background: #eeeeee;
-        }
-        
-        .page-content {
-            display: none;
-        }
-        
-        .page-content.active {
-            display: block;
-        }
-        
-        /* Profile Page Styles */
+        /* Profile Page */
         .profile-page {
             width: 100%;
             margin: 0;
@@ -517,25 +397,17 @@
             width: 80px;
             height: 80px;
             border-radius: 50%;
-            flex-shrink: 0;
         }
         
         .profile-info-container {
             flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
         }
         
         .profile-name {
             font-size: 24px;
             font-weight: 400;
             color: white;
-            margin: 0;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 8px 16px;
-            border-radius: 2px;
-            width: fit-content;
+            margin: 0 0 4px 0;
         }
         
         .profile-meta {
@@ -546,55 +418,28 @@
             font-size: 14px;
         }
         
-        .profile-subscribers {
-            margin: 0;
-        }
-        
-        .profile-videos {
-            margin: 0;
-        }
-        
-        .customize-channel-btn {
+        .customize-channel-btn,
+        .subscribe-btn {
             background: white;
             border: none;
             color: #0D47A1;
             font-family: 'Roboto', sans-serif;
             font-size: 14px;
             font-weight: 500;
-            padding: 12px 24px;
+            padding: 10px 16px;
             cursor: pointer;
-            border-radius: 2px;
+            border-radius: 18px;
             transition: all 0.2s;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
         
-        .customize-channel-btn:hover {
-            background: #f5f5f5;
-        }
-        
-        .subscribe-btn {
-            background: #cc0000;
-            border: none;
-            color: white;
-            font-family: 'Roboto', sans-serif;
-            font-size: 14px;
-            font-weight: 500;
-            padding: 12px 24px;
-            cursor: pointer;
-            border-radius: 2px;
-            transition: all 0.2s;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
+        .customize-channel-btn:hover,
         .subscribe-btn:hover {
-            background: #b30000;
+            background: #f0f0f0;
         }
         
         .subscribe-btn.subscribed {
-            background: rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
         }
         
         .profile-tabs {
@@ -649,167 +494,186 @@
         .profile-empty-text {
             font-size: 14px;
             color: rgba(255, 255, 255, 0.6);
-            margin: 0;
         }
         
-        .videos-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
+        /* Studio Layout */
+        .studio-layout {
+            display: none;
+            margin-top: 72px;
         }
         
-        .video-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 4px;
-            overflow: hidden;
-            transition: transform 0.2s;
-        }
-        
-        .video-card:hover {
-            transform: translateY(-4px);
-        }
-        
-        .video-thumbnail {
-            width: 100%;
-            height: 140px;
-            background-color: #333;
-            background-size: cover;
-            background-position: center;
-        }
-        
-        .video-info {
-            padding: 12px;
-        }
-        
-        .video-title {
-            color: white;
-            font-size: 14px;
-            font-weight: 500;
-            margin-bottom: 8px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-        }
-        
-        .video-meta {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 12px;
-        }
-        
-        /* Content Page Styles */
-        .content-filters {
+        .studio-layout.active {
             display: flex;
-            gap: 16px;
-            margin-bottom: 24px;
+            height: calc(100vh - 72px);
         }
         
-        .filter-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
+        .studio-sidebar {
+            width: 240px;
+            background: #1565C0;
+            padding: 24px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            overflow-y: auto;
+        }
+        
+        .studio-sidebar-profile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 16px 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 16px;
+        }
+        
+        .studio-sidebar-profile-pic {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-bottom: 12px;
+        }
+        
+        .studio-sidebar-profile-name {
             color: white;
-            font-family: 'Roboto', sans-serif;
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 500;
-            padding: 8px 16px;
-            cursor: pointer;
-            border-radius: 16px;
-            transition: all 0.2s;
-        }
-        
-        .filter-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-        
-        .filter-btn.active {
-            background: white;
-            color: #0D47A1;
-        }
-        
-        .content-empty {
             text-align: center;
-            padding: 80px 20px;
         }
         
-        .content-empty-title {
-            font-size: 20px;
-            font-weight: 400;
-            color: white;
-            margin: 0 0 8px 0;
-        }
-        
-        .content-empty-text {
+        .studio-sidebar-item {
+            padding: 12px 24px;
+            color: rgba(255, 255, 255, 0.8);
             font-size: 14px;
-            color: rgba(255, 255, 255, 0.6);
-            margin: 0;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            background: transparent;
+            text-align: left;
+            font-family: 'Roboto', sans-serif;
         }
         
-        /* Analytics Page Styles */
-        .analytics-container {
+        .studio-sidebar-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        .studio-sidebar-item.active {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-weight: 500;
+        }
+        
+        .studio-content {
+            flex: 1;
+            padding: 48px;
+            overflow-y: auto;
+        }
+        
+        .studio-title {
+            font-size: 32px;
+            font-weight: 500;
+            color: white;
+            margin: 0 0 32px 0;
+        }
+        
+        .page-content {
+            display: none;
+        }
+        
+        .page-content.active {
+            display: block;
+        }
+        
+        /* Dashboard */
+        .dashboard-container {
             display: flex;
             flex-direction: column;
             gap: 24px;
             max-width: 1200px;
         }
         
-        .analytics-card {
+        .stats-card {
             background: rgba(255, 255, 255, 0.1);
             border-radius: 4px;
             padding: 24px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
         
-        .analytics-card-title {
-            color: white;
-            font-size: 18px;
-            font-weight: 500;
-            margin: 0 0 16px 0;
-        }
-        
-        .analytics-grid {
+        .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 24px;
+            margin-bottom: 24px;
         }
         
-        .analytics-item {
+        .stat-item {
             display: flex;
             flex-direction: column;
         }
         
-        .analytics-label {
+        .stat-label {
             color: rgba(255, 255, 255, 0.7);
             font-size: 14px;
             margin-bottom: 8px;
         }
         
-        .analytics-value {
+        .stat-value {
             color: white;
-            font-size: 24px;
+            font-size: 28px;
             font-weight: 500;
         }
         
-        .graph-container {
-            height: 200px;
-            background: rgba(255, 255, 255, 0.05);
+        .analytics-btn,
+        .upload-btn {
+            background: white;
+            border: none;
+            color: #1976D2;
+            font-family: 'Roboto', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            text-transform: uppercase;
+            padding: 10px 24px;
+            cursor: pointer;
+            border-radius: 2px;
+            transition: background-color 0.2s;
+            letter-spacing: 0.5px;
+        }
+        
+        .analytics-btn:hover,
+        .upload-btn:hover {
+            background: #f5f5f5;
+        }
+        
+        .upload-card {
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 4px;
-            margin-top: 16px;
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-around;
-            padding: 16px;
+            padding: 32px;
+            text-align: center;
         }
         
-        .graph-bar {
-            width: 30px;
-            background: #1976D2;
-            border-radius: 2px 2px 0 0;
-            transition: height 0.3s;
+        .upload-card-title {
+            color: white;
+            font-size: 24px;
+            font-weight: 500;
+            margin: 0 0 16px 0;
         }
         
-        /* Customization Page Styles */
+        /* Analytics */
+        .analytics-empty {
+            text-align: center;
+            padding: 80px 20px;
+        }
+        
+        .analytics-empty-title {
+            font-size: 24px;
+            color: white;
+            margin-bottom: 8px;
+        }
+        
+        .analytics-empty-text {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        /* Customization */
         .customization-container {
             display: flex;
             flex-direction: column;
@@ -817,182 +681,65 @@
             max-width: 1200px;
         }
         
-        .customization-card {
+        .customization-item {
             background: rgba(255, 255, 255, 0.1);
             border-radius: 4px;
             padding: 24px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            display: flex;
+            gap: 24px;
+            align-items: center;
         }
         
-        .customization-card-title {
+        .customization-preview {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .customization-preview.banner {
+            width: 300px;
+            height: 150px;
+            border-radius: 4px;
+        }
+        
+        .customization-info {
+            flex: 1;
+        }
+        
+        .customization-label {
             color: white;
             font-size: 18px;
             font-weight: 500;
-            margin: 0 0 16px 0;
-        }
-        
-        .upload-area {
-            border: 2px dashed rgba(255, 255, 255, 0.3);
-            border-radius: 4px;
-            padding: 40px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .upload-area:hover {
-            border-color: rgba(255, 255, 255, 0.6);
-            background: rgba(255, 255, 255, 0.05);
-        }
-        
-        .upload-icon {
-            font-size: 48px;
-            color: rgba(255, 255, 255, 0.7);
             margin-bottom: 16px;
         }
         
-        .upload-text {
-            color: white;
-            font-size: 16px;
-            margin-bottom: 8px;
-        }
-        
-        .upload-subtext {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 14px;
-        }
-        
-        .form-group {
-            margin-bottom: 16px;
-        }
-        
-        .form-label {
-            color: white;
-            font-size: 14px;
-            font-weight: 500;
-            margin-bottom: 8px;
-            display: block;
-        }
-        
-        .form-input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 4px;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            font-family: 'Roboto', sans-serif;
-            font-size: 14px;
-        }
-        
-        .form-input:focus {
-            outline: none;
-            border-color: white;
-        }
-        
-        .form-select {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 4px;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            font-family: 'Roboto', sans-serif;
-            font-size: 14px;
-        }
-        
-        .form-select:focus {
-            outline: none;
-            border-color: white;
-        }
-        
-        .form-textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 4px;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            font-family: 'Roboto', sans-serif;
-            font-size: 14px;
-            min-height: 120px;
-            resize: vertical;
-        }
-        
-        .form-textarea:focus {
-            outline: none;
-            border-color: white;
-        }
-        
-        .save-btn {
-            background: white;
-            border: none;
-            color: #0D47A1;
-            font-family: 'Roboto', sans-serif;
-            font-size: 14px;
-            font-weight: 500;
-            padding: 12px 24px;
-            cursor: pointer;
-            border-radius: 2px;
-            transition: background-color 0.2s;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        .save-btn:hover {
-            background: #f5f5f5;
-        }
-        
-        /* Upload Page Styles */
-        .upload-container {
+        .customization-buttons {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 24px;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 60px 0;
+            gap: 12px;
         }
         
-        .upload-icon-large {
-            font-size: 80px;
-            color: rgba(255, 255, 255, 0.7);
-        }
-        
-        .upload-title {
-            color: white;
-            font-size: 24px;
-            font-weight: 500;
-            margin: 0;
-        }
-        
-        .upload-subtitle {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 16px;
-            margin: 0;
-        }
-        
-        .upload-file-btn {
+        .change-btn,
+        .remove-btn {
             background: white;
             border: none;
             color: #0D47A1;
             font-family: 'Roboto', sans-serif;
             font-size: 14px;
             font-weight: 500;
-            padding: 12px 32px;
+            padding: 8px 16px;
             cursor: pointer;
             border-radius: 2px;
             transition: background-color 0.2s;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
         
-        .upload-file-btn:hover {
+        .change-btn:hover,
+        .remove-btn:hover {
             background: #f5f5f5;
         }
         
-        .upload-file-input {
+        .file-input {
             display: none;
         }
     </style>
@@ -1003,7 +750,10 @@
     </div>
 
     <header class="header">
-        <h1 id="logo">Kwive</h1>
+        <div class="header-left">
+            <button class="menu-btn" id="menuBtn">☰</button>
+            <h1 id="logo">Kwive</h1>
+        </div>
         <div class="search-container" id="searchContainer">
             <input type="text" class="search-bar" placeholder="Search..." id="searchBar">
         </div>
@@ -1013,70 +763,85 @@
                 <button class="create-btn" id="createBtn">CREATE +</button>
                 <img src="" alt="Profile" class="profile-pic" id="profilePic">
                 <div class="profile-menu" id="profileMenu">
-                    <div class="profile-menu-header">
+                    <div class="profile-menu-header" id="profileMenuHeader">
                         <div class="profile-menu-name" id="profileName"></div>
                         <div class="profile-menu-email" id="profileEmail"></div>
                     </div>
-                    <hr class="profile-menu-divider">
                     <button class="profile-menu-item" id="returnToKwiveBtn" style="display: none;">Return to Kwive</button>
-                    <button class="profile-menu-item" id="settingsBtn">Settings</button>
                     <button class="profile-menu-item" id="signOutBtn">Sign out</button>
                 </div>
             </div>
         </div>
     </header>
     
-    <div class="content" id="mainContent">
-        <div class="no-results" id="noResults">
-            <h2 class="no-results-title">No results found</h2>
-            <p class="no-results-subtitle">Try searching something else up!</p>
-            <p class="no-results-suggestion">(Cat videos)</p>
-        </div>
-        
-        <div class="profile-page" id="profilePage" style="display: none;">
-            <div class="profile-banner" id="profileBanner"></div>
-            <div class="profile-header">
-                <img src="" alt="Profile" class="profile-picture-large" id="profilePictureLarge">
-                <div class="profile-info-container">
-                    <h1 class="profile-name" id="profilePageName">CHANNEL NAME</h1>
-                    <div class="profile-meta">
-                        <p class="profile-subscribers" id="profilePageSubscribers">0 SUBSCRIBERS</p>
-                        <span>•</span>
-                        <p class="profile-videos" id="profilePageVideos">0 VIDEOS</p>
-                    </div>
-                    <div class="profile-buttons">
-                        <button class="customize-channel-btn" id="customizeChannelBtn" style="display: none;">CUSTOMIZE CHANNEL</button>
-                        <button class="subscribe-btn" id="subscribeBtn" style="display: none;">SUBSCRIBE</button>
-                    </div>
-                </div>
+    <div class="sidebar" id="mainSidebar">
+        <button class="sidebar-item">Home</button>
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-label">Explore</div>
+        <button class="sidebar-item">Gaming</button>
+        <button class="sidebar-item">Animals</button>
+        <button class="sidebar-item">Tech</button>
+        <button class="sidebar-item">Nature</button>
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-label">Misc.</div>
+        <button class="sidebar-item">Donations</button>
+        <button class="sidebar-item">Send Feedback</button>
+        <button class="sidebar-item">Report Bugs</button>
+        <button class="sidebar-item">Contact</button>
+    </div>
+    
+    <div class="main-wrapper" id="mainWrapper">
+        <div class="content" id="mainContent">
+            <div class="no-results" id="noResults">
+                <h2 class="no-results-title">No results found</h2>
+                <p class="no-results-subtitle">Try searching something else up!</p>
+                <p class="no-results-suggestion">(Cat videos)</p>
             </div>
-            <div class="profile-tabs">
-                <button class="profile-tab active" data-tab="home">HOME</button>
-                <button class="profile-tab" data-tab="videos">VIDEOS</button>
-            </div>
-            <div class="profile-content">
-                <div class="profile-empty" id="homeTabContent">
-                    <h2 class="profile-empty-title">This channel doesn't have any content</h2>
-                    <p class="profile-empty-text">Check back later for updates</p>
+            
+            <div class="profile-page" id="profilePage" style="display: none;">
+                <div class="profile-banner" id="profileBanner"></div>
+                <div class="profile-header">
+                    <img src="" alt="Profile" class="profile-picture-large" id="profilePictureLarge">
+                    <div class="profile-info-container">
+                        <h1 class="profile-name" id="profilePageName"></h1>
+                        <div class="profile-meta">
+                            <span id="profilePageSubscribers">0 subscribers</span>
+                            <span>•</span>
+                            <span id="profilePageVideos">0 videos</span>
+                        </div>
+                    </div>
+                    <button class="customize-channel-btn" id="customizeChannelBtn" style="display: none;">Customize channel</button>
+                    <button class="subscribe-btn" id="subscribeBtn" style="display: none;">Subscribe</button>
                 </div>
-                <div class="videos-grid" id="videosTabContent" style="display: none;">
-                    <!-- Videos will be populated here -->
+                <div class="profile-tabs">
+                    <button class="profile-tab active" data-tab="videos">Videos</button>
+                    <button class="profile-tab" data-tab="about">About</button>
+                </div>
+                <div class="profile-content">
+                    <div class="profile-empty" id="videosTab">
+                        <h2 class="profile-empty-title">This channel doesn't have any content</h2>
+                        <p class="profile-empty-text">Check back later for updates</p>
+                    </div>
+                    <div class="profile-empty" id="aboutTab" style="display: none;">
+                        <h2 class="profile-empty-title">This channel doesn't have any content</h2>
+                        <p class="profile-empty-text">Check back later for updates</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="studio-layout" id="studioLayout">
-        <div class="sidebar">
-            <div class="sidebar-profile">
-                <img src="" alt="Profile" class="sidebar-profile-pic" id="sidebarProfilePic">
-                <div class="sidebar-profile-name" id="sidebarProfileName"></div>
+        <div class="studio-sidebar">
+            <div class="studio-sidebar-profile">
+                <img src="" alt="Profile" class="studio-sidebar-profile-pic" id="studioSidebarProfilePic">
+                <div class="studio-sidebar-profile-name" id="studioSidebarProfileName"></div>
             </div>
-            <button class="sidebar-item active" id="dashboardBtn">Dashboard</button>
-            <button class="sidebar-item" id="contentBtn">Content</button>
-            <button class="sidebar-item" id="analyticsBtn">Analytics</button>
-            <button class="sidebar-item" id="customizationBtn">Customization</button>
-            <button class="sidebar-item" id="uploadBtn">Upload</button>
+            <button class="studio-sidebar-item active" id="dashboardBtn">Dashboard</button>
+            <button class="studio-sidebar-item" id="contentBtn">Content</button>
+            <button class="studio-sidebar-item" id="analyticsBtn">Analytics</button>
+            <button class="studio-sidebar-item" id="customizationBtn">Customization</button>
+            <button class="studio-sidebar-item" id="uploadBtn">Upload</button>
         </div>
         <div class="studio-content">
             <h1 class="studio-title" id="studioTitle">Channel dashboard</h1>
@@ -1109,128 +874,51 @@
             </div>
             
             <div class="page-content" id="contentPage">
-                <div class="content-filters">
-                    <button class="filter-btn active">All videos</button>
-                    <button class="filter-btn">Public</button>
-                    <button class="filter-btn">Private</button>
-                    <button class="filter-btn">Scheduled</button>
-                </div>
-                <div class="content-empty">
-                    <h2 class="content-empty-title">No videos uploaded yet</h2>
-                    <p class="content-empty-text">Upload your first video to get started</p>
+                <div class="analytics-empty">
+                    <h2 class="analytics-empty-title">No content yet</h2>
+                    <p class="analytics-empty-text">Upload your first video to get started</p>
                 </div>
             </div>
             
             <div class="page-content" id="analyticsPage">
-                <div class="analytics-container">
-                    <div class="analytics-card">
-                        <h2 class="analytics-card-title">Overview</h2>
-                        <div class="analytics-grid">
-                            <div class="analytics-item">
-                                <div class="analytics-label">Subscribers</div>
-                                <div class="analytics-value">0</div>
-                            </div>
-                            <div class="analytics-item">
-                                <div class="analytics-label">Views</div>
-                                <div class="analytics-value">0</div>
-                            </div>
-                            <div class="analytics-item">
-                                <div class="analytics-label">Watch time (hours)</div>
-                                <div class="analytics-value">0</div>
-                            </div>
-                            <div class="analytics-item">
-                                <div class="analytics-label">Likes</div>
-                                <div class="analytics-value">0</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="analytics-card">
-                        <h2 class="analytics-card-title">Watch time</h2>
-                        <div class="graph-container">
-                            <div class="graph-bar" style="height: 40%;"></div>
-                            <div class="graph-bar" style="height: 60%;"></div>
-                            <div class="graph-bar" style="height: 80%;"></div>
-                            <div class="graph-bar" style="height: 30%;"></div>
-                            <div class="graph-bar" style="height: 70%;"></div>
-                            <div class="graph-bar" style="height: 50%;"></div>
-                            <div class="graph-bar" style="height: 90%;"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="analytics-card">
-                        <h2 class="analytics-card-title">Subscribers</h2>
-                        <div class="graph-container">
-                            <div class="graph-bar" style="height: 20%;"></div>
-                            <div class="graph-bar" style="height: 30%;"></div>
-                            <div class="graph-bar" style="height: 40%;"></div>
-                            <div class="graph-bar" style="height: 60%;"></div>
-                            <div class="graph-bar" style="height: 50%;"></div>
-                            <div class="graph-bar" style="height: 70%;"></div>
-                            <div class="graph-bar" style="height: 80%;"></div>
-                        </div>
-                    </div>
+                <div class="analytics-empty">
+                    <h2 class="analytics-empty-title">No analytics data</h2>
+                    <p class="analytics-empty-text">Analytics will appear once you have content</p>
                 </div>
             </div>
             
             <div class="page-content" id="customizationPage">
                 <div class="customization-container">
-                    <div class="customization-card">
-                        <h2 class="customization-card-title">Profile Picture</h2>
-                        <div class="upload-area" id="profilePictureUpload">
-                            <div class="upload-icon">📷</div>
-                            <div class="upload-text">Upload Profile Picture</div>
-                            <div class="upload-subtext">Recommended: 800x800 pixels</div>
+                    <div class="customization-item">
+                        <div class="customization-preview" id="pfpPreview"></div>
+                        <div class="customization-info">
+                            <div class="customization-label">Profile picture</div>
+                            <div class="customization-buttons">
+                                <button class="change-btn" id="changePfpBtn">Change</button>
+                                <button class="remove-btn" id="removePfpBtn">Remove</button>
+                                <input type="file" class="file-input" id="pfpInput" accept="image/*">
+                            </div>
                         </div>
                     </div>
                     
-                    <div class="customization-card">
-                        <h2 class="customization-card-title">Channel Banner</h2>
-                        <div class="upload-area" id="bannerUpload">
-                            <div class="upload-icon">🖼️</div>
-                            <div class="upload-text">Upload Channel Banner</div>
-                            <div class="upload-subtext">Recommended: 2560x1440 pixels</div>
+                    <div class="customization-item">
+                        <div class="customization-preview banner" id="bannerPreview"></div>
+                        <div class="customization-info">
+                            <div class="customization-label">Channel banner</div>
+                            <div class="customization-buttons">
+                                <button class="change-btn" id="changeBannerBtn">Change</button>
+                                <button class="remove-btn" id="removeBannerBtn">Remove</button>
+                                <input type="file" class="file-input" id="bannerInput" accept="image/*">
+                            </div>
                         </div>
-                    </div>
-                    
-                    <div class="customization-card">
-                        <h2 class="customization-card-title">Basic Info</h2>
-                        <div class="form-group">
-                            <label class="form-label">Channel Name</label>
-                            <input type="text" class="form-input" placeholder="Enter channel name">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Description</label>
-                            <textarea class="form-textarea" placeholder="Tell viewers about your channel"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Country</label>
-                            <select class="form-select">
-                                <option value="">Select a country</option>
-                                <option value="US">United States</option>
-                                <option value="CA">Canada</option>
-                                <option value="UK">United Kingdom</option>
-                                <option value="AU">Australia</option>
-                                <option value="DE">Germany</option>
-                                <option value="FR">France</option>
-                                <option value="JP">Japan</option>
-                                <option value="BR">Brazil</option>
-                                <option value="IN">India</option>
-                                <option value="MX">Mexico</option>
-                            </select>
-                        </div>
-                        <button class="save-btn">Save Changes</button>
                     </div>
                 </div>
             </div>
             
             <div class="page-content" id="uploadPage">
-                <div class="upload-container">
-                    <div class="upload-icon-large">+</div>
-                    <h2 class="upload-title">Upload Video</h2>
-                    <p class="upload-subtitle">Upload a video to your channel</p>
-                    <button class="upload-file-btn" id="uploadFileBtn">SELECT FILES</button>
-                    <input type="file" class="upload-file-input" id="uploadFileInput" accept="video/*">
+                <div class="analytics-empty">
+                    <h2 class="analytics-empty-title">Upload</h2>
+                    <p class="analytics-empty-text">Video upload functionality coming soon</p>
                 </div>
             </div>
         </div>
@@ -1239,528 +927,3 @@
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-        import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js';
-        import { getFirestore, doc, setDoc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyDCV9yTXFJ0yj1m9hZijs8OxIcfdK95nG8",
-            authDomain: "kwive0.firebaseapp.com",
-            projectId: "kwive0",
-            storageBucket: "kwive0.firebasestorage.app",
-            messagingSenderId: "314643228056",
-            appId: "1:314643228056:web:d74237b3066993eaa0f7ed",
-            measurementId: "G-61G51M1F21"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const analytics = getAnalytics(app);
-        const db = getFirestore(app);
-        const provider = new GoogleAuthProvider();
-
-        const signInBtn = document.getElementById('signInBtn');
-        const profileContainer = document.getElementById('profileContainer');
-        const profilePic = document.getElementById('profilePic');
-        const profileMenu = document.getElementById('profileMenu');
-        const profileName = document.getElementById('profileName');
-        const profileEmail = document.getElementById('profileEmail');
-        const settingsBtn = document.getElementById('settingsBtn');
-        const signOutBtn = document.getElementById('signOutBtn');
-        const createBtn = document.getElementById('createBtn');
-        const searchBar = document.getElementById('searchBar');
-        const noResults = document.getElementById('noResults');
-        const logo = document.getElementById('logo');
-        const loadingOverlay = document.getElementById('loadingOverlay');
-        const mainContent = document.getElementById('mainContent');
-        const studioLayout = document.getElementById('studioLayout');
-        const searchContainer = document.getElementById('searchContainer');
-        const returnToKwiveBtn = document.getElementById('returnToKwiveBtn');
-        const sidebarProfilePic = document.getElementById('sidebarProfilePic');
-        const sidebarProfileName = document.getElementById('sidebarProfileName');
-        const studioTitle = document.getElementById('studioTitle');
-        const goToAnalyticsBtn = document.getElementById('goToAnalyticsBtn');
-        const uploadFromDashboardBtn = document.getElementById('uploadFromDashboardBtn');
-        const profilePage = document.getElementById('profilePage');
-        const profileBanner = document.getElementById('profileBanner');
-        const profilePictureLarge = document.getElementById('profilePictureLarge');
-        const profilePageName = document.getElementById('profilePageName');
-        const profilePageSubscribers = document.getElementById('profilePageSubscribers');
-        const profilePageVideos = document.getElementById('profilePageVideos');
-        const customizeChannelBtn = document.getElementById('customizeChannelBtn');
-        const subscribeBtn = document.getElementById('subscribeBtn');
-        const profileTabs = document.querySelectorAll('.profile-tab');
-        const videosTabContent = document.getElementById('videosTabContent');
-        const filterBtns = document.querySelectorAll('.filter-btn');
-        const uploadFileBtn = document.getElementById('uploadFileBtn');
-        const uploadFileInput = document.getElementById('uploadFileInput');
-
-        let isStudioMode = false;
-        let currentUser = null;
-        let userChannelId = null;
-        let viewingOwnProfile = false;
-        let isSubscribed = false;
-        const defaultBanner = 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/1a989815-8731-4b08-8124-db03acb4ada8/di7xmh0-8c21639f-8b54-4c3b-bed0-b50b6fbc8d8b.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiIvZi8xYTk4OTgxNS04NzMxLTRiMDgtODEyNC1kYjAzYWNiNGFkYTgvZGk3eG1oMC04YzIxNjM5Zi04YjU0LTRjM2ItYmVkMC1iNTBiNmZiYzhkOGIucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.OWTlOXrVlOcGk3DkNyh2X5etCjhDxJ98O53I6vGzMpU';
-        
-        // Generate a random channel ID
-        function generateChannelId() {
-            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-            let result = '';
-            for (let i = 0; i < 15; i++) {
-                result += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            return result;
-        }
-
-        // Click logo to go home
-        logo.addEventListener('click', () => {
-            if (isStudioMode) {
-                switchToKwive();
-            } else {
-                noResults.classList.remove('show');
-                noResults.style.display = '';
-                profilePage.style.display = 'none';
-                searchBar.value = '';
-                document.title = 'Kwive';
-                window.history.pushState({ page: 'home' }, 'Kwive', '/');
-            }
-        });
-
-        // Toggle profile menu
-        profilePic.addEventListener('click', (e) => {
-            e.stopPropagation();
-            profileMenu.classList.toggle('show');
-        });
-        
-        // Go to profile when clicking profile menu header
-        document.querySelector('.profile-menu-header').addEventListener('click', () => {
-            viewingOwnProfile = true;
-            goToProfile();
-        });
-
-        // Close menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!profileContainer.contains(e.target)) {
-                profileMenu.classList.remove('show');
-            }
-        });
-
-        // Search functionality
-        searchBar.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                const searchQuery = searchBar.value.trim();
-                if (searchQuery) {
-                    noResults.classList.add('show');
-                } else {
-                    noResults.classList.remove('show');
-                }
-            }
-        });
-
-        // Sign in with Google
-        signInBtn.addEventListener('click', async () => {
-            try {
-                const result = await signInWithPopup(auth, provider);
-                const user = result.user;
-                console.log('User signed in:', user);
-            } catch (error) {
-                console.error('Error signing in:', error);
-                alert('Sign in failed: ' + error.message);
-            }
-        });
-
-        // Settings button
-        settingsBtn.addEventListener('click', () => {
-            alert('Settings clicked! (Add your settings page here)');
-            profileMenu.classList.remove('show');
-        });
-
-        // Create button - switch to studio
-        createBtn.addEventListener('click', () => {
-            switchToStudio();
-        });
-
-        // Return to Kwive button
-        returnToKwiveBtn.addEventListener('click', () => {
-            switchToKwive();
-        });
-
-        // Sign out
-        signOutBtn.addEventListener('click', async () => {
-            try {
-                await signOut(auth);
-                console.log('User signed out');
-                profileMenu.classList.remove('show');
-            } catch (error) {
-                console.error('Error signing out:', error);
-            }
-        });
-
-        // Switch to Studio mode
-        function switchToStudio() {
-            loadingOverlay.classList.add('show');
-            setTimeout(() => {
-                isStudioMode = true;
-                logo.textContent = 'Kwive Studio';
-                searchContainer.style.display = 'none';
-                createBtn.classList.add('hidden');
-                mainContent.style.display = 'none';
-                studioLayout.classList.add('active');
-                returnToKwiveBtn.style.display = 'block';
-                
-                if (currentUser) {
-                    sidebarProfilePic.src = currentUser.photoURL || 'https://via.placeholder.com/80';
-                    sidebarProfileName.textContent = currentUser.displayName || 'User';
-                }
-                
-                showPage('dashboardPage', 'Channel dashboard');
-                
-                // Update URL
-                window.history.pushState({ page: 'studio' }, 'Kwive Studio', '/studio');
-                
-                loadingOverlay.classList.remove('show');
-                profileMenu.classList.remove('show');
-            }, 2000);
-        }
-
-        // Switch back to Kwive
-        function switchToKwive() {
-            loadingOverlay.classList.add('show');
-            setTimeout(() => {
-                isStudioMode = false;
-                logo.textContent = 'Kwive';
-                searchContainer.style.display = 'flex';
-                createBtn.classList.remove('hidden');
-                mainContent.style.display = 'flex';
-                studioLayout.classList.remove('active');
-                returnToKwiveBtn.style.display = 'none';
-                noResults.classList.remove('show');
-                noResults.style.display = '';
-                profilePage.style.display = 'none';
-                searchBar.value = '';
-                
-                // Update URL and title
-                document.title = 'Kwive';
-                window.history.pushState({ page: 'home' }, 'Kwive', '/');
-                
-                loadingOverlay.classList.remove('show');
-                profileMenu.classList.remove('show');
-            }, 2000);
-        }
-
-        // Show specific page
-        function showPage(pageId, title) {
-            document.querySelectorAll('.page-content').forEach(page => {
-                page.classList.remove('active');
-            });
-            document.getElementById(pageId).classList.add('active');
-            studioTitle.textContent = title;
-            
-            // Update URL for studio pages
-            if (isStudioMode) {
-                const pageName = pageId.replace('Page', '');
-                window.history.pushState({ page: pageName }, title, `/studio/${pageName}`);
-            }
-        }
-
-        // Sidebar navigation
-        document.getElementById('dashboardBtn').addEventListener('click', () => {
-            showPage('dashboardPage', 'Channel dashboard');
-            setActiveSidebarItem('dashboardBtn');
-        });
-
-        document.getElementById('contentBtn').addEventListener('click', () => {
-            showPage('contentPage', 'Content');
-            setActiveSidebarItem('contentBtn');
-        });
-
-        document.getElementById('analyticsBtn').addEventListener('click', () => {
-            showPage('analyticsPage', 'Analytics');
-            setActiveSidebarItem('analyticsBtn');
-        });
-
-        document.getElementById('customizationBtn').addEventListener('click', () => {
-            showPage('customizationPage', 'Customization');
-            setActiveSidebarItem('customizationBtn');
-        });
-
-        document.getElementById('uploadBtn').addEventListener('click', () => {
-            showPage('uploadPage', 'Upload');
-            setActiveSidebarItem('uploadBtn');
-        });
-
-        // Go to Analytics button
-        goToAnalyticsBtn.addEventListener('click', () => {
-            showPage('analyticsPage', 'Analytics');
-            setActiveSidebarItem('analyticsBtn');
-        });
-
-        // Upload from dashboard button
-        uploadFromDashboardBtn.addEventListener('click', () => {
-            showPage('uploadPage', 'Upload');
-            setActiveSidebarItem('uploadBtn');
-        });
-        
-        // Customize channel button
-        customizeChannelBtn.addEventListener('click', () => {
-            loadingOverlay.classList.add('show');
-            setTimeout(() => {
-                switchToStudio();
-                showPage('customizationPage', 'Customization');
-                setActiveSidebarItem('customizationBtn');
-                loadingOverlay.classList.remove('show');
-            }, 2000);
-        });
-        
-        // Subscribe button functionality
-        subscribeBtn.addEventListener('click', () => {
-            isSubscribed = !isSubscribed;
-            if (isSubscribed) {
-                subscribeBtn.textContent = 'SUBSCRIBED';
-                subscribeBtn.classList.add('subscribed');
-                // In a real app, you would update the subscriber count here
-                const currentSubs = parseInt(profilePageSubscribers.textContent);
-                profilePageSubscribers.textContent = (currentSubs + 1) + ' SUBSCRIBERS';
-            } else {
-                subscribeBtn.textContent = 'SUBSCRIBE';
-                subscribeBtn.classList.remove('subscribed');
-                // In a real app, you would update the subscriber count here
-                const currentSubs = parseInt(profilePageSubscribers.textContent);
-                profilePageSubscribers.textContent = (currentSubs - 1) + ' SUBSCRIBERS';
-            }
-        });
-        
-        // Profile tab switching
-        profileTabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                // Remove active class from all tabs
-                profileTabs.forEach(t => t.classList.remove('active'));
-                // Add active class to clicked tab
-                tab.classList.add('active');
-                
-                // Hide all tab content
-                document.querySelectorAll('.profile-content > div').forEach(content => {
-                    content.style.display = 'none';
-                });
-                
-                // Show the selected tab content
-                const tabName = tab.getAttribute('data-tab');
-                document.getElementById(tabName + 'TabContent').style.display = 'block';
-            });
-        });
-        
-        // Content filter buttons
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                filterBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-            });
-        });
-        
-        // Upload file button
-        uploadFileBtn.addEventListener('click', () => {
-            uploadFileInput.click();
-        });
-        
-        uploadFileInput.addEventListener('change', (e) => {
-            if (e.target.files.length > 0) {
-                alert('Video selected: ' + e.target.files[0].name + '\n\nIn a real app, this would start the upload process.');
-            }
-        });
-
-        // Go to profile page
-        function goToProfile() {
-            if (!currentUser) return;
-            
-            loadingOverlay.classList.add('show');
-            profileMenu.classList.remove('show');
-            
-            setTimeout(() => {
-                noResults.style.display = 'none';
-                profilePage.style.display = 'block';
-                
-                // Set profile data
-                profileBanner.style.backgroundImage = `url('${defaultBanner}')`;
-                profilePictureLarge.src = currentUser.photoURL || 'https://via.placeholder.com/80';
-                profilePageName.textContent = (currentUser.displayName || 'USER').toUpperCase();
-                profilePageSubscribers.textContent = '0 SUBSCRIBERS';
-                profilePageVideos.textContent = '0 VIDEOS';
-                
-                // Show appropriate button based on whether it's own profile or someone else's
-                if (viewingOwnProfile) {
-                    customizeChannelBtn.style.display = 'block';
-                    subscribeBtn.style.display = 'none';
-                } else {
-                    customizeChannelBtn.style.display = 'none';
-                    subscribeBtn.style.display = 'block';
-                    subscribeBtn.textContent = 'SUBSCRIBE';
-                    subscribeBtn.classList.remove('subscribed');
-                    isSubscribed = false;
-                }
-                
-                // Reset to home tab
-                profileTabs.forEach(tab => tab.classList.remove('active'));
-                document.querySelector('.profile-tab[data-tab="home"]').classList.add('active');
-                document.querySelectorAll('.profile-content > div').forEach(content => {
-                    content.style.display = 'none';
-                });
-                document.getElementById('homeTabContent').style.display = 'block';
-                
-                // Update page title and URL
-                document.title = `${currentUser.displayName || 'User'} - Kwive`;
-                window.history.pushState({ page: 'profile', channelId: userChannelId }, document.title, `/c/${userChannelId}`);
-                
-                loadingOverlay.classList.remove('show');
-            }, 2000);
-        }
-        
-        // Function to view someone else's channel
-        function viewOtherChannel(channelId) {
-            loadingOverlay.classList.add('show');
-            
-            setTimeout(() => {
-                viewingOwnProfile = false;
-                noResults.style.display = 'none';
-                profilePage.style.display = 'block';
-                
-                // Set profile data for other channel
-                profileBanner.style.backgroundImage = `url('${defaultBanner}')`;
-                profilePictureLarge.src = 'https://via.placeholder.com/80'; // Different profile picture
-                profilePageName.textContent = 'OTHER CHANNEL';
-                profilePageSubscribers.textContent = '0 SUBSCRIBERS';
-                profilePageVideos.textContent = '0 VIDEOS';
-                
-                // Show subscribe button (not customize)
-                customizeChannelBtn.style.display = 'none';
-                subscribeBtn.style.display = 'block';
-                subscribeBtn.textContent = 'SUBSCRIBE';
-                subscribeBtn.classList.remove('subscribed');
-                isSubscribed = false;
-                
-                // Reset to home tab
-                profileTabs.forEach(tab => tab.classList.remove('active'));
-                document.querySelector('.profile-tab[data-tab="home"]').classList.add('active');
-                document.querySelectorAll('.profile-content > div').forEach(content => {
-                    content.style.display = 'none';
-                });
-                document.getElementById('homeTabContent').style.display = 'block';
-                
-                // Update page title and URL
-                document.title = 'Other Channel - Kwive';
-                window.history.pushState({ page: 'profile', channelId: channelId }, document.title, `/c/${channelId}`);
-                
-                loadingOverlay.classList.remove('show');
-            }, 2000);
-        }
-
-        function setActiveSidebarItem(activeId) {
-            document.querySelectorAll('.sidebar-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            document.getElementById(activeId).classList.add('active');
-        }
-
-        // Handle browser back/forward buttons
-        window.addEventListener('popstate', (event) => {
-            if (event.state) {
-                if (event.state.page === 'home') {
-                    if (isStudioMode) {
-                        switchToKwive();
-                    } else {
-                        noResults.style.display = '';
-                        profilePage.style.display = 'none';
-                        document.title = 'Kwive';
-                    }
-                } else if (event.state.page === 'profile') {
-                    if (!isStudioMode) {
-                        if (event.state.channelId === userChannelId) {
-                            viewingOwnProfile = true;
-                            goToProfile();
-                        } else {
-                            viewOtherChannel(event.state.channelId);
-                        }
-                    }
-                } else if (event.state.page === 'studio') {
-                    if (!isStudioMode) {
-                        switchToStudio();
-                    }
-                } else if (isStudioMode) {
-                    // Handle studio sub-pages
-                    const pageMap = {
-                        'dashboard': { id: 'dashboardPage', title: 'Channel dashboard', btn: 'dashboardBtn' },
-                        'content': { id: 'contentPage', title: 'Content', btn: 'contentBtn' },
-                        'analytics': { id: 'analyticsPage', title: 'Analytics', btn: 'analyticsBtn' },
-                        'customization': { id: 'customizationPage', title: 'Customization', btn: 'customizationBtn' },
-                        'upload': { id: 'uploadPage', title: 'Upload', btn: 'uploadBtn' }
-                    };
-                    
-                    const pageInfo = pageMap[event.state.page];
-                    if (pageInfo) {
-                        document.querySelectorAll('.page-content').forEach(page => {
-                            page.classList.remove('active');
-                        });
-                        document.getElementById(pageInfo.id).classList.add('active');
-                        studioTitle.textContent = pageInfo.title;
-                        setActiveSidebarItem(pageInfo.btn);
-                    }
-                }
-            }
-        });
-
-        // Handle initial page load based on URL
-        window.addEventListener('DOMContentLoaded', () => {
-            const path = window.location.pathname;
-            
-            // Check if it's a channel URL
-            if (path.startsWith('/c/')) {
-                const channelId = path.split('/c/')[1];
-                if (channelId && channelId !== userChannelId) {
-                    // View other channel
-                    viewOtherChannel(channelId);
-                }
-            } else if (path.startsWith('/studio')) {
-                // Studio URLs - wait for auth
-                console.log('Studio URL detected:', path);
-            }
-        });
-
-        // Listen for auth state changes
-        onAuthStateChanged(auth, (user) => {
-            currentUser = user;
-            if (user) {
-                // Generate or retrieve channel ID for user
-                if (!userChannelId) {
-                    userChannelId = generateChannelId();
-                }
-                
-                // User is signed in
-                signInBtn.style.display = 'none';
-                profileContainer.classList.add('active');
-                profilePic.src = user.photoURL || 'https://via.placeholder.com/40';
-                profilePic.alt = user.displayName || 'User';
-                profileName.textContent = user.displayName || 'User';
-                profileEmail.textContent = user.email || '';
-                
-                if (isStudioMode) {
-                    sidebarProfilePic.src = user.photoURL || 'https://via.placeholder.com/80';
-                    sidebarProfileName.textContent = user.displayName || 'User';
-                }
-            } else {
-                // User is signed out
-                signInBtn.style.display = 'block';
-                profileContainer.classList.remove('active');
-                userChannelId = null;
-                
-                // Return to Kwive if signed out while in studio
-                if (isStudioMode) {
-                    isStudioMode = false;
-                    logo.textContent = 'Kwive';
-                    searchContainer.style.display = 'flex';
-                    mainContent.style.display = 'flex';
-                    studioLayout.classList.remove('active');
-                    returnToKwiveBtn.style.display = 'none';
-                }
-            }
-        });
-    </script>
-</body>
-</html>
