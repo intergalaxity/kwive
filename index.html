@@ -367,7 +367,7 @@
             background: rgba(255, 255, 255, 0.05);
             padding: 20px 60px;
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 20px;
         }
         
@@ -394,24 +394,45 @@
             gap: 8px;
             color: rgba(255, 255, 255, 0.6);
             font-size: 14px;
+            margin-bottom: 12px;
         }
         
-        .customize-channel-btn,
-        .subscribe-btn {
-            background: white;
-            border: none;
-            color: #0D47A1;
+        .customize-channel-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
             font-family: 'Roboto', sans-serif;
             font-size: 14px;
             font-weight: 500;
             padding: 10px 16px;
             cursor: pointer;
-            border-radius: 18px;
+            border-radius: 2px;
+            text-transform: uppercase;
         }
         
-        .customize-channel-btn:hover,
+        .customize-channel-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .subscribe-btn {
+            background: #cc0000;
+            border: none;
+            color: white;
+            font-family: 'Roboto', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 10px 16px;
+            cursor: pointer;
+            border-radius: 2px;
+            text-transform: uppercase;
+        }
+        
         .subscribe-btn:hover {
-            background: #f0f0f0;
+            background: #b30000;
+        }
+        
+        .subscribe-btn.subscribed {
+            background: rgba(255, 255, 255, 0.2);
         }
         
         .profile-tabs {
@@ -479,6 +500,8 @@
             background: #1565C0;
             padding: 24px 0;
             overflow-y: auto;
+            display: flex;
+            flex-direction: column;
         }
         
         .studio-sidebar-profile {
@@ -493,6 +516,12 @@
             height: 80px;
             border-radius: 50%;
             margin: 0 auto 12px;
+        }
+        
+        .studio-sidebar-profile-name {
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
         }
         
         .studio-sidebar-item {
@@ -514,6 +543,7 @@
         .studio-sidebar-item.active {
             background: rgba(255, 255, 255, 0.2);
             font-weight: 500;
+            color: white;
         }
         
         .studio-content {
@@ -564,7 +594,8 @@
         }
         
         .analytics-btn,
-        .upload-btn {
+        .upload-btn,
+        .save-changes-btn {
             background: white;
             border: none;
             color: #1976D2;
@@ -575,6 +606,12 @@
             padding: 10px 20px;
             cursor: pointer;
             border-radius: 2px;
+        }
+        
+        .analytics-btn:hover,
+        .upload-btn:hover,
+        .save-changes-btn:hover {
+            background: #f5f5f5;
         }
         
         .upload-card {
@@ -621,6 +658,7 @@
             border-radius: 50%;
             background-size: cover;
             background-position: center;
+            flex-shrink: 0;
         }
         
         .customization-preview.banner {
@@ -653,8 +691,35 @@
             border-radius: 2px;
         }
         
+        .change-btn:hover,
+        .remove-btn:hover {
+            background: #f5f5f5;
+        }
+        
         .file-input {
             display: none;
+        }
+        
+        .save-changes-container {
+            margin-top: 24px;
+            text-align: center;
+        }
+        
+        .upload-container {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        
+        .upload-icon {
+            font-size: 80px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 16px;
+        }
+        
+        .upload-text {
+            font-size: 20px;
+            color: white;
+            margin-bottom: 24px;
         }
     </style>
 </head>
@@ -698,7 +763,9 @@
         <button class="sidebar-item" data-category="nature">Nature</button>
         <div class="sidebar-divider"></div>
         <div class="sidebar-label">Misc.</div>
-        <button class="sidebar-item" data-category="donations">Donations</button>
+        <button class="sidebar-item" data-category="donate">Donate</button>
+        <button class="sidebar-item" data-category="premium">Kwive Premium</button>
+        <button class="sidebar-item" data-category="guidelines">Community Guidelines</button>
         <button class="sidebar-item" data-category="feedback">Send Feedback</button>
         <button class="sidebar-item" data-category="bugs">Report Bugs</button>
         <button class="sidebar-item" data-category="contact">Contact</button>
@@ -725,9 +792,9 @@
                             <span>•</span>
                             <span id="profilePageVideos">0 videos</span>
                         </div>
+                        <button class="customize-channel-btn" id="customizeChannelBtn" style="display: none;">CUSTOMIZE CHANNEL</button>
+                        <button class="subscribe-btn" id="subscribeBtn" style="display: none;">SUBSCRIBE</button>
                     </div>
-                    <button class="customize-channel-btn" id="customizeChannelBtn" style="display: none;">Customize channel</button>
-                    <button class="subscribe-btn" id="subscribeBtn" style="display: none;">Subscribe</button>
                 </div>
                 <div class="profile-tabs">
                     <button class="profile-tab active" data-tab="videos">Videos</button>
@@ -751,7 +818,7 @@
         <div class="studio-sidebar">
             <div class="studio-sidebar-profile">
                 <img src="" alt="Profile" class="studio-sidebar-profile-pic" id="studioSidebarProfilePic">
-                <div id="studioSidebarProfileName"></div>
+                <div class="studio-sidebar-profile-name" id="studioSidebarProfileName"></div>
             </div>
             <button class="studio-sidebar-item active" id="dashboardBtn">Dashboard</button>
             <button class="studio-sidebar-item" id="contentBtn">Content</button>
@@ -814,12 +881,17 @@
                         </div>
                     </div>
                 </div>
+                <div class="save-changes-container">
+                    <button class="save-changes-btn" id="saveChangesBtn">Save Changes</button>
+                </div>
             </div>
             
             <div class="page-content" id="uploadPage">
-                <div class="analytics-empty">
-                    <h2 class="analytics-empty-title">Upload</h2>
-                    <p class="analytics-empty-text">Video upload functionality coming soon</p>
+                <div class="upload-container">
+                    <div class="upload-icon">+</div>
+                    <div class="upload-text">Upload your video here</div>
+                    <button class="upload-btn" id="uploadVideoBtn">UPLOAD</button>
+                    <input type="file" class="file-input" id="videoInput" accept="video/*">
                 </div>
             </div>
         </div>
@@ -847,9 +919,12 @@
         const provider = new GoogleAuthProvider();
         
         const defaultBanner = 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/1a989815-8731-4b08-8124-db03acb4ada8/di7xmh0-8c21639f-8b54-4c3b-bed0-b50b6fbc8d8b.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiIvZi8xYTk4OTgxNS04NzMxLTRiMDgtODEyNC1kYjAzYWNiNGFkYTgvZGk3eG1oMC04YzIxNjM5Zi04YjU0LTRjM2ItYmVkMC1iNTBiNmZiYzhkOGIucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.OWTlOXrVlOcGk3DkNyh2X5etCjhDxJ98O53I6vGzMpU';
+        const defaultPfp = 'https://i.imgur.com/PdUrCrV.jpeg';
         
         let currentUser = null;
         let isStudioMode = false;
+        let tempPfp = null;
+        let tempBanner = null;
         
         // Menu button toggle
         document.getElementById('menuBtn').addEventListener('click', () => {
@@ -862,12 +937,12 @@
             item.addEventListener('click', () => {
                 const category = item.getAttribute('data-category');
                 
-                if (category === 'donations') {
+                if (category === 'donate') {
                     window.open('https://ko-fi.com/intergalaxity', '_blank');
                     return;
                 }
                 
-                if (category === 'feedback' || category === 'bugs' || category === 'contact') {
+                if (category === 'feedback' || category === 'bugs' || category === 'contact' || category === 'premium' || category === 'guidelines') {
                     alert(`${item.textContent} - Coming soon!`);
                     return;
                 }
@@ -877,6 +952,18 @@
                 document.getElementById('categoryHeader').style.display = 'block';
                 document.getElementById('categoryTitle').textContent = category.charAt(0).toUpperCase() + category.slice(1);
             });
+        });
+        
+        // Search
+        document.getElementById('searchBar').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const query = e.target.value.trim();
+                if (query) {
+                    document.getElementById('profilePage').style.display = 'none';
+                    document.getElementById('categoryHeader').style.display = 'none';
+                    document.getElementById('noResults').classList.add('show');
+                }
+            }
         });
         
         // Sign in
@@ -919,13 +1006,17 @@
             document.getElementById('loadingOverlay').classList.add('show');
             document.getElementById('profileMenu').classList.remove('show');
             
-            setTimeout(() => {
+            setTimeout(async () => {
                 document.getElementById('categoryHeader').style.display = 'none';
                 document.getElementById('noResults').style.display = 'none';
                 document.getElementById('profilePage').style.display = 'block';
                 
-                document.getElementById('profileBanner').style.backgroundImage = `url('${defaultBanner}')`;
-                document.getElementById('profilePictureLarge').src = currentUser.photoURL || 'https://via.placeholder.com/80';
+                // Get saved data from Firestore
+                const channelDoc = await getDoc(doc(db, 'channels', currentUser.uid));
+                const channelData = channelDoc.exists() ? channelDoc.data() : {};
+                
+                document.getElementById('profileBanner').style.backgroundImage = `url('${channelData.banner || defaultBanner}')`;
+                document.getElementById('profilePictureLarge').src = channelData.photoURL || defaultPfp;
                 document.getElementById('profilePageName').textContent = currentUser.displayName || 'User';
                 document.getElementById('profilePageSubscribers').textContent = '0 subscribers';
                 document.getElementById('profilePageVideos').textContent = '0 videos';
@@ -950,10 +1041,17 @@
                 document.getElementById('returnToKwiveBtn').style.display = 'block';
                 
                 if (currentUser) {
-                    document.getElementById('studioSidebarProfilePic').src = currentUser.photoURL || 'https://via.placeholder.com/80';
+                    document.getElementById('studioSidebarProfilePic').src = currentUser.photoURL || defaultPfp;
                     document.getElementById('studioSidebarProfileName').textContent = currentUser.displayName || 'User';
-                    document.getElementById('pfpPreview').style.backgroundImage = `url('${currentUser.photoURL || 'https://via.placeholder.com/120'}')`;
-                    document.getElementById('bannerPreview').style.backgroundImage = `url('${defaultBanner}')`;
+                    
+                    // Load saved data
+                    getDoc(doc(db, 'channels', currentUser.uid)).then(channelDoc => {
+                        const channelData = channelDoc.exists() ? channelDoc.data() : {};
+                        tempPfp = channelData.photoURL || defaultPfp;
+                        tempBanner = channelData.banner || defaultBanner;
+                        document.getElementById('pfpPreview').style.backgroundImage = `url('${tempPfp}')`;
+                        document.getElementById('bannerPreview').style.backgroundImage = `url('${tempBanner}')`;
+                    });
                 }
                 
                 document.getElementById('loadingOverlay').classList.remove('show');
@@ -1016,6 +1114,17 @@
             }, 2100);
         });
         
+        // Subscribe button
+        document.getElementById('subscribeBtn').addEventListener('click', function() {
+            if (this.classList.contains('subscribed')) {
+                this.classList.remove('subscribed');
+                this.textContent = 'SUBSCRIBE';
+            } else {
+                this.classList.add('subscribed');
+                this.textContent = 'SUBSCRIBED';
+            }
+        });
+        
         // Studio sidebar
         document.getElementById('dashboardBtn').addEventListener('click', () => {
             document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
@@ -1065,7 +1174,7 @@
             document.getElementById('uploadBtn').click();
         });
         
-        // Customization
+        // Customization - Profile Picture
         document.getElementById('changePfpBtn').addEventListener('click', () => {
             document.getElementById('pfpInput').click();
         });
@@ -1074,16 +1183,19 @@
             if (e.target.files[0]) {
                 const reader = new FileReader();
                 reader.onload = (event) => {
-                    document.getElementById('pfpPreview').style.backgroundImage = `url('${event.target.result}')`;
+                    tempPfp = event.target.result;
+                    document.getElementById('pfpPreview').style.backgroundImage = `url('${tempPfp}')`;
                 };
                 reader.readAsDataURL(e.target.files[0]);
             }
         });
         
         document.getElementById('removePfpBtn').addEventListener('click', () => {
-            document.getElementById('pfpPreview').style.backgroundImage = `url('https://via.placeholder.com/120')`;
+            tempPfp = defaultPfp;
+            document.getElementById('pfpPreview').style.backgroundImage = `url('${defaultPfp}')`;
         });
         
+        // Customization - Banner
         document.getElementById('changeBannerBtn').addEventListener('click', () => {
             document.getElementById('bannerInput').click();
         });
@@ -1092,14 +1204,46 @@
             if (e.target.files[0]) {
                 const reader = new FileReader();
                 reader.onload = (event) => {
-                    document.getElementById('bannerPreview').style.backgroundImage = `url('${event.target.result}')`;
+                    tempBanner = event.target.result;
+                    document.getElementById('bannerPreview').style.backgroundImage = `url('${tempBanner}')`;
                 };
                 reader.readAsDataURL(e.target.files[0]);
             }
         });
         
         document.getElementById('removeBannerBtn').addEventListener('click', () => {
+            tempBanner = defaultBanner;
             document.getElementById('bannerPreview').style.backgroundImage = `url('${defaultBanner}')`;
+        });
+        
+        // Save changes
+        document.getElementById('saveChangesBtn').addEventListener('click', async () => {
+            if (!currentUser) return;
+            
+            try {
+                await setDoc(doc(db, 'channels', currentUser.uid), {
+                    photoURL: tempPfp,
+                    banner: tempBanner,
+                    displayName: currentUser.displayName,
+                    email: currentUser.email
+                }, { merge: true });
+                
+                alert('Changes saved successfully!');
+            } catch (error) {
+                console.error('Error saving:', error);
+                alert('Failed to save changes');
+            }
+        });
+        
+        // Upload video
+        document.getElementById('uploadVideoBtn').addEventListener('click', () => {
+            document.getElementById('videoInput').click();
+        });
+        
+        document.getElementById('videoInput').addEventListener('change', (e) => {
+            if (e.target.files[0]) {
+                alert('Video selected: ' + e.target.files[0].name + '\n\nVideo upload functionality coming soon!');
+            }
         });
         
         // Auth state
@@ -1108,7 +1252,7 @@
             if (user) {
                 document.getElementById('signInBtn').style.display = 'none';
                 document.getElementById('profileContainer').classList.add('active');
-                document.getElementById('profilePic').src = user.photoURL || 'https://via.placeholder.com/32';
+                document.getElementById('profilePic').src = user.photoURL || defaultPfp;
                 document.getElementById('profileName').textContent = user.displayName || 'User';
                 document.getElementById('profileEmail').textContent = user.email || '';
             } else {
