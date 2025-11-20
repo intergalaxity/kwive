@@ -22,7 +22,7 @@
         .header {
             background-color: #1976D2;
             color: white;
-            padding: 16px 24px;
+            padding: 12px 24px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
             position: fixed;
             top: 0;
@@ -33,6 +33,7 @@
             justify-content: space-between;
             align-items: center;
             gap: 24px;
+            height: 56px;
         }
         
         .header-left {
@@ -45,12 +46,14 @@
             background: transparent;
             border: none;
             color: white;
-            font-size: 24px;
+            font-size: 20px;
             cursor: pointer;
             padding: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
+            width: 36px;
+            height: 36px;
         }
         
         .menu-btn:hover {
@@ -59,7 +62,7 @@
         }
         
         .header h1 {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 500;
             letter-spacing: 0.5px;
             cursor: pointer;
@@ -79,23 +82,18 @@
         
         .search-bar {
             width: 100%;
-            padding: 10px 16px;
+            padding: 8px 16px;
             border: none;
             border-radius: 2px;
             font-family: 'Roboto', sans-serif;
-            font-size: 16px;
+            font-size: 14px;
             background: rgba(255, 255, 255, 0.9);
             color: #212121;
-            transition: background-color 0.2s;
         }
         
         .search-bar:focus {
             outline: none;
             background: white;
-        }
-        
-        .search-bar::placeholder {
-            color: #757575;
         }
         
         .header-right {
@@ -115,8 +113,6 @@
             padding: 8px 16px;
             cursor: pointer;
             border-radius: 2px;
-            transition: background-color 0.2s;
-            letter-spacing: 0.5px;
         }
         
         .sign-in-btn:hover {
@@ -142,16 +138,13 @@
             font-size: 14px;
             font-weight: 500;
             text-transform: uppercase;
-            padding: 8px 16px;
+            padding: 6px 12px;
             cursor: pointer;
             border-radius: 2px;
-            transition: all 0.2s;
-            letter-spacing: 0.5px;
         }
         
         .create-btn:hover {
             background-color: rgba(255, 255, 255, 0.1);
-            border-color: white;
         }
         
         .create-btn.hidden {
@@ -159,21 +152,15 @@
         }
         
         .profile-pic {
-            width: 40px;
-            height: 40px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
-            border: 2px solid rgba(255, 255, 255, 0.3);
             cursor: pointer;
-            transition: border-color 0.2s;
-        }
-        
-        .profile-pic:hover {
-            border-color: rgba(255, 255, 255, 0.6);
         }
         
         .profile-menu {
             position: absolute;
-            top: 55px;
+            top: 45px;
             right: 0;
             background: white;
             border-radius: 2px;
@@ -196,7 +183,6 @@
             padding: 16px;
             border-bottom: 1px solid #e0e0e0;
             cursor: pointer;
-            transition: background-color 0.2s;
         }
         
         .profile-menu-header:hover {
@@ -222,7 +208,6 @@
             color: #212121;
             font-size: 14px;
             cursor: pointer;
-            transition: background-color 0.2s;
             border: none;
             background: transparent;
             width: 100%;
@@ -234,17 +219,17 @@
             background-color: #f5f5f5;
         }
         
-        /* Sidebar Styles */
         .sidebar {
             position: fixed;
             left: 0;
-            top: 72px;
+            top: 56px;
             width: 240px;
-            height: calc(100vh - 72px);
+            height: calc(100vh - 56px);
             background: #1565C0;
             overflow-y: auto;
             transition: transform 0.3s;
             z-index: 90;
+            padding-top: 16px;
         }
         
         .sidebar.collapsed {
@@ -256,11 +241,10 @@
         }
         
         .sidebar-item {
-            padding: 12px 24px;
+            padding: 10px 24px;
             color: rgba(255, 255, 255, 0.9);
             font-size: 14px;
             cursor: pointer;
-            transition: all 0.2s;
             border: none;
             background: transparent;
             text-align: left;
@@ -279,19 +263,17 @@
         }
         
         .sidebar-label {
-            padding: 12px 24px;
+            padding: 8px 24px;
             color: rgba(255, 255, 255, 0.6);
             font-size: 12px;
             text-transform: uppercase;
-            letter-spacing: 1px;
         }
         
-        /* Main Content */
         .main-wrapper {
-            margin-top: 72px;
+            margin-top: 56px;
             margin-left: 240px;
             transition: margin-left 0.3s;
-            min-height: calc(100vh - 72px);
+            min-height: calc(100vh - 56px);
         }
         
         .main-wrapper.expanded {
@@ -303,41 +285,37 @@
         }
         
         .content {
-            padding: 24px;
+            padding: 48px 24px 24px;
             color: white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: calc(100vh - 120px);
+            min-height: calc(100vh - 56px);
+        }
+        
+        .category-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+        
+        .category-title {
+            font-size: 36px;
+            font-weight: 500;
+            color: white;
+            margin: 0;
         }
         
         .no-results {
             display: none;
             text-align: center;
-            flex-direction: column;
-            align-items: center;
-            gap: 16px;
+            padding: 80px 20px;
         }
         
         .no-results.show {
-            display: flex;
+            display: block;
         }
         
         .no-results-title {
             font-size: 32px;
             font-weight: 500;
             color: white;
-        }
-        
-        .no-results-subtitle {
-            font-size: 18px;
-            color: rgba(255, 255, 255, 0.9);
-        }
-        
-        .no-results-suggestion {
-            font-size: 16px;
-            color: rgba(255, 255, 255, 0.7);
         }
         
         .loading-overlay {
@@ -371,7 +349,6 @@
             100% { transform: rotate(360deg); }
         }
         
-        /* Profile Page */
         .profile-page {
             width: 100%;
             margin: 0;
@@ -380,17 +357,17 @@
         
         .profile-banner {
             width: 100%;
-            height: 250px;
+            height: 200px;
             background-size: cover;
             background-position: center;
         }
         
         .profile-header {
             background: rgba(255, 255, 255, 0.05);
-            padding: 24px 80px;
+            padding: 20px 60px;
             display: flex;
             align-items: center;
-            gap: 24px;
+            gap: 20px;
         }
         
         .profile-picture-large {
@@ -429,7 +406,6 @@
             padding: 10px 16px;
             cursor: pointer;
             border-radius: 18px;
-            transition: all 0.2s;
         }
         
         .customize-channel-btn:hover,
@@ -437,14 +413,9 @@
             background: #f0f0f0;
         }
         
-        .subscribe-btn.subscribed {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-        }
-        
         .profile-tabs {
             background: rgba(255, 255, 255, 0.05);
-            padding: 0 80px;
+            padding: 0 60px;
             display: flex;
             gap: 32px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -457,12 +428,10 @@
             font-family: 'Roboto', sans-serif;
             font-size: 14px;
             font-weight: 500;
-            padding: 14px 0;
+            padding: 12px 0;
             cursor: pointer;
             border-bottom: 2px solid transparent;
-            transition: all 0.2s;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
         
         .profile-tab:hover {
@@ -475,18 +444,16 @@
         }
         
         .profile-content {
-            padding: 48px 80px;
-            min-height: 400px;
+            padding: 40px 60px;
         }
         
         .profile-empty {
             text-align: center;
-            padding: 80px 20px;
+            padding: 60px 20px;
         }
         
         .profile-empty-title {
             font-size: 20px;
-            font-weight: 400;
             color: white;
             margin: 0 0 8px 0;
         }
@@ -496,48 +463,35 @@
             color: rgba(255, 255, 255, 0.6);
         }
         
-        /* Studio Layout */
         .studio-layout {
             display: none;
-            margin-top: 72px;
+            margin-top: 56px;
         }
         
         .studio-layout.active {
             display: flex;
-            height: calc(100vh - 72px);
+            height: calc(100vh - 56px);
         }
         
         .studio-sidebar {
             width: 240px;
             background: #1565C0;
             padding: 24px 0;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
             overflow-y: auto;
         }
         
         .studio-sidebar-profile {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
             padding: 0 16px 24px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
             margin-bottom: 16px;
+            text-align: center;
         }
         
         .studio-sidebar-profile-pic {
             width: 80px;
             height: 80px;
             border-radius: 50%;
-            margin-bottom: 12px;
-        }
-        
-        .studio-sidebar-profile-name {
-            color: white;
-            font-size: 16px;
-            font-weight: 500;
-            text-align: center;
+            margin: 0 auto 12px;
         }
         
         .studio-sidebar-item {
@@ -545,35 +499,33 @@
             color: rgba(255, 255, 255, 0.8);
             font-size: 14px;
             cursor: pointer;
-            transition: all 0.2s;
             border: none;
             background: transparent;
             text-align: left;
+            width: 100%;
             font-family: 'Roboto', sans-serif;
         }
         
         .studio-sidebar-item:hover {
             background: rgba(255, 255, 255, 0.1);
-            color: white;
         }
         
         .studio-sidebar-item.active {
             background: rgba(255, 255, 255, 0.2);
-            color: white;
             font-weight: 500;
         }
         
         .studio-content {
             flex: 1;
-            padding: 48px;
+            padding: 40px;
             overflow-y: auto;
         }
         
         .studio-title {
-            font-size: 32px;
+            font-size: 28px;
             font-weight: 500;
             color: white;
-            margin: 0 0 32px 0;
+            margin: 0 0 24px 0;
         }
         
         .page-content {
@@ -584,30 +536,18 @@
             display: block;
         }
         
-        /* Dashboard */
-        .dashboard-container {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-            max-width: 1200px;
-        }
-        
         .stats-card {
             background: rgba(255, 255, 255, 0.1);
             border-radius: 4px;
             padding: 24px;
+            margin-bottom: 24px;
         }
         
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 24px;
             margin-bottom: 24px;
-        }
-        
-        .stat-item {
-            display: flex;
-            flex-direction: column;
         }
         
         .stat-label {
@@ -618,7 +558,7 @@
         
         .stat-value {
             color: white;
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 500;
         }
         
@@ -631,16 +571,9 @@
             font-size: 14px;
             font-weight: 500;
             text-transform: uppercase;
-            padding: 10px 24px;
+            padding: 10px 20px;
             cursor: pointer;
             border-radius: 2px;
-            transition: background-color 0.2s;
-            letter-spacing: 0.5px;
-        }
-        
-        .analytics-btn:hover,
-        .upload-btn:hover {
-            background: #f5f5f5;
         }
         
         .upload-card {
@@ -652,33 +585,23 @@
         
         .upload-card-title {
             color: white;
-            font-size: 24px;
-            font-weight: 500;
+            font-size: 20px;
             margin: 0 0 16px 0;
         }
         
-        /* Analytics */
         .analytics-empty {
             text-align: center;
-            padding: 80px 20px;
+            padding: 60px 20px;
         }
         
         .analytics-empty-title {
-            font-size: 24px;
+            font-size: 20px;
             color: white;
             margin-bottom: 8px;
         }
         
         .analytics-empty-text {
             color: rgba(255, 255, 255, 0.6);
-        }
-        
-        /* Customization */
-        .customization-container {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-            max-width: 1200px;
         }
         
         .customization-item {
@@ -688,6 +611,7 @@
             display: flex;
             gap: 24px;
             align-items: center;
+            margin-bottom: 20px;
         }
         
         .customization-preview {
@@ -699,20 +623,16 @@
         }
         
         .customization-preview.banner {
-            width: 300px;
-            height: 150px;
+            width: 280px;
+            height: 140px;
             border-radius: 4px;
-        }
-        
-        .customization-info {
-            flex: 1;
         }
         
         .customization-label {
             color: white;
             font-size: 18px;
             font-weight: 500;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
         
         .customization-buttons {
@@ -727,16 +647,9 @@
             color: #0D47A1;
             font-family: 'Roboto', sans-serif;
             font-size: 14px;
-            font-weight: 500;
             padding: 8px 16px;
             cursor: pointer;
             border-radius: 2px;
-            transition: background-color 0.2s;
-        }
-        
-        .change-btn:hover,
-        .remove-btn:hover {
-            background: #f5f5f5;
         }
         
         .file-input {
@@ -775,27 +688,29 @@
     </header>
     
     <div class="sidebar" id="mainSidebar">
-        <button class="sidebar-item">Home</button>
+        <button class="sidebar-item" data-category="home">Home</button>
         <div class="sidebar-divider"></div>
         <div class="sidebar-label">Explore</div>
-        <button class="sidebar-item">Gaming</button>
-        <button class="sidebar-item">Animals</button>
-        <button class="sidebar-item">Tech</button>
-        <button class="sidebar-item">Nature</button>
+        <button class="sidebar-item" data-category="gaming">Gaming</button>
+        <button class="sidebar-item" data-category="animals">Animals</button>
+        <button class="sidebar-item" data-category="tech">Tech</button>
+        <button class="sidebar-item" data-category="nature">Nature</button>
         <div class="sidebar-divider"></div>
         <div class="sidebar-label">Misc.</div>
-        <button class="sidebar-item">Donations</button>
-        <button class="sidebar-item">Send Feedback</button>
-        <button class="sidebar-item">Report Bugs</button>
-        <button class="sidebar-item">Contact</button>
+        <button class="sidebar-item" data-category="donations">Donations</button>
+        <button class="sidebar-item" data-category="feedback">Send Feedback</button>
+        <button class="sidebar-item" data-category="bugs">Report Bugs</button>
+        <button class="sidebar-item" data-category="contact">Contact</button>
     </div>
     
     <div class="main-wrapper" id="mainWrapper">
         <div class="content" id="mainContent">
+            <div class="category-header" id="categoryHeader">
+                <h1 class="category-title" id="categoryTitle">Home</h1>
+            </div>
+            
             <div class="no-results" id="noResults">
                 <h2 class="no-results-title">No results found</h2>
-                <p class="no-results-subtitle">Try searching something else up!</p>
-                <p class="no-results-suggestion">(Cat videos)</p>
             </div>
             
             <div class="profile-page" id="profilePage" style="display: none;">
@@ -835,7 +750,7 @@
         <div class="studio-sidebar">
             <div class="studio-sidebar-profile">
                 <img src="" alt="Profile" class="studio-sidebar-profile-pic" id="studioSidebarProfilePic">
-                <div class="studio-sidebar-profile-name" id="studioSidebarProfileName"></div>
+                <div id="studioSidebarProfileName"></div>
             </div>
             <button class="studio-sidebar-item active" id="dashboardBtn">Dashboard</button>
             <button class="studio-sidebar-item" id="contentBtn">Content</button>
@@ -847,29 +762,17 @@
             <h1 class="studio-title" id="studioTitle">Channel dashboard</h1>
             
             <div class="page-content active" id="dashboardPage">
-                <div class="dashboard-container">
-                    <div class="stats-card">
-                        <div class="stats-grid">
-                            <div class="stat-item">
-                                <div class="stat-label">Subscribers</div>
-                                <div class="stat-value">0</div>
-                            </div>
-                            <div class="stat-item">
-                                <div class="stat-label">Views</div>
-                                <div class="stat-value">0</div>
-                            </div>
-                            <div class="stat-item">
-                                <div class="stat-label">Watch hours</div>
-                                <div class="stat-value">0</div>
-                            </div>
-                        </div>
-                        <button class="analytics-btn" id="goToAnalyticsBtn">Go to channel analytics</button>
+                <div class="stats-card">
+                    <div class="stats-grid">
+                        <div><div class="stat-label">Subscribers</div><div class="stat-value">0</div></div>
+                        <div><div class="stat-label">Views</div><div class="stat-value">0</div></div>
+                        <div><div class="stat-label">Watch hours</div><div class="stat-value">0</div></div>
                     </div>
-                    
-                    <div class="upload-card">
-                        <h2 class="upload-card-title">Upload your first video here!</h2>
-                        <button class="upload-btn" id="uploadFromDashboardBtn">Upload</button>
-                    </div>
+                    <button class="analytics-btn" id="goToAnalyticsBtn">Go to channel analytics</button>
+                </div>
+                <div class="upload-card">
+                    <h2 class="upload-card-title">Upload your first video here!</h2>
+                    <button class="upload-btn" id="uploadFromDashboardBtn">Upload</button>
                 </div>
             </div>
             
@@ -888,28 +791,25 @@
             </div>
             
             <div class="page-content" id="customizationPage">
-                <div class="customization-container">
-                    <div class="customization-item">
-                        <div class="customization-preview" id="pfpPreview"></div>
-                        <div class="customization-info">
-                            <div class="customization-label">Profile picture</div>
-                            <div class="customization-buttons">
-                                <button class="change-btn" id="changePfpBtn">Change</button>
-                                <button class="remove-btn" id="removePfpBtn">Remove</button>
-                                <input type="file" class="file-input" id="pfpInput" accept="image/*">
-                            </div>
+                <div class="customization-item">
+                    <div class="customization-preview" id="pfpPreview"></div>
+                    <div>
+                        <div class="customization-label">Profile picture</div>
+                        <div class="customization-buttons">
+                            <button class="change-btn" id="changePfpBtn">Change</button>
+                            <button class="remove-btn" id="removePfpBtn">Remove</button>
+                            <input type="file" class="file-input" id="pfpInput" accept="image/*">
                         </div>
                     </div>
-                    
-                    <div class="customization-item">
-                        <div class="customization-preview banner" id="bannerPreview"></div>
-                        <div class="customization-info">
-                            <div class="customization-label">Channel banner</div>
-                            <div class="customization-buttons">
-                                <button class="change-btn" id="changeBannerBtn">Change</button>
-                                <button class="remove-btn" id="removeBannerBtn">Remove</button>
-                                <input type="file" class="file-input" id="bannerInput" accept="image/*">
-                            </div>
+                </div>
+                <div class="customization-item">
+                    <div class="customization-preview banner" id="bannerPreview"></div>
+                    <div>
+                        <div class="customization-label">Channel banner</div>
+                        <div class="customization-buttons">
+                            <button class="change-btn" id="changeBannerBtn">Change</button>
+                            <button class="remove-btn" id="removeBannerBtn">Remove</button>
+                            <input type="file" class="file-input" id="bannerInput" accept="image/*">
                         </div>
                     </div>
                 </div>
@@ -942,6 +842,279 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const analytics = getAnalytics(app);
         const db = getFirestore(app);
         const provider = new GoogleAuthProvider();
+        
+        const defaultBanner = 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/1a989815-8731-4b08-8124-db03acb4ada8/di7xmh0-8c21639f-8b54-4c3b-bed0-b50b6fbc8d8b.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiIvZi8xYTk4OTgxNS04NzMxLTRiMDgtODEyNC1kYjAzYWNiNGFkYTgvZGk3eG1oMC04YzIxNjM5Zi04YjU0LTRjM2ItYmVkMC1iNTBiNmZiYzhkOGIucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.OWTlOXrVlOcGk3DkNyh2X5etCjhDxJ98O53I6vGzMpU';
+        
+        let currentUser = null;
+        let isStudioMode = false;
+        
+        // Menu button toggle
+        document.getElementById('menuBtn').addEventListener('click', () => {
+            document.getElementById('mainSidebar').classList.toggle('collapsed');
+            document.getElementById('mainWrapper').classList.toggle('expanded');
+        });
+        
+        // Sidebar items
+        document.querySelectorAll('.sidebar-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const category = item.getAttribute('data-category');
+                
+                if (category === 'donations') {
+                    window.open('https://ko-fi.com/intergalaxity', '_blank');
+                    return;
+                }
+                
+                if (category === 'feedback' || category === 'bugs' || category === 'contact') {
+                    alert(`${item.textContent} - Coming soon!`);
+                    return;
+                }
+                
+                document.getElementById('profilePage').style.display = 'none';
+                document.getElementById('noResults').classList.remove('show');
+                document.getElementById('categoryHeader').style.display = 'block';
+                document.getElementById('categoryTitle').textContent = category.charAt(0).toUpperCase() + category.slice(1);
+            });
+        });
+        
+        // Sign in
+        document.getElementById('signInBtn').addEventListener('click', async () => {
+            try {
+                await signInWithPopup(auth, provider);
+            } catch (error) {
+                console.error('Sign in error:', error);
+                alert('Sign in failed: ' + error.message);
+            }
+        });
+        
+        // Sign out
+        document.getElementById('signOutBtn').addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+                document.getElementById('profileMenu').classList.remove('show');
+            } catch (error) {
+                console.error('Sign out error:', error);
+            }
+        });
+        
+        // Profile pic click
+        document.getElementById('profilePic').addEventListener('click', (e) => {
+            e.stopPropagation();
+            document.getElementById('profileMenu').classList.toggle('show');
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!document.getElementById('profileContainer').contains(e.target)) {
+                document.getElementById('profileMenu').classList.remove('show');
+            }
+        });
+        
+        // Profile menu header click
+        document.getElementById('profileMenuHeader').addEventListener('click', () => {
+            if (!currentUser) return;
+            
+            document.getElementById('loadingOverlay').classList.add('show');
+            document.getElementById('profileMenu').classList.remove('show');
+            
+            setTimeout(() => {
+                document.getElementById('categoryHeader').style.display = 'none';
+                document.getElementById('noResults').style.display = 'none';
+                document.getElementById('profilePage').style.display = 'block';
+                
+                document.getElementById('profileBanner').style.backgroundImage = `url('${defaultBanner}')`;
+                document.getElementById('profilePictureLarge').src = currentUser.photoURL || 'https://via.placeholder.com/80';
+                document.getElementById('profilePageName').textContent = currentUser.displayName || 'User';
+                document.getElementById('profilePageSubscribers').textContent = '0 subscribers';
+                document.getElementById('profilePageVideos').textContent = '0 videos';
+                document.getElementById('customizeChannelBtn').style.display = 'block';
+                document.getElementById('subscribeBtn').style.display = 'none';
+                
+                document.getElementById('loadingOverlay').classList.remove('show');
+            }, 2000);
+        });
+        
+        // Create button
+        document.getElementById('createBtn').addEventListener('click', () => {
+            document.getElementById('loadingOverlay').classList.add('show');
+            setTimeout(() => {
+                isStudioMode = true;
+                document.getElementById('logo').textContent = 'Kwive Studio';
+                document.getElementById('searchContainer').style.display = 'none';
+                document.getElementById('createBtn').classList.add('hidden');
+                document.getElementById('mainWrapper').style.display = 'none';
+                document.getElementById('mainSidebar').classList.add('hidden');
+                document.getElementById('studioLayout').classList.add('active');
+                document.getElementById('returnToKwiveBtn').style.display = 'block';
+                
+                if (currentUser) {
+                    document.getElementById('studioSidebarProfilePic').src = currentUser.photoURL || 'https://via.placeholder.com/80';
+                    document.getElementById('studioSidebarProfileName').textContent = currentUser.displayName || 'User';
+                    document.getElementById('pfpPreview').style.backgroundImage = `url('${currentUser.photoURL || 'https://via.placeholder.com/120'}')`;
+                    document.getElementById('bannerPreview').style.backgroundImage = `url('${defaultBanner}')`;
+                }
+                
+                document.getElementById('loadingOverlay').classList.remove('show');
+            }, 2000);
+        });
+        
+        // Return to Kwive
+        document.getElementById('returnToKwiveBtn').addEventListener('click', () => {
+            document.getElementById('loadingOverlay').classList.add('show');
+            setTimeout(() => {
+                isStudioMode = false;
+                document.getElementById('logo').textContent = 'Kwive';
+                document.getElementById('searchContainer').style.display = 'flex';
+                document.getElementById('createBtn').classList.remove('hidden');
+                document.getElementById('mainWrapper').style.display = 'block';
+                document.getElementById('mainSidebar').classList.remove('hidden');
+                document.getElementById('studioLayout').classList.remove('active');
+                document.getElementById('returnToKwiveBtn').style.display = 'none';
+                document.getElementById('categoryHeader').style.display = 'block';
+                document.getElementById('categoryTitle').textContent = 'Home';
+                
+                document.getElementById('loadingOverlay').classList.remove('show');
+                document.getElementById('profileMenu').classList.remove('show');
+            }, 2000);
+        });
+        
+        // Logo click
+        document.getElementById('logo').addEventListener('click', () => {
+            if (isStudioMode) {
+                document.getElementById('returnToKwiveBtn').click();
+            } else {
+                document.getElementById('categoryHeader').style.display = 'block';
+                document.getElementById('categoryTitle').textContent = 'Home';
+                document.getElementById('profilePage').style.display = 'none';
+                document.getElementById('noResults').classList.remove('show');
+            }
+        });
+        
+        // Profile tabs
+        document.querySelectorAll('.profile-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.profile-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                const tabName = tab.getAttribute('data-tab');
+                document.getElementById('videosTab').style.display = tabName === 'videos' ? 'block' : 'none';
+                document.getElementById('aboutTab').style.display = tabName === 'about' ? 'block' : 'none';
+            });
+        });
+        
+        // Customize channel
+        document.getElementById('customizeChannelBtn').addEventListener('click', () => {
+            document.getElementById('createBtn').click();
+            setTimeout(() => {
+                document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+                document.getElementById('customizationPage').classList.add('active');
+                document.getElementById('studioTitle').textContent = 'Customization';
+                document.querySelectorAll('.studio-sidebar-item').forEach(i => i.classList.remove('active'));
+                document.getElementById('customizationBtn').classList.add('active');
+            }, 2100);
+        });
+        
+        // Studio sidebar
+        document.getElementById('dashboardBtn').addEventListener('click', () => {
+            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+            document.getElementById('dashboardPage').classList.add('active');
+            document.getElementById('studioTitle').textContent = 'Channel dashboard';
+            document.querySelectorAll('.studio-sidebar-item').forEach(i => i.classList.remove('active'));
+            document.getElementById('dashboardBtn').classList.add('active');
+        });
+        
+        document.getElementById('contentBtn').addEventListener('click', () => {
+            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+            document.getElementById('contentPage').classList.add('active');
+            document.getElementById('studioTitle').textContent = 'Content';
+            document.querySelectorAll('.studio-sidebar-item').forEach(i => i.classList.remove('active'));
+            document.getElementById('contentBtn').classList.add('active');
+        });
+        
+        document.getElementById('analyticsBtn').addEventListener('click', () => {
+            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+            document.getElementById('analyticsPage').classList.add('active');
+            document.getElementById('studioTitle').textContent = 'Analytics';
+            document.querySelectorAll('.studio-sidebar-item').forEach(i => i.classList.remove('active'));
+            document.getElementById('analyticsBtn').classList.add('active');
+        });
+        
+        document.getElementById('customizationBtn').addEventListener('click', () => {
+            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+            document.getElementById('customizationPage').classList.add('active');
+            document.getElementById('studioTitle').textContent = 'Customization';
+            document.querySelectorAll('.studio-sidebar-item').forEach(i => i.classList.remove('active'));
+            document.getElementById('customizationBtn').classList.add('active');
+        });
+        
+        document.getElementById('uploadBtn').addEventListener('click', () => {
+            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+            document.getElementById('uploadPage').classList.add('active');
+            document.getElementById('studioTitle').textContent = 'Upload';
+            document.querySelectorAll('.studio-sidebar-item').forEach(i => i.classList.remove('active'));
+            document.getElementById('uploadBtn').classList.add('active');
+        });
+        
+        document.getElementById('goToAnalyticsBtn').addEventListener('click', () => {
+            document.getElementById('analyticsBtn').click();
+        });
+        
+        document.getElementById('uploadFromDashboardBtn').addEventListener('click', () => {
+            document.getElementById('uploadBtn').click();
+        });
+        
+        // Customization
+        document.getElementById('changePfpBtn').addEventListener('click', () => {
+            document.getElementById('pfpInput').click();
+        });
+        
+        document.getElementById('pfpInput').addEventListener('change', (e) => {
+            if (e.target.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    document.getElementById('pfpPreview').style.backgroundImage = `url('${event.target.result}')`;
+                };
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+        
+        document.getElementById('removePfpBtn').addEventListener('click', () => {
+            document.getElementById('pfpPreview').style.backgroundImage = `url('https://via.placeholder.com/120')`;
+        });
+        
+        document.getElementById('changeBannerBtn').addEventListener('click', () => {
+            document.getElementById('bannerInput').click();
+        });
+        
+        document.getElementById('bannerInput').addEventListener('change', (e) => {
+            if (e.target.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    document.getElementById('bannerPreview').style.backgroundImage = `url('${event.target.result}')`;
+                };
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+        
+        document.getElementById('removeBannerBtn').addEventListener('click', () => {
+            document.getElementById('bannerPreview').style.backgroundImage = `url('${defaultBanner}')`;
+        });
+        
+        // Auth state
+        onAuthStateChanged(auth, async (user) => {
+            currentUser = user;
+            if (user) {
+                document.getElementById('signInBtn').style.display = 'none';
+                document.getElementById('profileContainer').classList.add('active');
+                document.getElementById('profilePic').src = user.photoURL || 'https://via.placeholder.com/32';
+                document.getElementById('profileName').textContent = user.displayName || 'User';
+                document.getElementById('profileEmail').textContent = user.email || '';
+            } else {
+                document.getElementById('signInBtn').style.display = 'block';
+                document.getElementById('profileContainer').classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
