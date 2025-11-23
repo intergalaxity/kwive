@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+const defaultBanner = 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/1a989815-8731-4b08-8124-db03acb4ada8/di7xmh0-8c21639f-8b54-4c3b-bed0-b50b6fbc8d8b.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiIvZi8xYTk4OTgxNS04NzMxLTRiMDgtODEyNC1kYjAzYWNiNGFkYTgvZGk3eG1oMC04YzIxNjM<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -931,9 +931,34 @@
         const defaultPfp = 'https://i.imgur.com/PdUrCrV.jpeg';
         
         let currentUser = null;
+        let userChannelId = null;
         let isStudioMode = false;
         let tempPfp = null;
         let tempBanner = null;
+        
+        // Generate random channel ID
+        function generateChannelId() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let result = '';
+            for (let i = 0; i < 15; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
+        
+        // Handle redirected URLs from 404.html
+        const urlParams = new URLSearchParams(window.location.search);
+        const redirectPath = urlParams.get('redirect');
+        if (redirectPath) {
+            // Handle the redirected path
+            if (redirectPath.startsWith('/c/')) {
+                const channelId = redirectPath.substring(3);
+                // We'll load this channel after auth
+                window.channelToLoad = channelId;
+            }
+            // Clean up URL
+            window.history.replaceState({}, '', window.location.pathname);
+        }
         
         // Menu button toggle
         document.getElementById('menuBtn').addEventListener('click', () => {
@@ -1027,15 +1052,20 @@
         
         // Profile menu header click
         document.getElementById('profileMenuHeader').addEventListener('click', async () => {
-            if (!currentUser) return;
+            if (!currentUser || !userChannelId) return;
             
+            loadProfile(userChannelId, true);
+        });
+        
+        // Load profile function
+        async function loadProfile(channelId, isOwnProfile = false) {
             document.getElementById('loadingOverlay').classList.add('show');
             document.getElementById('profileMenu').classList.remove('show');
             
             // Get saved data from Firestore first
             let channelData = {};
             try {
-                const channelDoc = await getDoc(doc(db, 'channels', currentUser.uid));
+                const channelDoc = await getDoc(doc(db, 'channels', channelId));
                 if (channelDoc.exists()) {
                     channelData = channelDoc.data();
                 }
@@ -1053,15 +1083,24 @@
                 // Use saved data from Firestore
                 document.getElementById('profileBanner').style.backgroundImage = `url('${channelData.banner || defaultBanner}')`;
                 document.getElementById('profilePictureLarge').src = channelData.photoURL || defaultPfp;
-                document.getElementById('profilePageName').textContent = currentUser.displayName || 'User';
+                document.getElementById('profilePageName').textContent = channelData.displayName || 'User';
                 document.getElementById('profilePageSubscribers').textContent = '0 subscribers';
                 document.getElementById('profilePageVideos').textContent = '0 videos';
-                document.getElementById('customizeChannelBtn').style.display = 'block';
-                document.getElementById('subscribeBtn').style.display = 'none';
+                
+                if (isOwnProfile) {
+                    document.getElementById('customizeChannelBtn').style.display = 'block';
+                    document.getElementById('subscribeBtn').style.display = 'none';
+                } else {
+                    document.getElementById('customizeChannelBtn').style.display = 'none';
+                    document.getElementById('subscribeBtn').style.display = 'block';
+                }
+                
+                // Update URL
+                window.history.pushState({}, '', `/c/${channelId}`);
                 
                 document.getElementById('loadingOverlay').classList.remove('show');
             }, 2000);
-        });
+        }
         
         // Create button
         document.getElementById('createBtn').addEventListener('click', () => {
@@ -1254,10 +1293,10 @@
         
         // Save changes
         document.getElementById('saveChangesBtn').addEventListener('click', async () => {
-            if (!currentUser) return;
+            if (!currentUser || !userChannelId) return;
             
             try {
-                await setDoc(doc(db, 'channels', currentUser.uid), {
+                await setDoc(doc(db, 'channels', userChannelId), {
                     photoURL: tempPfp,
                     banner: tempBanner,
                     displayName: currentUser.displayName,
@@ -1292,14 +1331,54 @@
         onAuthStateChanged(auth, async (user) => {
             currentUser = user;
             if (user) {
+                // Get or create permanent channel ID
+                try {
+                    const userDocRef = doc(db, 'users', user.uid);
+                    const userDoc = await getDoc(userDocRef);
+                    
+                    if (userDoc.exists() && userDoc.data().channelId) {
+                        userChannelId = userDoc.data().channelId;
+                    } else {
+                        userChannelId = generateChannelId();
+                        await setDoc(userDocRef, {
+                            channelId: userChannelId,
+                            uid: user.uid
+                        });
+                    }
+                    
+                    // Initialize channel data if it doesn't exist
+                    const channelDocRef = doc(db, 'channels', userChannelId);
+                    const channelDoc = await getDoc(channelDocRef);
+                    
+                    if (!channelDoc.exists()) {
+                        await setDoc(channelDocRef, {
+                            photoURL: user.photoURL || defaultPfp,
+                            banner: defaultBanner,
+                            displayName: user.displayName || 'User',
+                            email: user.email || ''
+                        });
+                    }
+                    
+                    console.log('Permanent Channel ID:', userChannelId);
+                } catch (error) {
+                    console.error('Error setting up channel:', error);
+                }
+                
                 document.getElementById('signInBtn').style.display = 'none';
                 document.getElementById('profileContainer').classList.add('active');
                 document.getElementById('profilePic').src = user.photoURL || defaultPfp;
                 document.getElementById('profileName').textContent = user.displayName || 'User';
                 document.getElementById('profileEmail').textContent = user.email || '';
+                
+                // Check if we need to load a specific channel from URL
+                if (window.channelToLoad) {
+                    loadProfile(window.channelToLoad, window.channelToLoad === userChannelId);
+                    window.channelToLoad = null;
+                }
             } else {
                 document.getElementById('signInBtn').style.display = 'block';
                 document.getElementById('profileContainer').classList.remove('active');
+                userChannelId = null;
             }
         });
     </script>
