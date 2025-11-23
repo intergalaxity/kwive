@@ -1050,6 +1050,7 @@
                 document.getElementById('categoryMessage').style.display = 'none';
                 document.getElementById('profilePage').style.display = 'block';
                 
+                // Use saved data from Firestore
                 document.getElementById('profileBanner').style.backgroundImage = `url('${channelData.banner || defaultBanner}')`;
                 document.getElementById('profilePictureLarge').src = channelData.photoURL || defaultPfp;
                 document.getElementById('profilePageName').textContent = currentUser.displayName || 'User';
@@ -1262,6 +1263,12 @@
                     displayName: currentUser.displayName,
                     email: currentUser.email
                 }, { merge: true });
+                
+                // Update the profile pic in header
+                document.getElementById('profilePic').src = tempPfp;
+                
+                // Update studio sidebar
+                document.getElementById('studioSidebarProfilePic').src = tempPfp;
                 
                 alert('Changes saved successfully!');
             } catch (error) {
