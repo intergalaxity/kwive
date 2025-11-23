@@ -1032,31 +1032,34 @@
             document.getElementById('loadingOverlay').classList.add('show');
             document.getElementById('profileMenu').classList.remove('show');
             
+            // Get saved data from Firestore first
+            let channelData = {};
             try {
-                // Get saved data from Firestore
                 const channelDoc = await getDoc(doc(db, 'channels', currentUser.uid));
-                const channelData = channelDoc.exists() ? channelDoc.data() : {};
-                
-                setTimeout(() => {
-                    document.getElementById('categoryHeader').style.display = 'none';
-                    document.getElementById('noResults').style.display = 'none';
-                    document.getElementById('categoryMessage').style.display = 'none';
-                    document.getElementById('profilePage').style.display = 'block';
-                    
-                    document.getElementById('profileBanner').style.backgroundImage = `url('${channelData.banner || defaultBanner}')`;
-                    document.getElementById('profilePictureLarge').src = channelData.photoURL || defaultPfp;
-                    document.getElementById('profilePageName').textContent = currentUser.displayName || 'User';
-                    document.getElementById('profilePageSubscribers').textContent = '0 subscribers';
-                    document.getElementById('profilePageVideos').textContent = '0 videos';
-                    document.getElementById('customizeChannelBtn').style.display = 'block';
-                    document.getElementById('subscribeBtn').style.display = 'none';
-                    
-                    document.getElementById('loadingOverlay').classList.remove('show');
-                }, 2000);
+                if (channelDoc.exists()) {
+                    channelData = channelDoc.data();
+                }
             } catch (error) {
                 console.error('Error loading profile:', error);
-                document.getElementById('loadingOverlay').classList.remove('show');
             }
+            
+            // Then show profile after 2 seconds
+            setTimeout(() => {
+                document.getElementById('categoryHeader').style.display = 'none';
+                document.getElementById('noResults').style.display = 'none';
+                document.getElementById('categoryMessage').style.display = 'none';
+                document.getElementById('profilePage').style.display = 'block';
+                
+                document.getElementById('profileBanner').style.backgroundImage = `url('${channelData.banner || defaultBanner}')`;
+                document.getElementById('profilePictureLarge').src = channelData.photoURL || defaultPfp;
+                document.getElementById('profilePageName').textContent = currentUser.displayName || 'User';
+                document.getElementById('profilePageSubscribers').textContent = '0 subscribers';
+                document.getElementById('profilePageVideos').textContent = '0 videos';
+                document.getElementById('customizeChannelBtn').style.display = 'block';
+                document.getElementById('subscribeBtn').style.display = 'none';
+                
+                document.getElementById('loadingOverlay').classList.remove('show');
+            }, 2000);
         });
         
         // Create button
