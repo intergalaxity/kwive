@@ -1,108 +1,130 @@
-const defaultBanner = 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/1a989815-8731-4b08-8124-db03acb4ada8/di7xmh0-8c21639f-8b54-4c3b-bed0-b50b6fbc8d8b.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiIvZi8xYTk4OTgxNS04NzMxLTRiMDgtODEyNC1kYjAzYWNiNGFkYTgvZGk3eG1oMC04YzIxNjM<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kwive</title>
     <link rel="icon" type="image/png" href="https://i.imgur.com/Tz517pW.png">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #1976D2;
+            --primary-dark: #1565C0;
+            --primary-darker: #0D47A1;
+            --primary-light: #42A5F5;
+            --accent: #FF5722;
+            --red: #cc0000;
+            --red-dark: #b30000;
+            --white: #ffffff;
+            --text-primary: rgba(255,255,255,0.95);
+            --text-secondary: rgba(255,255,255,0.6);
+            --text-hint: rgba(255,255,255,0.38);
+            --surface: rgba(255,255,255,0.08);
+            --surface-hover: rgba(255,255,255,0.12);
+            --divider: rgba(255,255,255,0.12);
+            --shadow: 0 2px 4px rgba(0,0,0,0.3);
+            --shadow-2: 0 4px 8px rgba(0,0,0,0.4);
+            --sidebar-width: 240px;
+            --header-height: 56px;
         }
-        
+
         body {
             font-family: 'Roboto', sans-serif;
-            background-color: #0D47A1;
+            background-color: var(--primary-darker);
             min-height: 100vh;
+            color: var(--text-primary);
         }
-        
+
+        /* ===== HEADER ===== */
         .header {
-            background-color: #1976D2;
-            color: white;
-            padding: 12px 24px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            background-color: var(--primary);
+            padding: 0 16px;
+            box-shadow: var(--shadow);
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 100;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 24px;
-            height: 56px;
-        }
-        
-        .header-left {
+            top: 0; left: 0; right: 0;
+            z-index: 200;
             display: flex;
             align-items: center;
             gap: 16px;
+            height: var(--header-height);
         }
-        
-        .menu-btn {
+
+        .header-left { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+
+        .icon-btn {
             background: transparent;
             border: none;
             color: white;
-            font-size: 20px;
             cursor: pointer;
             padding: 8px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 36px;
-            height: 36px;
+            width: 40px;
+            height: 40px;
+            transition: background 0.2s;
         }
-        
-        .menu-btn:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-        }
-        
-        .header h1 {
+        .icon-btn:hover { background: rgba(255,255,255,0.1); }
+        .icon-btn .material-icons { font-size: 24px; }
+
+        .logo {
             font-size: 20px;
             font-weight: 500;
             letter-spacing: 0.5px;
             cursor: pointer;
+            color: white;
+            background: none;
+            border: none;
+            font-family: 'Roboto', sans-serif;
             transition: opacity 0.2s;
+            white-space: nowrap;
         }
-        
-        .header h1:hover {
-            opacity: 0.8;
-        }
-        
+        .logo:hover { opacity: 0.8; }
+
         .search-container {
             flex: 1;
-            max-width: 600px;
+            max-width: 640px;
             display: flex;
             align-items: center;
         }
-        
-        .search-bar {
+        .search-wrapper {
+            display: flex;
             width: 100%;
+            border-radius: 2px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        .search-bar {
+            flex: 1;
             padding: 8px 16px;
             border: none;
-            border-radius: 2px;
             font-family: 'Roboto', sans-serif;
             font-size: 14px;
-            background: rgba(255, 255, 255, 0.9);
-            color: #212121;
-        }
-        
-        .search-bar:focus {
+            background: rgba(255,255,255,0.15);
+            color: white;
             outline: none;
-            background: white;
         }
-        
-        .header-right {
+        .search-bar::placeholder { color: rgba(255,255,255,0.6); }
+        .search-bar:focus { background: rgba(255,255,255,0.2); }
+        .search-submit {
+            background: rgba(255,255,255,0.15);
+            border: none;
+            border-left: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 0 16px;
+            cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 16px;
         }
-        
-        .sign-in-btn {
+        .search-submit:hover { background: rgba(255,255,255,0.25); }
+
+        .header-right { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+
+        .text-btn {
             background: transparent;
             border: none;
             color: white;
@@ -113,97 +135,79 @@ const defaultBanner = 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f
             padding: 8px 16px;
             cursor: pointer;
             border-radius: 2px;
+            transition: background 0.2s;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
         }
-        
-        .sign-in-btn:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-        
-        .profile-container {
-            display: none;
-            align-items: center;
-            gap: 16px;
-            position: relative;
-        }
-        
-        .profile-container.active {
-            display: flex;
-        }
-        
-        .create-btn {
+        .text-btn:hover { background: rgba(255,255,255,0.1); }
+
+        .outlined-btn {
             background: transparent;
-            border: 2px solid rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(255,255,255,0.6);
             color: white;
             font-family: 'Roboto', sans-serif;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
             text-transform: uppercase;
-            padding: 6px 12px;
+            padding: 7px 14px;
             cursor: pointer;
             border-radius: 2px;
+            transition: background 0.2s;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
         }
-        
-        .create-btn:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-        
-        .create-btn.hidden {
-            display: none;
-        }
-        
-        .profile-pic {
+        .outlined-btn:hover { background: rgba(255,255,255,0.1); }
+
+        .avatar-btn {
             width: 32px;
             height: 32px;
             border-radius: 50%;
             cursor: pointer;
+            border: none;
+            overflow: hidden;
+            background: var(--primary-dark);
+            flex-shrink: 0;
         }
-        
-        .profile-menu {
+        .avatar-btn img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Profile dropdown */
+        .profile-dropdown {
+            position: relative;
+        }
+        .dropdown-menu {
             position: absolute;
-            top: 45px;
+            top: 44px;
             right: 0;
             background: white;
             border-radius: 2px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-            min-width: 250px;
+            box-shadow: var(--shadow-2);
+            min-width: 260px;
             opacity: 0;
             visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.2s ease;
-            z-index: 1000;
+            transform: translateY(-8px);
+            transition: all 0.2s;
+            z-index: 300;
         }
-        
-        .profile-menu.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-        
-        .profile-menu-header {
+        .dropdown-menu.show { opacity: 1; visibility: visible; transform: translateY(0); }
+
+        .dropdown-header {
             padding: 16px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
             border-bottom: 1px solid #e0e0e0;
             cursor: pointer;
         }
-        
-        .profile-menu-header:hover {
-            background-color: #f5f5f5;
-        }
-        
-        .profile-menu-name {
-            color: #212121;
-            font-size: 16px;
-            font-weight: 500;
-        }
-        
-        .profile-menu-email {
-            color: #757575;
-            font-size: 14px;
-            margin-top: 4px;
-        }
-        
-        .profile-menu-item {
+        .dropdown-header:hover { background: #f5f5f5; }
+        .dropdown-header img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+        .dropdown-header-info { flex: 1; }
+        .dropdown-name { color: #212121; font-size: 14px; font-weight: 500; }
+        .dropdown-email { color: #757575; font-size: 12px; margin-top: 2px; }
+
+        .dropdown-item {
             display: flex;
             align-items: center;
+            gap: 12px;
             padding: 12px 16px;
             color: #212121;
             font-size: 14px;
@@ -213,36 +217,34 @@ const defaultBanner = 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f
             width: 100%;
             text-align: left;
             font-family: 'Roboto', sans-serif;
+            transition: background 0.15s;
         }
-        
-        .profile-menu-item:hover {
-            background-color: #f5f5f5;
-        }
-        
+        .dropdown-item:hover { background: #f5f5f5; }
+        .dropdown-item .material-icons { font-size: 20px; color: #757575; }
+        .dropdown-divider { height: 1px; background: #e0e0e0; margin: 4px 0; }
+
+        /* ===== SIDEBAR ===== */
         .sidebar {
             position: fixed;
             left: 0;
-            top: 56px;
-            width: 240px;
-            height: calc(100vh - 56px);
-            background: #1565C0;
+            top: var(--header-height);
+            width: var(--sidebar-width);
+            height: calc(100vh - var(--header-height));
+            background: var(--primary-dark);
             overflow-y: auto;
             transition: transform 0.3s;
-            z-index: 90;
-            padding-top: 16px;
+            z-index: 100;
+            padding: 8px 0;
         }
-        
-        .sidebar.collapsed {
-            transform: translateX(-240px);
-        }
-        
-        .sidebar.hidden {
-            display: none;
-        }
-        
+        .sidebar.collapsed { transform: translateX(-100%); }
+        .sidebar.hidden { display: none; }
+
         .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
             padding: 10px 24px;
-            color: rgba(255, 255, 255, 0.9);
+            color: var(--text-secondary);
             font-size: 14px;
             cursor: pointer;
             border: none;
@@ -250,1137 +252,1926 @@ const defaultBanner = 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f
             text-align: left;
             width: 100%;
             font-family: 'Roboto', sans-serif;
+            transition: background 0.15s, color 0.15s;
         }
-        
-        .sidebar-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-        
-        .sidebar-divider {
-            height: 1px;
-            background: rgba(255, 255, 255, 0.2);
-            margin: 12px 0;
-        }
-        
+        .sidebar-item:hover { background: var(--surface-hover); color: var(--text-primary); }
+        .sidebar-item.active { color: var(--text-primary); background: var(--surface); }
+        .sidebar-item .material-icons { font-size: 20px; flex-shrink: 0; }
+
+        .sidebar-divider { height: 1px; background: var(--divider); margin: 8px 0; }
         .sidebar-label {
-            padding: 8px 24px;
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 12px;
+            padding: 8px 24px 4px;
+            color: var(--text-hint);
+            font-size: 11px;
+            font-weight: 500;
             text-transform: uppercase;
+            letter-spacing: 1px;
         }
-        
+
+        /* ===== MAIN LAYOUT ===== */
         .main-wrapper {
-            margin-top: 56px;
-            margin-left: 240px;
+            margin-top: var(--header-height);
+            margin-left: var(--sidebar-width);
             transition: margin-left 0.3s;
-            min-height: calc(100vh - 56px);
+            min-height: calc(100vh - var(--header-height));
         }
-        
-        .main-wrapper.expanded {
-            margin-left: 0;
-        }
-        
-        .main-wrapper.no-sidebar {
-            margin-left: 0;
-        }
-        
-        .content {
-            padding: 48px 24px 24px;
-            color: white;
-            min-height: calc(100vh - 56px);
-        }
-        
-        .category-header {
-            text-align: left;
-            margin-bottom: 48px;
-            padding-left: 60px;
-        }
-        
-        .category-title {
-            font-size: 36px;
+        .main-wrapper.expanded { margin-left: 0; }
+        .main-wrapper.no-sidebar { margin-left: 0; }
+
+        /* ===== VIEWS ===== */
+        .view { display: none; padding: 24px; }
+        .view.active { display: block; }
+
+        /* ===== HOME FEED ===== */
+        .feed-header {
+            font-size: 20px;
             font-weight: 500;
-            color: white;
-            margin: 0;
+            margin-bottom: 24px;
+            color: var(--text-primary);
         }
-        
-        .category-message {
-            text-align: center;
-            padding: 80px 20px;
-            font-size: 18px;
-            color: white;
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
         }
-        
-        .no-results {
-            display: none;
-            text-align: center;
-            padding: 80px 20px;
+
+        .video-card {
+            cursor: pointer;
+            transition: transform 0.15s;
+            border-radius: 2px;
+            overflow: hidden;
         }
-        
-        .no-results.show {
-            display: block;
+        .video-card:hover { transform: translateY(-2px); }
+
+        .video-thumbnail {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
         }
-        
-        .no-results-title {
-            font-size: 32px;
-            font-weight: 500;
-            color: white;
-        }
-        
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
+        .video-thumbnail img, .video-thumbnail video {
             width: 100%;
             height: 100%;
-            background: rgba(13, 71, 161, 0.95);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
+            object-fit: cover;
         }
-        
-        .loading-overlay.show {
-            display: flex;
-        }
-        
-        .loader {
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-top: 4px solid white;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .profile-page {
-            width: 100%;
-            margin: 0;
-            padding: 0;
-        }
-        
-        .profile-banner {
-            width: 100%;
-            height: 200px;
-            background-size: cover;
-            background-position: center;
-        }
-        
-        .profile-header {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 20px 60px;
-            display: flex;
-            align-items: flex-start;
-            gap: 20px;
-        }
-        
-        .profile-picture-large {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-        }
-        
-        .profile-info-container {
-            flex: 1;
-        }
-        
-        .profile-name {
-            font-size: 24px;
-            font-weight: 400;
+        .video-duration {
+            position: absolute;
+            bottom: 6px;
+            right: 6px;
+            background: rgba(0,0,0,0.8);
             color: white;
-            margin: 0 0 4px 0;
-        }
-        
-        .profile-meta {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 14px;
-            margin-bottom: 12px;
-        }
-        
-        .customize-channel-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: white;
-            font-family: 'Roboto', sans-serif;
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 500;
-            padding: 10px 16px;
-            cursor: pointer;
-            border-radius: 2px;
-            text-transform: uppercase;
-        }
-        
-        .customize-channel-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-        
-        .subscribe-btn {
-            background: #cc0000;
-            border: none;
-            color: white;
-            font-family: 'Roboto', sans-serif;
-            font-size: 14px;
-            font-weight: 500;
-            padding: 10px 16px;
-            cursor: pointer;
-            border-radius: 2px;
-            text-transform: uppercase;
-        }
-        
-        .subscribe-btn:hover {
-            background: #b30000;
-        }
-        
-        .subscribe-btn.subscribed {
-            background: rgba(255, 255, 255, 0.2);
-        }
-        
-        .profile-tabs {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 0 60px;
-            display: flex;
-            gap: 32px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .profile-tab {
-            background: transparent;
-            border: none;
-            color: rgba(255, 255, 255, 0.6);
-            font-family: 'Roboto', sans-serif;
-            font-size: 14px;
-            font-weight: 500;
-            padding: 12px 0;
-            cursor: pointer;
-            border-bottom: 2px solid transparent;
-            text-transform: uppercase;
-        }
-        
-        .profile-tab:hover {
-            color: white;
-        }
-        
-        .profile-tab.active {
-            color: white;
-            border-bottom-color: white;
-        }
-        
-        .profile-content {
-            padding: 40px 60px;
-        }
-        
-        .profile-empty {
-            text-align: center;
-            padding: 60px 20px;
-        }
-        
-        .profile-empty-title {
-            font-size: 20px;
-            color: white;
-            margin: 0 0 8px 0;
-        }
-        
-        .profile-empty-text {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.6);
-        }
-        
-        .studio-layout {
-            display: none;
-            margin-top: 56px;
-        }
-        
-        .studio-layout.active {
-            display: flex;
-            height: calc(100vh - 56px);
-        }
-        
-        .studio-sidebar {
-            width: 240px;
-            background: #1565C0;
-            padding: 24px 0;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .studio-sidebar-profile {
-            padding: 0 16px 24px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            margin-bottom: 16px;
-            text-align: center;
-        }
-        
-        .studio-sidebar-profile-pic {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            margin: 0 auto 12px;
-        }
-        
-        .studio-sidebar-profile-name {
-            color: white;
-            font-size: 16px;
-            font-weight: 500;
-        }
-        
-        .studio-sidebar-item {
-            padding: 12px 24px;
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 14px;
-            cursor: pointer;
-            border: none;
-            background: transparent;
-            text-align: left;
-            width: 100%;
-            font-family: 'Roboto', sans-serif;
-        }
-        
-        .studio-sidebar-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-        
-        .studio-sidebar-item.active {
-            background: rgba(255, 255, 255, 0.2);
-            font-weight: 500;
-            color: white;
-        }
-        
-        .studio-content {
-            flex: 1;
-            padding: 40px;
-            overflow-y: auto;
-        }
-        
-        .studio-title {
-            font-size: 28px;
-            font-weight: 500;
-            color: white;
-            margin: 0 0 24px 0;
-        }
-        
-        .page-content {
-            display: none;
-        }
-        
-        .page-content.active {
-            display: block;
-        }
-        
-        .stats-card {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-            padding: 24px;
-            margin-bottom: 24px;
-        }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 24px;
-            margin-bottom: 24px;
-        }
-        
-        .stat-label {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 14px;
-            margin-bottom: 8px;
-        }
-        
-        .stat-value {
-            color: white;
-            font-size: 24px;
-            font-weight: 500;
-        }
-        
-        .analytics-btn,
-        .upload-btn,
-        .save-changes-btn {
-            background: white;
-            border: none;
-            color: #1976D2;
-            font-family: 'Roboto', sans-serif;
-            font-size: 14px;
-            font-weight: 500;
-            text-transform: uppercase;
-            padding: 10px 20px;
-            cursor: pointer;
+            padding: 2px 5px;
             border-radius: 2px;
         }
-        
-        .analytics-btn:hover,
-        .upload-btn:hover,
-        .save-changes-btn:hover {
-            background: #f5f5f5;
-        }
-        
-        .upload-card {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-            padding: 32px;
-            text-align: center;
-        }
-        
-        .upload-card-title {
-            color: white;
-            font-size: 20px;
-            margin: 0 0 16px 0;
-        }
-        
-        .analytics-empty {
-            text-align: center;
-            padding: 60px 20px;
-        }
-        
-        .analytics-empty-title {
-            font-size: 20px;
-            color: white;
-            margin-bottom: 8px;
-        }
-        
-        .analytics-empty-text {
-            color: rgba(255, 255, 255, 0.6);
-        }
-        
-        .customization-item {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-            padding: 24px;
+
+        .video-info {
+            padding: 10px;
+            background: rgba(255,255,255,0.06);
             display: flex;
-            gap: 24px;
-            align-items: center;
-            margin-bottom: 20px;
+            gap: 10px;
         }
-        
-        .customization-preview {
-            width: 120px;
-            height: 120px;
+        .video-channel-avatar {
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
-            background-size: cover;
-            background-position: center;
+            object-fit: cover;
             flex-shrink: 0;
+            cursor: pointer;
         }
-        
-        .customization-preview.banner {
-            width: 280px;
-            height: 140px;
-            border-radius: 4px;
+        .video-meta { flex: 1; min-width: 0; }
+        .video-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            line-height: 1.3;
+            margin-bottom: 4px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
-        
-        .customization-label {
-            color: white;
+        .video-channel-name {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 2px;
+        }
+        .video-stats {
+            font-size: 12px;
+            color: var(--text-hint);
+        }
+
+        .empty-feed {
+            text-align: center;
+            padding: 80px 20px;
+            color: var(--text-secondary);
+        }
+        .empty-feed .material-icons { font-size: 64px; margin-bottom: 16px; color: var(--text-hint); }
+        .empty-feed h2 { font-size: 22px; font-weight: 400; margin-bottom: 8px; }
+        .empty-feed p { font-size: 14px; }
+
+        /* ===== VIDEO PLAYER ===== */
+        #playerView {
+            padding: 0;
+            max-width: 100%;
+        }
+        .player-layout {
+            display: flex;
+            gap: 0;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 24px 24px 24px;
+            gap: 24px;
+        }
+        .player-main { flex: 1; min-width: 0; }
+
+        .player-video-wrap {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #000;
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+        }
+        .player-video-wrap video {
+            width: 100%;
+            height: 100%;
+        }
+        .player-title {
             font-size: 18px;
             font-weight: 500;
-            margin-bottom: 12px;
+            margin: 16px 0 8px;
+            line-height: 1.3;
         }
-        
-        .customization-buttons {
+        .player-meta-row {
             display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
             gap: 12px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--divider);
+            margin-bottom: 16px;
         }
-        
-        .change-btn,
-        .remove-btn {
-            background: white;
+        .player-stats { font-size: 13px; color: var(--text-secondary); }
+
+        .player-actions { display: flex; gap: 4px; align-items: center; }
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--surface);
             border: none;
-            color: #0D47A1;
+            color: var(--text-primary);
             font-family: 'Roboto', sans-serif;
             font-size: 14px;
+            font-weight: 500;
             padding: 8px 16px;
             cursor: pointer;
             border-radius: 2px;
+            text-transform: uppercase;
+            transition: background 0.15s;
+            letter-spacing: 0.4px;
         }
-        
-        .change-btn:hover,
-        .remove-btn:hover {
-            background: #f5f5f5;
+        .action-btn:hover { background: var(--surface-hover); }
+        .action-btn.active { color: var(--primary-light); }
+        .action-btn .material-icons { font-size: 20px; }
+        .action-divider { width: 1px; height: 32px; background: var(--divider); margin: 0 4px; }
+
+        .player-channel-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
         }
-        
-        .file-input {
+        .player-channel-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            cursor: pointer;
+        }
+        .player-channel-info { flex: 1; }
+        .player-channel-name {
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            color: var(--text-primary);
+        }
+        .player-channel-name:hover { color: var(--primary-light); }
+        .player-channel-subs { font-size: 13px; color: var(--text-secondary); }
+        .subscribe-btn {
+            background: var(--red);
+            border: none;
+            color: white;
+            font-family: 'Roboto', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            text-transform: uppercase;
+            padding: 9px 18px;
+            cursor: pointer;
+            border-radius: 2px;
+            transition: background 0.2s;
+            letter-spacing: 0.5px;
+        }
+        .subscribe-btn:hover { background: var(--red-dark); }
+        .subscribe-btn.subscribed { background: var(--surface); color: var(--text-secondary); }
+        .subscribe-btn.subscribed:hover { background: var(--surface-hover); }
+
+        .player-description {
+            background: var(--surface);
+            border-radius: 2px;
+            padding: 16px;
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        /* Comments */
+        .comments-section { }
+        .comments-title { font-size: 16px; font-weight: 500; margin-bottom: 20px; }
+        .comment-input-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            align-items: flex-start;
+        }
+        .comment-input-row img {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        .comment-input-wrap { flex: 1; }
+        .comment-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid var(--divider);
+            color: var(--text-primary);
+            font-family: 'Roboto', sans-serif;
+            font-size: 14px;
+            padding: 4px 0 8px;
+            outline: none;
+            resize: none;
+            min-height: 36px;
+        }
+        .comment-input:focus { border-bottom-color: white; }
+        .comment-input-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 8px;
             display: none;
         }
-        
-        .save-changes-container {
-            margin-top: 24px;
-            text-align: center;
+        .comment-input-actions.show { display: flex; }
+
+        .comment { display: flex; gap: 12px; margin-bottom: 20px; }
+        .comment img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+        .comment-body { flex: 1; }
+        .comment-author { font-size: 13px; font-weight: 500; margin-bottom: 4px; }
+        .comment-text { font-size: 14px; color: var(--text-secondary); line-height: 1.5; }
+        .comment-actions { display: flex; gap: 8px; margin-top: 6px; }
+        .comment-action-btn {
+            background: none;
+            border: none;
+            color: var(--text-hint);
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-family: 'Roboto', sans-serif;
+            padding: 2px 4px;
+            border-radius: 2px;
         }
-        
-        .upload-container {
-            text-align: center;
-            padding: 60px 20px;
+        .comment-action-btn:hover { color: var(--text-secondary); background: var(--surface); }
+        .comment-action-btn .material-icons { font-size: 16px; }
+
+        /* Sidebar recommendations */
+        .player-sidebar { width: 360px; flex-shrink: 0; }
+        .rec-title { font-size: 14px; font-weight: 500; margin-bottom: 12px; }
+        .rec-card {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 2px;
+            transition: background 0.15s;
         }
-        
-        .upload-icon {
-            font-size: 80px;
-            color: rgba(255, 255, 255, 0.7);
+        .rec-card:hover { background: var(--surface); }
+        .rec-thumb {
+            width: 120px;
+            aspect-ratio: 16/9;
+            flex-shrink: 0;
+            background: rgba(0,0,0,0.4);
+            position: relative;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .rec-thumb img { width: 100%; height: 100%; object-fit: cover; }
+        .rec-info { flex: 1; min-width: 0; }
+        .rec-video-title {
+            font-size: 13px;
+            font-weight: 500;
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 4px;
+        }
+        .rec-channel { font-size: 12px; color: var(--text-secondary); }
+        .rec-stats { font-size: 11px; color: var(--text-hint); }
+
+        /* ===== CHANNEL/PROFILE VIEW ===== */
+        #channelView { padding: 0; }
+        .channel-banner {
+            width: 100%;
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+            background-color: var(--primary-dark);
+        }
+        .channel-header {
+            background: rgba(255,255,255,0.05);
+            padding: 20px 48px;
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            border-bottom: 1px solid var(--divider);
+        }
+        .channel-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        .channel-info { flex: 1; }
+        .channel-name { font-size: 24px; font-weight: 400; margin-bottom: 6px; }
+        .channel-meta { font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; }
+
+        .channel-tabs {
+            display: flex;
+            gap: 0;
+            padding: 0 48px;
+            background: rgba(255,255,255,0.04);
+            border-bottom: 1px solid var(--divider);
+        }
+        .channel-tab {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-family: 'Roboto', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 14px 16px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid transparent;
+            transition: all 0.15s;
+        }
+        .channel-tab:hover { color: var(--text-primary); }
+        .channel-tab.active { color: white; border-bottom-color: white; }
+
+        .channel-content { padding: 24px 48px; }
+
+        /* ===== SEARCH RESULTS ===== */
+        .search-results-header {
+            font-size: 16px;
+            color: var(--text-secondary);
             margin-bottom: 16px;
         }
-        
-        .upload-text {
-            font-size: 20px;
-            color: white;
+        .search-result-card {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 2px;
+            transition: background 0.15s;
+        }
+        .search-result-card:hover { background: var(--surface); }
+        .search-result-thumb {
+            width: 246px;
+            aspect-ratio: 16/9;
+            flex-shrink: 0;
+            background: rgba(0,0,0,0.4);
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+        }
+        .search-result-thumb img { width: 100%; height: 100%; object-fit: cover; }
+        .search-result-info { flex: 1; }
+        .search-result-title { font-size: 18px; font-weight: 400; margin-bottom: 8px; }
+        .search-result-stats { font-size: 13px; color: var(--text-secondary); margin-bottom: 8px; }
+        .search-result-channel { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+        .search-result-channel img { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; }
+        .search-result-channel span { font-size: 13px; color: var(--text-secondary); }
+        .search-result-desc { font-size: 13px; color: var(--text-hint); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+        /* ===== UPLOAD MODAL ===== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 400;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-overlay.show { display: flex; }
+
+        .modal {
+            background: var(--primary-dark);
+            border-radius: 4px;
+            width: 640px;
+            max-width: 95vw;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+        }
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--divider);
+        }
+        .modal-title { font-size: 20px; font-weight: 500; }
+        .modal-body { padding: 24px; }
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            padding: 16px 24px;
+            border-top: 1px solid var(--divider);
+        }
+
+        /* Upload steps */
+        .upload-drop-zone {
+            border: 2px dashed rgba(255,255,255,0.3);
+            border-radius: 4px;
+            padding: 48px 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
             margin-bottom: 24px;
         }
+        .upload-drop-zone:hover, .upload-drop-zone.drag-over {
+            border-color: rgba(255,255,255,0.7);
+            background: var(--surface);
+        }
+        .upload-drop-zone .material-icons { font-size: 56px; color: var(--text-hint); margin-bottom: 12px; }
+        .upload-drop-zone p { color: var(--text-secondary); font-size: 14px; margin-bottom: 8px; }
+
+        .upload-progress {
+            display: none;
+            margin-bottom: 20px;
+        }
+        .progress-bar-wrap {
+            background: rgba(255,255,255,0.2);
+            border-radius: 2px;
+            height: 4px;
+            margin: 8px 0;
+        }
+        .progress-bar {
+            height: 100%;
+            background: var(--primary-light);
+            border-radius: 2px;
+            transition: width 0.3s;
+            width: 0%;
+        }
+        .progress-text { font-size: 13px; color: var(--text-secondary); }
+
+        .form-field { margin-bottom: 20px; }
+        .form-label { font-size: 12px; color: var(--text-secondary); margin-bottom: 6px; display: block; text-transform: uppercase; letter-spacing: 0.5px; }
+        .form-input, .form-textarea {
+            width: 100%;
+            background: var(--surface);
+            border: none;
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+            color: var(--text-primary);
+            font-family: 'Roboto', sans-serif;
+            font-size: 14px;
+            padding: 10px 12px;
+            outline: none;
+            border-radius: 2px 2px 0 0;
+        }
+        .form-input:focus, .form-textarea:focus { border-bottom-color: white; background: rgba(255,255,255,0.1); }
+        .form-textarea { resize: vertical; min-height: 80px; }
+
+        .thumbnail-picker { display: flex; gap: 12px; margin-top: 8px; }
+        .thumb-option {
+            width: 120px;
+            aspect-ratio: 16/9;
+            background: rgba(0,0,0,0.4);
+            border-radius: 2px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: border-color 0.15s;
+            position: relative;
+        }
+        .thumb-option img { width: 100%; height: 100%; object-fit: cover; }
+        .thumb-option.selected { border-color: white; }
+        .thumb-option-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: var(--text-hint);
+            font-size: 12px;
+            gap: 4px;
+        }
+
+        /* Flat buttons */
+        .flat-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-family: 'Roboto', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            text-transform: uppercase;
+            padding: 9px 16px;
+            cursor: pointer;
+            border-radius: 2px;
+            letter-spacing: 0.5px;
+            transition: background 0.15s, color 0.15s;
+        }
+        .flat-btn:hover { background: var(--surface); color: var(--text-primary); }
+
+        .raised-btn {
+            background: white;
+            border: none;
+            color: var(--primary-darker);
+            font-family: 'Roboto', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            text-transform: uppercase;
+            padding: 9px 20px;
+            cursor: pointer;
+            border-radius: 2px;
+            letter-spacing: 0.5px;
+            transition: background 0.15s;
+            box-shadow: var(--shadow);
+        }
+        .raised-btn:hover { background: #f5f5f5; }
+        .raised-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        /* ===== STUDIO ===== */
+        .studio-wrap {
+            display: none;
+            margin-top: var(--header-height);
+        }
+        .studio-wrap.active { display: flex; height: calc(100vh - var(--header-height)); }
+
+        .studio-sidebar {
+            width: var(--sidebar-width);
+            background: var(--primary-dark);
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+        .studio-profile-section {
+            padding: 24px 16px;
+            text-align: center;
+            border-bottom: 1px solid var(--divider);
+        }
+        .studio-profile-section img {
+            width: 72px; height: 72px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+        .studio-profile-name { font-size: 14px; font-weight: 500; }
+
+        .studio-content { flex: 1; overflow-y: auto; padding: 40px; }
+        .studio-title { font-size: 24px; font-weight: 500; margin-bottom: 24px; }
+
+        .studio-page { display: none; }
+        .studio-page.active { display: block; }
+
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+        .stat-card { background: var(--surface); padding: 20px; border-radius: 2px; }
+        .stat-card-label { font-size: 13px; color: var(--text-secondary); margin-bottom: 8px; }
+        .stat-card-value { font-size: 28px; font-weight: 400; }
+
+        .studio-videos-table { width: 100%; border-collapse: collapse; }
+        .studio-videos-table th {
+            text-align: left;
+            padding: 12px 16px;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--divider);
+        }
+        .studio-videos-table td {
+            padding: 12px 16px;
+            font-size: 14px;
+            border-bottom: 1px solid var(--divider);
+            vertical-align: middle;
+        }
+        .studio-video-thumb { width: 80px; aspect-ratio: 16/9; object-fit: cover; border-radius: 2px; }
+
+        .studio-customization-item {
+            background: var(--surface);
+            border-radius: 2px;
+            padding: 20px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .studio-preview-circle { width: 80px; height: 80px; border-radius: 50%; background-size: cover; background-position: center; flex-shrink: 0; }
+        .studio-preview-banner { width: 200px; height: 100px; border-radius: 2px; background-size: cover; background-position: center; flex-shrink: 0; }
+
+        /* ===== LOADING ===== */
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(13,71,161,0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        .loading-overlay.show { display: flex; }
+        .spinner {
+            border: 3px solid rgba(255,255,255,0.2);
+            border-top-color: white;
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ===== SNACKBAR ===== */
+        .snackbar {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #323232;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 2px;
+            font-size: 14px;
+            z-index: 9998;
+            transition: transform 0.3s;
+            box-shadow: var(--shadow-2);
+        }
+        .snackbar.show { transform: translateX(-50%) translateY(0); }
+
+        /* ===== MISC ===== */
+        .divider { height: 1px; background: var(--divider); margin: 16px 0; }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .player-layout { flex-direction: column; }
+            .player-sidebar { width: 100%; }
+            .search-result-thumb { width: 168px; }
+        }
+        @media (max-width: 600px) {
+            .main-wrapper { margin-left: 0; }
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .channel-header { padding: 16px; }
+            .channel-tabs { padding: 0 16px; }
+            .channel-content { padding: 16px; }
+            .player-layout { padding: 16px; }
+        }
+
+        /* Scroll thin */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
+
+        input[type=file] { display: none; }
+
+        .video-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1565C0 0%, #0D47A1 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255,255,255,0.3);
+        }
+        .video-placeholder .material-icons { font-size: 48px; }
     </style>
 </head>
 <body>
-    <div class="loading-overlay" id="loadingOverlay">
-        <div class="loader"></div>
-    </div>
 
-    <header class="header">
-        <div class="header-left">
-            <button class="menu-btn" id="menuBtn">☰</button>
-            <h1 id="logo">Kwive</h1>
-        </div>
-        <div class="search-container" id="searchContainer">
-            <input type="text" class="search-bar" placeholder="Search..." id="searchBar">
-        </div>
-        <div class="header-right">
-            <button class="sign-in-btn" id="signInBtn">Sign In</button>
-            <div class="profile-container" id="profileContainer">
-                <button class="create-btn" id="createBtn">CREATE +</button>
-                <img src="" alt="Profile" class="profile-pic" id="profilePic">
-                <div class="profile-menu" id="profileMenu">
-                    <div class="profile-menu-header" id="profileMenuHeader">
-                        <div class="profile-menu-name" id="profileName"></div>
-                        <div class="profile-menu-email" id="profileEmail"></div>
-                    </div>
-                    <button class="profile-menu-item" id="returnToKwiveBtn" style="display: none;">Return to Kwive</button>
-                    <button class="profile-menu-item" id="signOutBtn">Sign out</button>
-                </div>
-            </div>
-        </div>
-    </header>
-    
-    <div class="sidebar" id="mainSidebar">
-        <button class="sidebar-item" data-category="home">Home</button>
-        <div class="sidebar-divider"></div>
-        <div class="sidebar-label">Explore</div>
-        <button class="sidebar-item" data-category="gaming">Gaming</button>
-        <button class="sidebar-item" data-category="animals">Animals</button>
-        <button class="sidebar-item" data-category="tech">Tech</button>
-        <button class="sidebar-item" data-category="nature">Nature</button>
-        <div class="sidebar-divider"></div>
-        <div class="sidebar-label">Misc.</div>
-        <button class="sidebar-item" data-category="donate">Donate</button>
-        <button class="sidebar-item" data-category="premium">Kwive Premium</button>
-        <button class="sidebar-item" data-category="guidelines">Community Guidelines</button>
-        <button class="sidebar-item" data-category="feedback">Send Feedback</button>
-        <button class="sidebar-item" data-category="bugs">Report Bugs</button>
-        <button class="sidebar-item" data-category="contact">Contact</button>
-    </div>
-    
-    <div class="main-wrapper" id="mainWrapper">
-        <div class="content" id="mainContent">
-            <div class="category-header" id="categoryHeader">
-                <h1 class="category-title" id="categoryTitle">Home</h1>
-            </div>
-            
-            <div class="category-message" id="categoryMessage" style="display: none;"></div>
-            
-            <div class="no-results" id="noResults">
-                <h2 class="no-results-title">No results found</h2>
-            </div>
-            
-            <div class="profile-page" id="profilePage" style="display: none;">
-                <div class="profile-banner" id="profileBanner"></div>
-                <div class="profile-header">
-                    <img src="" alt="Profile" class="profile-picture-large" id="profilePictureLarge">
-                    <div class="profile-info-container">
-                        <h1 class="profile-name" id="profilePageName"></h1>
-                        <div class="profile-meta">
-                            <span id="profilePageSubscribers">0 subscribers</span>
-                            <span>•</span>
-                            <span id="profilePageVideos">0 videos</span>
-                        </div>
-                        <button class="customize-channel-btn" id="customizeChannelBtn" style="display: none;">CUSTOMIZE CHANNEL</button>
-                        <button class="subscribe-btn" id="subscribeBtn" style="display: none;">SUBSCRIBE</button>
-                    </div>
-                </div>
-                <div class="profile-tabs">
-                    <button class="profile-tab active" data-tab="videos">Videos</button>
-                    <button class="profile-tab" data-tab="about">About</button>
-                </div>
-                <div class="profile-content">
-                    <div class="profile-empty" id="videosTab">
-                        <h2 class="profile-empty-title">This channel doesn't have any content</h2>
-                        <p class="profile-empty-text">Check back later for updates</p>
-                    </div>
-                    <div class="profile-empty" id="aboutTab" style="display: none;">
-                        <h2 class="profile-empty-title">This channel doesn't have any content</h2>
-                        <p class="profile-empty-text">Check back later for updates</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<!-- Loading -->
+<div class="loading-overlay" id="loadingOverlay"><div class="spinner"></div></div>
 
-    <div class="studio-layout" id="studioLayout">
-        <div class="studio-sidebar">
-            <div class="studio-sidebar-profile">
-                <img src="" alt="Profile" class="studio-sidebar-profile-pic" id="studioSidebarProfilePic">
-                <div class="studio-sidebar-profile-name" id="studioSidebarProfileName"></div>
-            </div>
-            <button class="studio-sidebar-item active" id="dashboardBtn">Dashboard</button>
-            <button class="studio-sidebar-item" id="contentBtn">Content</button>
-            <button class="studio-sidebar-item" id="analyticsBtn">Analytics</button>
-            <button class="studio-sidebar-item" id="customizationBtn">Customization</button>
-            <button class="studio-sidebar-item" id="uploadBtn">Upload</button>
+<!-- Snackbar -->
+<div class="snackbar" id="snackbar"></div>
+
+<!-- ===== HEADER ===== -->
+<header class="header">
+    <div class="header-left">
+        <button class="icon-btn" id="menuBtn"><span class="material-icons">menu</span></button>
+        <button class="logo" id="logo">Kwive</button>
+    </div>
+    <div class="search-container" id="searchContainer">
+        <div class="search-wrapper">
+            <input type="text" class="search-bar" placeholder="Search" id="searchBar">
+            <button class="search-submit" id="searchSubmit"><span class="material-icons">search</span></button>
         </div>
-        <div class="studio-content">
-            <h1 class="studio-title" id="studioTitle">Channel dashboard</h1>
-            
-            <div class="page-content active" id="dashboardPage">
-                <div class="stats-card">
-                    <div class="stats-grid">
-                        <div><div class="stat-label">Subscribers</div><div class="stat-value">0</div></div>
-                        <div><div class="stat-label">Views</div><div class="stat-value">0</div></div>
-                        <div><div class="stat-label">Watch hours</div><div class="stat-value">0</div></div>
-                    </div>
-                    <button class="analytics-btn" id="goToAnalyticsBtn">Go to channel analytics</button>
-                </div>
-                <div class="upload-card">
-                    <h2 class="upload-card-title">Upload your first video here!</h2>
-                    <button class="upload-btn" id="uploadFromDashboardBtn">Upload</button>
-                </div>
-            </div>
-            
-            <div class="page-content" id="contentPage">
-                <div class="analytics-empty">
-                    <h2 class="analytics-empty-title">No content yet</h2>
-                    <p class="analytics-empty-text">Upload your first video to get started</p>
-                </div>
-            </div>
-            
-            <div class="page-content" id="analyticsPage">
-                <div class="analytics-empty">
-                    <h2 class="analytics-empty-title">No analytics data</h2>
-                    <p class="analytics-empty-text">Analytics will appear once you have content</p>
-                </div>
-            </div>
-            
-            <div class="page-content" id="customizationPage">
-                <div class="customization-item">
-                    <div class="customization-preview" id="pfpPreview"></div>
-                    <div>
-                        <div class="customization-label">Profile picture</div>
-                        <div class="customization-buttons">
-                            <button class="change-btn" id="changePfpBtn">Change</button>
-                            <button class="remove-btn" id="removePfpBtn">Remove</button>
-                            <input type="file" class="file-input" id="pfpInput" accept="image/*">
+    </div>
+    <div class="header-right">
+        <button class="text-btn" id="signInBtn">Sign In</button>
+        <div id="authArea" style="display:none; display:flex; align-items:center; gap:8px;">
+            <button class="outlined-btn" id="uploadBtn"><span class="material-icons" style="font-size:16px;vertical-align:middle;">video_call</span> Create</button>
+            <div class="profile-dropdown">
+                <button class="avatar-btn" id="avatarBtn"><img src="" id="headerAvatar" alt=""></button>
+                <div class="dropdown-menu" id="dropdownMenu">
+                    <div class="dropdown-header" id="dropdownHeader">
+                        <img src="" id="dropdownAvatar" alt="">
+                        <div class="dropdown-header-info">
+                            <div class="dropdown-name" id="dropdownName"></div>
+                            <div class="dropdown-email" id="dropdownEmail"></div>
                         </div>
                     </div>
-                </div>
-                <div class="customization-item">
-                    <div class="customization-preview banner" id="bannerPreview"></div>
-                    <div>
-                        <div class="customization-label">Channel banner</div>
-                        <div class="customization-buttons">
-                            <button class="change-btn" id="changeBannerBtn">Change</button>
-                            <button class="remove-btn" id="removeBannerBtn">Remove</button>
-                            <input type="file" class="file-input" id="bannerInput" accept="image/*">
-                        </div>
-                    </div>
-                </div>
-                <div class="save-changes-container">
-                    <button class="save-changes-btn" id="saveChangesBtn">Save Changes</button>
-                </div>
-            </div>
-            
-            <div class="page-content" id="uploadPage">
-                <div class="upload-container">
-                    <div class="upload-icon">+</div>
-                    <div class="upload-text">Upload your video here</div>
-                    <button class="upload-btn" id="uploadVideoBtn">UPLOAD</button>
-                    <input type="file" class="file-input" id="videoInput" accept="video/*">
+                    <button class="dropdown-item" id="myChannelBtn"><span class="material-icons">person</span>My channel</button>
+                    <button class="dropdown-item" id="studioBtn"><span class="material-icons">video_settings</span>Kwive Studio</button>
+                    <div class="dropdown-divider"></div>
+                    <button class="dropdown-item" id="returnToKwiveBtn" style="display:none;"><span class="material-icons">home</span>Return to Kwive</button>
+                    <button class="dropdown-item" id="signOutBtn"><span class="material-icons">logout</span>Sign out</button>
                 </div>
             </div>
         </div>
     </div>
+</header>
 
-    <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-        import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js';
-        import { getFirestore, doc, setDoc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+<!-- ===== SIDEBAR ===== -->
+<nav class="sidebar" id="mainSidebar">
+    <button class="sidebar-item active" data-view="home"><span class="material-icons">home</span>Home</button>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-label">Explore</div>
+    <button class="sidebar-item" data-view="gaming"><span class="material-icons">sports_esports</span>Gaming</button>
+    <button class="sidebar-item" data-view="animals"><span class="material-icons">pets</span>Animals</button>
+    <button class="sidebar-item" data-view="tech"><span class="material-icons">computer</span>Tech</button>
+    <button class="sidebar-item" data-view="nature"><span class="material-icons">park</span>Nature</button>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-label">Misc.</div>
+    <button class="sidebar-item" data-view="donate"><span class="material-icons">favorite</span>Donate</button>
+    <button class="sidebar-item" data-view="premium"><span class="material-icons">star</span>Kwive Premium</button>
+    <button class="sidebar-item" data-view="guidelines"><span class="material-icons">gavel</span>Guidelines</button>
+    <button class="sidebar-item" data-view="feedback"><span class="material-icons">feedback</span>Feedback</button>
+    <button class="sidebar-item" data-view="bugs"><span class="material-icons">bug_report</span>Report Bugs</button>
+    <button class="sidebar-item" data-view="contact"><span class="material-icons">email</span>Contact</button>
+</nav>
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyDCV9yTXFJ0yj1m9hZijs8OxIcfdK95nG8",
-            authDomain: "kwive0.firebaseapp.com",
-            projectId: "kwive0",
-            storageBucket: "kwive0.firebasestorage.app",
-            messagingSenderId: "314643228056",
-            appId: "1:314643228056:web:d74237b3066993eaa0f7ed",
-            measurementId: "G-61G51M1F21"
+<!-- ===== MAIN WRAPPER ===== -->
+<div class="main-wrapper" id="mainWrapper">
+
+    <!-- Home View -->
+    <div class="view active" id="homeView" style="display:block;">
+        <h2 class="feed-header" id="feedTitle">Home</h2>
+        <div class="video-grid" id="videoGrid"></div>
+        <div class="empty-feed" id="emptyFeed" style="display:none;">
+            <span class="material-icons">videocam_off</span>
+            <h2>No videos yet</h2>
+            <p>Be the first to upload something!</p>
+        </div>
+    </div>
+
+    <!-- Search View -->
+    <div class="view" id="searchView" style="display:none;">
+        <div class="search-results-header" id="searchHeader"></div>
+        <div id="searchResults"></div>
+        <div class="empty-feed" id="emptySearch" style="display:none;">
+            <span class="material-icons">search_off</span>
+            <h2>No results found</h2>
+            <p>Try different keywords</p>
+        </div>
+    </div>
+
+    <!-- Player View -->
+    <div class="view" id="playerView" style="display:none;">
+        <div class="player-layout">
+            <div class="player-main">
+                <div class="player-video-wrap">
+                    <video id="playerVideo" controls></video>
+                </div>
+                <h1 class="player-title" id="playerTitle"></h1>
+                <div class="player-meta-row">
+                    <div class="player-stats" id="playerStats"></div>
+                    <div class="player-actions">
+                        <button class="action-btn" id="likeBtn"><span class="material-icons">thumb_up</span><span id="likeCount">0</span></button>
+                        <button class="action-btn" id="dislikeBtn"><span class="material-icons">thumb_down</span><span id="dislikeCount">0</span></button>
+                        <div class="action-divider"></div>
+                        <button class="action-btn" id="shareBtn"><span class="material-icons">share</span>Share</button>
+                    </div>
+                </div>
+                <div class="player-channel-row">
+                    <img class="player-channel-avatar" id="playerChannelAvatar" src="" alt="">
+                    <div class="player-channel-info">
+                        <div class="player-channel-name" id="playerChannelName"></div>
+                        <div class="player-channel-subs" id="playerChannelSubs"></div>
+                    </div>
+                    <button class="subscribe-btn" id="playerSubscribeBtn">SUBSCRIBE</button>
+                </div>
+                <div class="player-description" id="playerDescription"></div>
+                <div class="comments-section">
+                    <div class="comments-title" id="commentsTitle">Comments</div>
+                    <div class="comment-input-row" id="commentInputRow" style="display:none;">
+                        <img id="commentUserAvatar" src="" alt="">
+                        <div class="comment-input-wrap">
+                            <textarea class="comment-input" id="commentInput" placeholder="Add a comment..." rows="1"></textarea>
+                            <div class="comment-input-actions" id="commentActions">
+                                <button class="flat-btn" id="cancelCommentBtn">Cancel</button>
+                                <button class="raised-btn" id="postCommentBtn">Comment</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="commentsList"></div>
+                </div>
+            </div>
+            <div class="player-sidebar">
+                <div class="rec-title">Up next</div>
+                <div id="recommendations"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Channel View -->
+    <div class="view" id="channelView" style="display:none;">
+        <div class="channel-banner" id="channelBanner"></div>
+        <div class="channel-header">
+            <img class="channel-avatar" id="channelAvatar" src="" alt="">
+            <div class="channel-info">
+                <div class="channel-name" id="channelName"></div>
+                <div class="channel-meta" id="channelMeta"></div>
+                <div style="display:flex;gap:8px;">
+                    <button class="subscribe-btn" id="channelSubscribeBtn" style="display:none;">SUBSCRIBE</button>
+                    <button class="outlined-btn" id="customizeChannelBtn" style="display:none;">Customize Channel</button>
+                </div>
+            </div>
+        </div>
+        <div class="channel-tabs">
+            <button class="channel-tab active" data-tab="videos">Videos</button>
+            <button class="channel-tab" data-tab="about">About</button>
+        </div>
+        <div class="channel-content">
+            <div id="channelVideosTab">
+                <div class="video-grid" id="channelVideoGrid"></div>
+                <div class="empty-feed" id="channelEmptyVideos" style="display:none;">
+                    <span class="material-icons">videocam_off</span>
+                    <h2>No videos yet</h2>
+                </div>
+            </div>
+            <div id="channelAboutTab" style="display:none;">
+                <p style="color:var(--text-secondary);font-size:14px;line-height:1.7;" id="channelAboutText"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Simple message views (categories etc.) -->
+    <div class="view" id="messageView" style="display:none;">
+        <h2 class="feed-header" id="messageTitle"></h2>
+        <div style="text-align:center;padding:60px 20px;color:var(--text-secondary);font-size:16px;" id="messageText"></div>
+    </div>
+
+</div>
+
+<!-- ===== STUDIO ===== -->
+<div class="studio-wrap" id="studioWrap">
+    <div class="studio-sidebar">
+        <div class="studio-profile-section">
+            <img src="" id="studioProfilePic" alt="">
+            <div class="studio-profile-name" id="studioProfileName"></div>
+        </div>
+        <button class="sidebar-item active" data-studio-page="dashboard"><span class="material-icons">dashboard</span>Dashboard</button>
+        <button class="sidebar-item" data-studio-page="content"><span class="material-icons">video_library</span>Content</button>
+        <button class="sidebar-item" data-studio-page="analytics"><span class="material-icons">bar_chart</span>Analytics</button>
+        <button class="sidebar-item" data-studio-page="customization"><span class="material-icons">brush</span>Customization</button>
+    </div>
+    <div class="studio-content">
+        <!-- Dashboard -->
+        <div class="studio-page active" id="dashboardPage">
+            <div class="studio-title">Channel Dashboard</div>
+            <div class="stats-grid">
+                <div class="stat-card"><div class="stat-card-label">Subscribers</div><div class="stat-card-value" id="dashSubs">0</div></div>
+                <div class="stat-card"><div class="stat-card-label">Total Views</div><div class="stat-card-value" id="dashViews">0</div></div>
+                <div class="stat-card"><div class="stat-card-label">Videos</div><div class="stat-card-value" id="dashVideos">0</div></div>
+            </div>
+            <div style="background:var(--surface);border-radius:2px;padding:24px;text-align:center;">
+                <div class="material-icons" style="font-size:48px;color:var(--text-hint);margin-bottom:12px;">video_call</div>
+                <p style="color:var(--text-secondary);margin-bottom:16px;">Upload your first video to get started</p>
+                <button class="raised-btn" id="dashUploadBtn">Upload Video</button>
+            </div>
+        </div>
+        <!-- Content -->
+        <div class="studio-page" id="contentPage">
+            <div class="studio-title">Content</div>
+            <div id="studioVideoList">
+                <div class="empty-feed" style="padding:40px 0;">
+                    <span class="material-icons">videocam_off</span>
+                    <h2>No videos yet</h2>
+                    <p>Upload your first video to see it here</p>
+                </div>
+            </div>
+        </div>
+        <!-- Analytics -->
+        <div class="studio-page" id="analyticsPage">
+            <div class="studio-title">Analytics</div>
+            <div class="stats-grid">
+                <div class="stat-card"><div class="stat-card-label">Subscribers</div><div class="stat-card-value" id="analyticsSubs">0</div></div>
+                <div class="stat-card"><div class="stat-card-label">Total Views</div><div class="stat-card-value" id="analyticsViews">0</div></div>
+                <div class="stat-card"><div class="stat-card-label">Likes</div><div class="stat-card-value" id="analyticsLikes">0</div></div>
+            </div>
+            <p style="color:var(--text-secondary);font-size:14px;">More detailed analytics coming soon.</p>
+        </div>
+        <!-- Customization -->
+        <div class="studio-page" id="customizationPage">
+            <div class="studio-title">Customization</div>
+            <div class="studio-customization-item">
+                <div class="studio-preview-circle" id="pfpPreview"></div>
+                <div>
+                    <div style="font-size:16px;font-weight:500;margin-bottom:12px;">Profile Picture</div>
+                    <div style="display:flex;gap:8px;">
+                        <button class="raised-btn" id="changePfpBtn">Change</button>
+                        <button class="flat-btn" id="removePfpBtn">Remove</button>
+                    </div>
+                    <input type="file" id="pfpInput" accept="image/*">
+                </div>
+            </div>
+            <div class="studio-customization-item">
+                <div class="studio-preview-banner" id="bannerPreview"></div>
+                <div>
+                    <div style="font-size:16px;font-weight:500;margin-bottom:12px;">Channel Banner</div>
+                    <div style="display:flex;gap:8px;">
+                        <button class="raised-btn" id="changeBannerBtn">Change</button>
+                        <button class="flat-btn" id="removeBannerBtn">Remove</button>
+                    </div>
+                    <input type="file" id="bannerInput" accept="image/*">
+                </div>
+            </div>
+            <div style="margin-top:8px;">
+                <div style="font-size:14px;color:var(--text-secondary);margin-bottom:8px;">Channel Description</div>
+                <textarea class="form-textarea" id="channelDescInput" placeholder="Tell viewers about your channel" style="width:100%;max-width:480px;"></textarea>
+            </div>
+            <button class="raised-btn" style="margin-top:16px;" id="saveCustomizationBtn">Save Changes</button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== UPLOAD MODAL ===== -->
+<div class="modal-overlay" id="uploadModal">
+    <div class="modal">
+        <div class="modal-header">
+            <div class="modal-title" id="uploadModalTitle">Upload Video</div>
+            <button class="icon-btn" id="closeUploadModal"><span class="material-icons">close</span></button>
+        </div>
+        <div class="modal-body">
+            <!-- Step 1: File select -->
+            <div id="uploadStep1">
+                <div class="upload-drop-zone" id="dropZone">
+                    <span class="material-icons">cloud_upload</span>
+                    <p style="font-size:18px;margin-bottom:4px;">Drag and drop video files to upload</p>
+                    <p>Your videos will be private until you publish them.</p>
+                    <button class="raised-btn" style="margin-top:16px;" onclick="document.getElementById('videoFileInput').click()">Select File</button>
+                </div>
+                <input type="file" id="videoFileInput" accept="video/*">
+            </div>
+            <!-- Step 2: Details -->
+            <div id="uploadStep2" style="display:none;">
+                <div class="upload-progress" id="uploadProgress">
+                    <div class="progress-text" id="progressText">Uploading...</div>
+                    <div class="progress-bar-wrap"><div class="progress-bar" id="progressBar"></div></div>
+                    <div class="progress-text" id="progressPercent">0%</div>
+                </div>
+                <div class="form-field">
+                    <label class="form-label">Title (required)</label>
+                    <input class="form-input" id="videoTitle" placeholder="Add a title that describes your video" maxlength="100">
+                </div>
+                <div class="form-field">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-textarea" id="videoDesc" placeholder="Tell viewers about your video" rows="3"></textarea>
+                </div>
+                <div class="form-field">
+                    <label class="form-label">Thumbnail</label>
+                    <div class="thumbnail-picker" id="thumbnailPicker"></div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="flat-btn" id="closeUploadBtn">Cancel</button>
+            <button class="raised-btn" id="publishBtn" style="display:none;" disabled>Publish</button>
+        </div>
+    </div>
+</div>
+
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+import {
+    getAuth, signInWithPopup, GoogleAuthProvider,
+    onAuthStateChanged, signOut
+} from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+import {
+    getFirestore, doc, setDoc, getDoc, getDocs, addDoc,
+    collection, query, orderBy, limit, where,
+    updateDoc, increment, arrayUnion, arrayRemove,
+    serverTimestamp, onSnapshot
+} from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+import {
+    getStorage, ref, uploadBytesResumable, getDownloadURL
+} from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js';
+
+// ===== FIREBASE INIT =====
+const app = initializeApp({
+    apiKey: "AIzaSyDCV9yTXFJ0yj1m9hZijs8OxIcfdK95nG8",
+    authDomain: "kwive0.firebaseapp.com",
+    projectId: "kwive0",
+    storageBucket: "kwive0.firebasestorage.app",
+    messagingSenderId: "314643228056",
+    appId: "1:314643228056:web:d74237b3066993eaa0f7ed",
+    measurementId: "G-61G51M1F21"
+});
+const auth = getAuth(app);
+const db = getFirestore(app);
+const storage = getStorage(app);
+const provider = new GoogleAuthProvider();
+
+const DEFAULT_PFP = 'https://i.imgur.com/PdUrCrV.jpeg';
+const DEFAULT_BANNER = 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/1a989815-8731-4b08-8124-db03acb4ada8/di7xmh0-8c21639f-8b54-4c3b-bed0-b50b6fbc8d8b.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiIvZi8xYTk4OTgxNS04NzMxLTRiMDgtODEyNC1kYjAzYWNiNGFkYTgvZGk3eG1oMC04YzIxNjM5Zi04YjU0LTRjM2ItYmVkMC1iNTBiNmZiYzhkOGIucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.OWTlOXrVlOcGk3DkNyh2X5etCjhDxJ98O53I6vGzMpU';
+
+let currentUser = null;
+let userChannelId = null;
+let currentVideoId = null;
+let currentChannelId = null;
+let isStudio = false;
+let tempPfp = null;
+let tempBanner = null;
+let videoFile = null;
+let thumbnailOptions = [];
+let selectedThumbIndex = 0;
+let uploadedVideoURL = null;
+let allVideos = [];
+let commentsUnsub = null;
+
+// ===== UTILS =====
+function showSnack(msg) {
+    const s = document.getElementById('snackbar');
+    s.textContent = msg;
+    s.classList.add('show');
+    setTimeout(() => s.classList.remove('show'), 3000);
+}
+function showLoading() { document.getElementById('loadingOverlay').classList.add('show'); }
+function hideLoading() { document.getElementById('loadingOverlay').classList.remove('show'); }
+function fmtNum(n) {
+    if (!n) return '0';
+    if (n >= 1000000) return (n/1000000).toFixed(1)+'M';
+    if (n >= 1000) return (n/1000).toFixed(1)+'K';
+    return n.toString();
+}
+function timeAgo(ts) {
+    if (!ts) return '';
+    const now = Date.now();
+    const then = ts.toMillis ? ts.toMillis() : ts;
+    const diff = Math.floor((now - then) / 1000);
+    if (diff < 60) return 'just now';
+    if (diff < 3600) return Math.floor(diff/60) + ' minutes ago';
+    if (diff < 86400) return Math.floor(diff/3600) + ' hours ago';
+    if (diff < 2592000) return Math.floor(diff/86400) + ' days ago';
+    if (diff < 31536000) return Math.floor(diff/2592000) + ' months ago';
+    return Math.floor(diff/31536000) + ' years ago';
+}
+function generateChannelId() {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    return Array.from({length:15}, () => chars[Math.floor(Math.random()*chars.length)]).join('');
+}
+
+// ===== VIEW MANAGEMENT =====
+const views = ['homeView','searchView','playerView','channelView','messageView'];
+function showView(id) {
+    views.forEach(v => {
+        const el = document.getElementById(v);
+        if (el) { el.style.display = 'none'; el.classList.remove('active'); }
+    });
+    const target = document.getElementById(id);
+    if (target) { target.style.display = 'block'; target.classList.add('active'); }
+}
+
+// ===== AUTH =====
+document.getElementById('signInBtn').addEventListener('click', async () => {
+    try { await signInWithPopup(auth, provider); }
+    catch(e) { showSnack('Sign in failed: ' + e.message); }
+});
+document.getElementById('signOutBtn').addEventListener('click', async () => {
+    await signOut(auth);
+    closeDropdown();
+    showSnack('Signed out');
+});
+document.getElementById('avatarBtn').addEventListener('click', e => {
+    e.stopPropagation();
+    document.getElementById('dropdownMenu').classList.toggle('show');
+});
+document.addEventListener('click', () => closeDropdown());
+function closeDropdown() { document.getElementById('dropdownMenu').classList.remove('show'); }
+
+onAuthStateChanged(auth, async user => {
+    currentUser = user;
+    const signInBtn = document.getElementById('signInBtn');
+    const authArea = document.getElementById('authArea');
+
+    if (user) {
+        signInBtn.style.display = 'none';
+        authArea.style.display = 'flex';
+        document.getElementById('headerAvatar').src = user.photoURL || DEFAULT_PFP;
+        document.getElementById('dropdownAvatar').src = user.photoURL || DEFAULT_PFP;
+        document.getElementById('dropdownName').textContent = user.displayName || 'User';
+        document.getElementById('dropdownEmail').textContent = user.email || '';
+
+        // Setup channel
+        try {
+            const userRef = doc(db, 'users', user.uid);
+            const userDoc = await getDoc(userRef);
+            if (userDoc.exists() && userDoc.data().channelId) {
+                userChannelId = userDoc.data().channelId;
+            } else {
+                userChannelId = generateChannelId();
+                await setDoc(userRef, { channelId: userChannelId, uid: user.uid });
+            }
+            const chRef = doc(db, 'channels', userChannelId);
+            const chDoc = await getDoc(chRef);
+            if (!chDoc.exists()) {
+                await setDoc(chRef, {
+                    displayName: user.displayName || 'User',
+                    photoURL: user.photoURL || DEFAULT_PFP,
+                    banner: DEFAULT_BANNER,
+                    description: '',
+                    subscribers: 0,
+                    subscriberList: [],
+                    createdAt: serverTimestamp()
+                });
+            }
+            // Setup comment input row
+            document.getElementById('commentInputRow').style.display = 'flex';
+            document.getElementById('commentUserAvatar').src = user.photoURL || DEFAULT_PFP;
+        } catch(e) { console.error(e); }
+    } else {
+        signInBtn.style.display = 'block';
+        authArea.style.display = 'none';
+        currentUser = null;
+        userChannelId = null;
+        document.getElementById('commentInputRow').style.display = 'none';
+        if (isStudio) exitStudio();
+    }
+});
+
+// ===== MENU =====
+document.getElementById('menuBtn').addEventListener('click', () => {
+    document.getElementById('mainSidebar').classList.toggle('collapsed');
+    document.getElementById('mainWrapper').classList.toggle('expanded');
+});
+
+// ===== LOGO =====
+document.getElementById('logo').addEventListener('click', () => {
+    if (isStudio) { exitStudio(); return; }
+    showView('homeView');
+    loadHomeFeed();
+    document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+    document.querySelector('[data-view="home"]').classList.add('active');
+});
+
+// ===== SIDEBAR =====
+document.querySelectorAll('[data-view]').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const v = btn.dataset.view;
+        document.querySelectorAll('[data-view]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        if (v === 'donate') { window.open('https://ko-fi.com/intergalaxity','_blank'); return; }
+        if (v === 'bugs') { window.open('https://github.com/intergalaxity/kwive/issues','_blank'); return; }
+
+        if (v === 'home') {
+            showView('homeView');
+            loadHomeFeed();
+            document.getElementById('feedTitle').textContent = 'Home';
+            return;
+        }
+
+        const msgs = {
+            gaming: 'Gaming videos — coming soon!',
+            animals: 'Animals videos — coming soon!',
+            tech: 'Tech videos — coming soon!',
+            nature: 'Nature videos — coming soon!',
+            premium: 'Kwive Premium — Coming soon!',
+            feedback: 'You can find a way, trust me.',
+            guidelines: 'Do not post scams, pornography, CSAM, gore or anything harmful.',
+            contact: 'Email: luxifoo@gmail.com'
         };
+        showView('messageView');
+        document.getElementById('messageTitle').textContent = v.charAt(0).toUpperCase() + v.slice(1);
+        document.getElementById('messageText').textContent = msgs[v] || '';
+    });
+});
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        const provider = new GoogleAuthProvider();
-        
-        const defaultBanner = 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/1a989815-8731-4b08-8124-db03acb4ada8/di7xmh0-8c21639f-8b54-4c3b-bed0-b50b6fbc8d8b.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiIvZi8xYTk4OTgxNS04NzMxLTRiMDgtODEyNC1kYjAzYWNiNGFkYTgvZGk3eG1oMC04YzIxNjM5Zi04YjU0LTRjM2ItYmVkMC1iNTBiNmZiYzhkOGIucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.OWTlOXrVlOcGk3DkNyh2X5etCjhDxJ98O53I6vGzMpU';
-        const defaultPfp = 'https://i.imgur.com/PdUrCrV.jpeg';
-        
-        let currentUser = null;
-        let userChannelId = null;
-        let isStudioMode = false;
-        let tempPfp = null;
-        let tempBanner = null;
-        
-        // Generate random channel ID
-        function generateChannelId() {
-            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-            let result = '';
-            for (let i = 0; i < 15; i++) {
-                result += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            return result;
-        }
-        
-        // Handle redirected URLs from 404.html
-        const urlParams = new URLSearchParams(window.location.search);
-        const redirectPath = urlParams.get('redirect');
-        if (redirectPath) {
-            // Handle the redirected path
-            if (redirectPath.startsWith('/c/')) {
-                const channelId = redirectPath.substring(3);
-                // We'll load this channel after auth
-                window.channelToLoad = channelId;
-            }
-            // Clean up URL
-            window.history.replaceState({}, '', window.location.pathname);
-        }
-        
-        // Menu button toggle
-        document.getElementById('menuBtn').addEventListener('click', () => {
-            document.getElementById('mainSidebar').classList.toggle('collapsed');
-            document.getElementById('mainWrapper').classList.toggle('expanded');
-        });
-        
-        // Sidebar items
-        document.querySelectorAll('.sidebar-item').forEach(item => {
-            item.addEventListener('click', () => {
-                const category = item.getAttribute('data-category');
-                
-                if (category === 'donate') {
-                    window.open('https://ko-fi.com/intergalaxity', '_blank');
-                    return;
-                }
-                
-                if (category === 'bugs') {
-                    window.open('https://github.com/intergalaxity/kwive/issues', '_blank');
-                    return;
-                }
-                
-                document.getElementById('profilePage').style.display = 'none';
-                document.getElementById('noResults').classList.remove('show');
-                document.getElementById('categoryMessage').style.display = 'none';
-                document.getElementById('categoryHeader').style.display = 'block';
-                document.getElementById('categoryTitle').textContent = category.charAt(0).toUpperCase() + category.slice(1);
-                
-                // Show special messages for certain categories
-                if (category === 'contact') {
-                    document.getElementById('categoryMessage').textContent = 'Email me at luxifoo@gmail.com for any inquiries.';
-                    document.getElementById('categoryMessage').style.display = 'block';
-                } else if (category === 'feedback') {
-                    document.getElementById('categoryMessage').textContent = 'You can find a way, trust me.';
-                    document.getElementById('categoryMessage').style.display = 'block';
-                } else if (category === 'premium') {
-                    document.getElementById('categoryMessage').textContent = 'Kwive Premium - Coming soon!';
-                    document.getElementById('categoryMessage').style.display = 'block';
-                } else if (category === 'guidelines') {
-                    document.getElementById('categoryTitle').textContent = 'Community guidelines';
-                    document.getElementById('categoryMessage').textContent = 'Work in progress but for now, do not post anything that has to do with scamming, pornography media, CSAM media, no gore and yeah';
-                    document.getElementById('categoryMessage').style.display = 'block';
-                }
-            });
-        });
-        
-        // Search
-        document.getElementById('searchBar').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                const query = e.target.value.trim();
-                if (query) {
-                    document.getElementById('profilePage').style.display = 'none';
-                    document.getElementById('categoryHeader').style.display = 'none';
-                    document.getElementById('noResults').classList.add('show');
-                }
-            }
-        });
-        
-        // Sign in
-        document.getElementById('signInBtn').addEventListener('click', async () => {
-            try {
-                await signInWithPopup(auth, provider);
-            } catch (error) {
-                console.error('Sign in error:', error);
-                alert('Sign in failed: ' + error.message);
-            }
-        });
-        
-        // Sign out
-        document.getElementById('signOutBtn').addEventListener('click', async () => {
-            try {
-                await signOut(auth);
-                document.getElementById('profileMenu').classList.remove('show');
-            } catch (error) {
-                console.error('Sign out error:', error);
-            }
-        });
-        
-        // Profile pic click
-        document.getElementById('profilePic').addEventListener('click', (e) => {
+// ===== HOME FEED =====
+async function loadHomeFeed() {
+    showLoading();
+    try {
+        const q = query(collection(db,'videos'), orderBy('createdAt','desc'), limit(40));
+        const snap = await getDocs(q);
+        allVideos = [];
+        snap.forEach(d => allVideos.push({ id: d.id, ...d.data() }));
+        renderVideoGrid(allVideos, 'videoGrid', 'emptyFeed');
+    } catch(e) {
+        console.error(e);
+        document.getElementById('emptyFeed').style.display = 'block';
+    }
+    hideLoading();
+}
+
+function renderVideoGrid(videos, gridId, emptyId) {
+    const grid = document.getElementById(gridId);
+    const empty = document.getElementById(emptyId);
+    grid.innerHTML = '';
+    if (!videos.length) { empty.style.display = 'block'; return; }
+    empty.style.display = 'none';
+    videos.forEach(v => {
+        const card = document.createElement('div');
+        card.className = 'video-card';
+        card.innerHTML = `
+            <div class="video-thumbnail">
+                ${v.thumbnail ? `<img src="${v.thumbnail}" alt="${v.title}" loading="lazy">` : `<div class="video-placeholder"><span class="material-icons">play_circle_outline</span></div>`}
+            </div>
+            <div class="video-info">
+                <img class="video-channel-avatar" src="${v.channelPhoto || DEFAULT_PFP}" alt="" data-channel="${v.channelId}">
+                <div class="video-meta">
+                    <div class="video-title">${escHtml(v.title)}</div>
+                    <div class="video-channel-name">${escHtml(v.channelName || 'Unknown')}</div>
+                    <div class="video-stats">${fmtNum(v.views || 0)} views • ${timeAgo(v.createdAt)}</div>
+                </div>
+            </div>
+        `;
+        card.querySelector('.video-thumbnail').addEventListener('click', () => openVideo(v.id));
+        card.querySelector('.video-meta').addEventListener('click', () => openVideo(v.id));
+        card.querySelector('.video-channel-avatar').addEventListener('click', e => {
             e.stopPropagation();
-            document.getElementById('profileMenu').classList.toggle('show');
+            openChannel(v.channelId);
         });
-        
-        // Close menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!document.getElementById('profileContainer').contains(e.target)) {
-                document.getElementById('profileMenu').classList.remove('show');
-            }
-        });
-        
-        // Profile menu header click
-        document.getElementById('profileMenuHeader').addEventListener('click', async () => {
-            if (!currentUser || !userChannelId) return;
-            
-            loadProfile(userChannelId, true);
-        });
-        
-        // Load profile function
-        async function loadProfile(channelId, isOwnProfile = false) {
-            document.getElementById('loadingOverlay').classList.add('show');
-            document.getElementById('profileMenu').classList.remove('show');
-            
-            // Get saved data from Firestore first
-            let channelData = {};
-            try {
-                const channelDoc = await getDoc(doc(db, 'channels', channelId));
-                if (channelDoc.exists()) {
-                    channelData = channelDoc.data();
-                }
-            } catch (error) {
-                console.error('Error loading profile:', error);
-            }
-            
-            // Then show profile after 2 seconds
-            setTimeout(() => {
-                document.getElementById('categoryHeader').style.display = 'none';
-                document.getElementById('noResults').style.display = 'none';
-                document.getElementById('categoryMessage').style.display = 'none';
-                document.getElementById('profilePage').style.display = 'block';
-                
-                // Use saved data from Firestore
-                document.getElementById('profileBanner').style.backgroundImage = `url('${channelData.banner || defaultBanner}')`;
-                document.getElementById('profilePictureLarge').src = channelData.photoURL || defaultPfp;
-                document.getElementById('profilePageName').textContent = channelData.displayName || 'User';
-                document.getElementById('profilePageSubscribers').textContent = '0 subscribers';
-                document.getElementById('profilePageVideos').textContent = '0 videos';
-                
-                if (isOwnProfile) {
-                    document.getElementById('customizeChannelBtn').style.display = 'block';
-                    document.getElementById('subscribeBtn').style.display = 'none';
-                } else {
-                    document.getElementById('customizeChannelBtn').style.display = 'none';
-                    document.getElementById('subscribeBtn').style.display = 'block';
-                }
-                
-                // Update URL
-                window.history.pushState({}, '', `/c/${channelId}`);
-                
-                document.getElementById('loadingOverlay').classList.remove('show');
-            }, 2000);
+        grid.appendChild(card);
+    });
+}
+
+function escHtml(s) {
+    return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ===== SEARCH =====
+function doSearch(query) {
+    if (!query.trim()) return;
+    showView('searchView');
+    const q = query.toLowerCase();
+    const results = allVideos.filter(v =>
+        v.title?.toLowerCase().includes(q) ||
+        v.description?.toLowerCase().includes(q) ||
+        v.channelName?.toLowerCase().includes(q)
+    );
+    document.getElementById('searchHeader').textContent = `${results.length} result${results.length!==1?'s':''} for "${query}"`;
+    const container = document.getElementById('searchResults');
+    const empty = document.getElementById('emptySearch');
+    container.innerHTML = '';
+    if (!results.length) { empty.style.display = 'block'; return; }
+    empty.style.display = 'none';
+    results.forEach(v => {
+        const card = document.createElement('div');
+        card.className = 'search-result-card';
+        card.innerHTML = `
+            <div class="search-result-thumb">
+                ${v.thumbnail ? `<img src="${v.thumbnail}" alt="">` : `<div class="video-placeholder"><span class="material-icons">play_circle_outline</span></div>`}
+            </div>
+            <div class="search-result-info">
+                <div class="search-result-title">${escHtml(v.title)}</div>
+                <div class="search-result-stats">${fmtNum(v.views||0)} views • ${timeAgo(v.createdAt)}</div>
+                <div class="search-result-channel">
+                    <img src="${v.channelPhoto||DEFAULT_PFP}" alt="">
+                    <span>${escHtml(v.channelName||'Unknown')}</span>
+                </div>
+                <div class="search-result-desc">${escHtml(v.description||'')}</div>
+            </div>
+        `;
+        card.addEventListener('click', () => openVideo(v.id));
+        container.appendChild(card);
+    });
+}
+
+document.getElementById('searchSubmit').addEventListener('click', () => {
+    doSearch(document.getElementById('searchBar').value.trim());
+});
+document.getElementById('searchBar').addEventListener('keypress', e => {
+    if (e.key === 'Enter') doSearch(e.target.value.trim());
+});
+
+// ===== VIDEO PLAYER =====
+async function openVideo(videoId) {
+    showLoading();
+    currentVideoId = videoId;
+    if (commentsUnsub) { commentsUnsub(); commentsUnsub = null; }
+
+    try {
+        const videoRef = doc(db, 'videos', videoId);
+        const videoDoc = await getDoc(videoRef);
+        if (!videoDoc.exists()) { showSnack('Video not found'); hideLoading(); return; }
+        const v = { id: videoDoc.id, ...videoDoc.data() };
+
+        // Increment views
+        await updateDoc(videoRef, { views: increment(1) });
+
+        // Load channel data
+        let channelData = {};
+        if (v.channelId) {
+            const chDoc = await getDoc(doc(db, 'channels', v.channelId));
+            if (chDoc.exists()) channelData = chDoc.data();
         }
-        
-        // Create button
-        document.getElementById('createBtn').addEventListener('click', () => {
-            document.getElementById('loadingOverlay').classList.add('show');
-            setTimeout(() => {
-                isStudioMode = true;
-                document.getElementById('logo').textContent = 'Kwive Studio';
-                document.getElementById('searchContainer').style.display = 'none';
-                document.getElementById('createBtn').classList.add('hidden');
-                document.getElementById('mainWrapper').style.display = 'none';
-                document.getElementById('mainSidebar').classList.add('hidden');
-                document.getElementById('studioLayout').classList.add('active');
-                document.getElementById('returnToKwiveBtn').style.display = 'block';
-                
-                if (currentUser) {
-                    document.getElementById('studioSidebarProfilePic').src = currentUser.photoURL || defaultPfp;
-                    document.getElementById('studioSidebarProfileName').textContent = currentUser.displayName || 'User';
-                    
-                    // Load saved data
-                    getDoc(doc(db, 'channels', currentUser.uid)).then(channelDoc => {
-                        const channelData = channelDoc.exists() ? channelDoc.data() : {};
-                        tempPfp = channelData.photoURL || defaultPfp;
-                        tempBanner = channelData.banner || defaultBanner;
-                        document.getElementById('pfpPreview').style.backgroundImage = `url('${tempPfp}')`;
-                        document.getElementById('bannerPreview').style.backgroundImage = `url('${tempBanner}')`;
-                    });
-                }
-                
-                document.getElementById('loadingOverlay').classList.remove('show');
-            }, 2000);
+
+        showView('playerView');
+
+        document.getElementById('playerVideo').src = v.videoURL || '';
+        document.getElementById('playerTitle').textContent = v.title || 'Untitled';
+        document.getElementById('playerStats').textContent = `${fmtNum((v.views||0)+1)} views • ${timeAgo(v.createdAt)}`;
+        document.getElementById('playerDescription').textContent = v.description || '';
+        document.getElementById('playerChannelAvatar').src = channelData.photoURL || DEFAULT_PFP;
+        document.getElementById('playerChannelName').textContent = channelData.displayName || v.channelName || 'Unknown';
+        document.getElementById('playerChannelSubs').textContent = fmtNum(channelData.subscribers||0) + ' subscribers';
+        document.getElementById('likeCount').textContent = fmtNum(v.likes||0);
+        document.getElementById('dislikeCount').textContent = fmtNum(v.dislikes||0);
+
+        // Like/dislike state
+        const liked = currentUser && v.likedBy?.includes(currentUser.uid);
+        const disliked = currentUser && v.dislikedBy?.includes(currentUser.uid);
+        document.getElementById('likeBtn').classList.toggle('active', !!liked);
+        document.getElementById('dislikeBtn').classList.toggle('active', !!disliked);
+
+        // Channel nav
+        document.getElementById('playerChannelAvatar').onclick = () => openChannel(v.channelId);
+        document.getElementById('playerChannelName').onclick = () => openChannel(v.channelId);
+
+        // Subscribe btn
+        const subBtn = document.getElementById('playerSubscribeBtn');
+        if (!currentUser || v.channelId === userChannelId) {
+            subBtn.style.display = 'none';
+        } else {
+            subBtn.style.display = 'block';
+            const isSubbed = channelData.subscriberList?.includes(currentUser.uid);
+            subBtn.textContent = isSubbed ? 'SUBSCRIBED' : 'SUBSCRIBE';
+            subBtn.className = 'subscribe-btn' + (isSubbed ? ' subscribed' : '');
+            subBtn.onclick = () => toggleSubscribe(v.channelId, subBtn);
+        }
+
+        // Load comments
+        loadComments(videoId);
+
+        // Recommendations
+        const recs = allVideos.filter(r => r.id !== videoId).slice(0, 10);
+        renderRecommendations(recs);
+
+        window.scrollTo(0,0);
+    } catch(e) {
+        console.error(e);
+        showSnack('Error loading video');
+    }
+    hideLoading();
+}
+
+// Like / dislike
+document.getElementById('likeBtn').addEventListener('click', async () => {
+    if (!currentUser) { showSnack('Sign in to like videos'); return; }
+    const videoRef = doc(db, 'videos', currentVideoId);
+    const videoDoc = await getDoc(videoRef);
+    if (!videoDoc.exists()) return;
+    const v = videoDoc.data();
+    const liked = v.likedBy?.includes(currentUser.uid);
+    if (liked) {
+        await updateDoc(videoRef, { likes: increment(-1), likedBy: arrayRemove(currentUser.uid) });
+        document.getElementById('likeCount').textContent = fmtNum((v.likes||1)-1);
+        document.getElementById('likeBtn').classList.remove('active');
+    } else {
+        await updateDoc(videoRef, { likes: increment(1), likedBy: arrayUnion(currentUser.uid), dislikes: v.dislikedBy?.includes(currentUser.uid)?increment(-1):increment(0), dislikedBy: arrayRemove(currentUser.uid) });
+        document.getElementById('likeCount').textContent = fmtNum((v.likes||0)+1);
+        document.getElementById('likeBtn').classList.add('active');
+        document.getElementById('dislikeBtn').classList.remove('active');
+    }
+});
+
+document.getElementById('dislikeBtn').addEventListener('click', async () => {
+    if (!currentUser) { showSnack('Sign in to rate videos'); return; }
+    const videoRef = doc(db, 'videos', currentVideoId);
+    const videoDoc = await getDoc(videoRef);
+    if (!videoDoc.exists()) return;
+    const v = videoDoc.data();
+    const disliked = v.dislikedBy?.includes(currentUser.uid);
+    if (disliked) {
+        await updateDoc(videoRef, { dislikes: increment(-1), dislikedBy: arrayRemove(currentUser.uid) });
+        document.getElementById('dislikeCount').textContent = fmtNum((v.dislikes||1)-1);
+        document.getElementById('dislikeBtn').classList.remove('active');
+    } else {
+        await updateDoc(videoRef, { dislikes: increment(1), dislikedBy: arrayUnion(currentUser.uid), likes: v.likedBy?.includes(currentUser.uid)?increment(-1):increment(0), likedBy: arrayRemove(currentUser.uid) });
+        document.getElementById('dislikeCount').textContent = fmtNum((v.dislikes||0)+1);
+        document.getElementById('dislikeBtn').classList.add('active');
+        document.getElementById('likeBtn').classList.remove('active');
+    }
+});
+
+document.getElementById('shareBtn').addEventListener('click', () => {
+    navigator.clipboard.writeText(window.location.href).then(() => showSnack('Link copied!'));
+});
+
+// ===== SUBSCRIBE =====
+async function toggleSubscribe(channelId, btn) {
+    if (!currentUser) { showSnack('Sign in to subscribe'); return; }
+    const chRef = doc(db, 'channels', channelId);
+    const chDoc = await getDoc(chRef);
+    if (!chDoc.exists()) return;
+    const isSubbed = chDoc.data().subscriberList?.includes(currentUser.uid);
+    if (isSubbed) {
+        await updateDoc(chRef, { subscribers: increment(-1), subscriberList: arrayRemove(currentUser.uid) });
+        btn.textContent = 'SUBSCRIBE';
+        btn.className = 'subscribe-btn';
+    } else {
+        await updateDoc(chRef, { subscribers: increment(1), subscriberList: arrayUnion(currentUser.uid) });
+        btn.textContent = 'SUBSCRIBED';
+        btn.className = 'subscribe-btn subscribed';
+    }
+}
+
+// ===== COMMENTS =====
+function loadComments(videoId) {
+    const list = document.getElementById('commentsList');
+    list.innerHTML = '';
+    const q = query(collection(db,'videos',videoId,'comments'), orderBy('createdAt','desc'));
+    commentsUnsub = onSnapshot(q, snap => {
+        list.innerHTML = '';
+        document.getElementById('commentsTitle').textContent = `${snap.size} Comment${snap.size!==1?'s':''}`;
+        snap.forEach(d => {
+            const c = d.data();
+            const el = document.createElement('div');
+            el.className = 'comment';
+            el.innerHTML = `
+                <img src="${c.userPhoto||DEFAULT_PFP}" alt="">
+                <div class="comment-body">
+                    <div class="comment-author">${escHtml(c.userName||'User')} <span style="font-weight:400;color:var(--text-hint);font-size:12px;">${timeAgo(c.createdAt)}</span></div>
+                    <div class="comment-text">${escHtml(c.text)}</div>
+                    <div class="comment-actions">
+                        <button class="comment-action-btn"><span class="material-icons">thumb_up</span>${c.likes||0}</button>
+                    </div>
+                </div>
+            `;
+            list.appendChild(el);
         });
-        
-        // Return to Kwive
-        document.getElementById('returnToKwiveBtn').addEventListener('click', () => {
-            document.getElementById('loadingOverlay').classList.add('show');
-            setTimeout(() => {
-                isStudioMode = false;
-                document.getElementById('logo').textContent = 'Kwive';
-                document.getElementById('searchContainer').style.display = 'flex';
-                document.getElementById('createBtn').classList.remove('hidden');
-                document.getElementById('mainWrapper').style.display = 'block';
-                document.getElementById('mainSidebar').classList.remove('hidden');
-                document.getElementById('studioLayout').classList.remove('active');
-                document.getElementById('returnToKwiveBtn').style.display = 'none';
-                document.getElementById('categoryHeader').style.display = 'block';
-                document.getElementById('categoryTitle').textContent = 'Home';
-                
-                document.getElementById('loadingOverlay').classList.remove('show');
-                document.getElementById('profileMenu').classList.remove('show');
-            }, 2000);
+    });
+}
+
+const commentInput = document.getElementById('commentInput');
+const commentActions = document.getElementById('commentActions');
+commentInput.addEventListener('focus', () => commentActions.classList.add('show'));
+document.getElementById('cancelCommentBtn').addEventListener('click', () => {
+    commentInput.value = '';
+    commentActions.classList.remove('show');
+});
+document.getElementById('postCommentBtn').addEventListener('click', async () => {
+    if (!currentUser) { showSnack('Sign in to comment'); return; }
+    const text = commentInput.value.trim();
+    if (!text) return;
+    try {
+        await addDoc(collection(db,'videos',currentVideoId,'comments'), {
+            text,
+            userId: currentUser.uid,
+            userName: currentUser.displayName || 'User',
+            userPhoto: currentUser.photoURL || DEFAULT_PFP,
+            likes: 0,
+            createdAt: serverTimestamp()
         });
-        
-        // Logo click
-        document.getElementById('logo').addEventListener('click', () => {
-            if (isStudioMode) {
-                document.getElementById('returnToKwiveBtn').click();
+        commentInput.value = '';
+        commentActions.classList.remove('show');
+    } catch(e) { showSnack('Failed to post comment'); }
+});
+
+// ===== RECOMMENDATIONS =====
+function renderRecommendations(videos) {
+    const rec = document.getElementById('recommendations');
+    rec.innerHTML = '';
+    videos.forEach(v => {
+        const el = document.createElement('div');
+        el.className = 'rec-card';
+        el.innerHTML = `
+            <div class="rec-thumb">
+                ${v.thumbnail ? `<img src="${v.thumbnail}" alt="">` : `<div class="video-placeholder" style="height:100%"><span class="material-icons" style="font-size:24px">play_circle_outline</span></div>`}
+            </div>
+            <div class="rec-info">
+                <div class="rec-video-title">${escHtml(v.title)}</div>
+                <div class="rec-channel">${escHtml(v.channelName||'')}</div>
+                <div class="rec-stats">${fmtNum(v.views||0)} views</div>
+            </div>
+        `;
+        el.addEventListener('click', () => openVideo(v.id));
+        rec.appendChild(el);
+    });
+}
+
+// ===== CHANNEL PAGE =====
+async function openChannel(channelId) {
+    if (!channelId) return;
+    showLoading();
+    currentChannelId = channelId;
+    try {
+        const chDoc = await getDoc(doc(db,'channels',channelId));
+        if (!chDoc.exists()) { showSnack('Channel not found'); hideLoading(); return; }
+        const ch = chDoc.data();
+
+        showView('channelView');
+
+        document.getElementById('channelBanner').style.backgroundImage = `url('${ch.banner||DEFAULT_BANNER}')`;
+        document.getElementById('channelAvatar').src = ch.photoURL || DEFAULT_PFP;
+        document.getElementById('channelName').textContent = ch.displayName || 'User';
+        document.getElementById('channelAboutText').textContent = ch.description || 'No description.';
+
+        // Load subscriber count
+        const subBtn = document.getElementById('channelSubscribeBtn');
+        const customBtn = document.getElementById('customizeChannelBtn');
+
+        if (currentUser && channelId === userChannelId) {
+            subBtn.style.display = 'none';
+            customBtn.style.display = 'block';
+            customBtn.onclick = () => enterStudio('customization');
+        } else {
+            customBtn.style.display = 'none';
+            if (currentUser) {
+                subBtn.style.display = 'block';
+                const isSubbed = ch.subscriberList?.includes(currentUser.uid);
+                subBtn.textContent = isSubbed ? 'SUBSCRIBED' : 'SUBSCRIBE';
+                subBtn.className = 'subscribe-btn' + (isSubbed ? ' subscribed' : '');
+                subBtn.onclick = () => toggleSubscribe(channelId, subBtn);
             } else {
-                document.getElementById('categoryHeader').style.display = 'block';
-                document.getElementById('categoryTitle').textContent = 'Home';
-                document.getElementById('profilePage').style.display = 'none';
-                document.getElementById('noResults').classList.remove('show');
+                subBtn.style.display = 'none';
             }
+        }
+
+        // Load channel videos
+        const vq = query(collection(db,'videos'), where('channelId','==',channelId), orderBy('createdAt','desc'));
+        const vSnap = await getDocs(vq);
+        const channelVideos = [];
+        vSnap.forEach(d => channelVideos.push({ id: d.id, ...d.data() }));
+
+        document.getElementById('channelMeta').textContent = `${fmtNum(ch.subscribers||0)} subscribers • ${channelVideos.length} videos`;
+        renderVideoGrid(channelVideos, 'channelVideoGrid', 'channelEmptyVideos');
+
+        // Show videos tab
+        document.getElementById('channelVideosTab').style.display = 'block';
+        document.getElementById('channelAboutTab').style.display = 'none';
+        document.querySelectorAll('.channel-tab').forEach(t => t.classList.remove('active'));
+        document.querySelector('[data-tab="videos"]').classList.add('active');
+    } catch(e) {
+        console.error(e);
+        showSnack('Error loading channel');
+    }
+    hideLoading();
+}
+
+document.querySelectorAll('.channel-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+        document.querySelectorAll('.channel-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        const t = tab.dataset.tab;
+        document.getElementById('channelVideosTab').style.display = t === 'videos' ? 'block' : 'none';
+        document.getElementById('channelAboutTab').style.display = t === 'about' ? 'block' : 'none';
+    });
+});
+
+document.getElementById('myChannelBtn').addEventListener('click', () => {
+    closeDropdown();
+    if (userChannelId) openChannel(userChannelId);
+    else showSnack('Sign in first');
+});
+
+// ===== STUDIO =====
+document.getElementById('studioBtn').addEventListener('click', () => {
+    closeDropdown();
+    enterStudio('dashboard');
+});
+document.getElementById('returnToKwiveBtn').addEventListener('click', exitStudio);
+document.getElementById('dashUploadBtn').addEventListener('click', openUploadModal);
+
+function enterStudio(page = 'dashboard') {
+    if (!currentUser) { showSnack('Sign in first'); return; }
+    isStudio = true;
+    document.getElementById('logo').textContent = 'Kwive Studio';
+    document.getElementById('studioWrap').classList.add('active');
+    document.getElementById('mainWrapper').style.display = 'none';
+    document.getElementById('mainSidebar').classList.add('hidden');
+    document.getElementById('uploadBtn').style.display = 'none';
+    document.getElementById('returnToKwiveBtn').style.display = 'flex';
+    document.getElementById('studioProfilePic').src = currentUser.photoURL || DEFAULT_PFP;
+    document.getElementById('studioProfileName').textContent = currentUser.displayName || 'User';
+    showStudioPage(page);
+    loadStudioData();
+}
+
+function exitStudio() {
+    isStudio = false;
+    document.getElementById('logo').textContent = 'Kwive';
+    document.getElementById('studioWrap').classList.remove('active');
+    document.getElementById('mainWrapper').style.display = 'block';
+    document.getElementById('mainSidebar').classList.remove('hidden');
+    document.getElementById('uploadBtn').style.display = 'block';
+    document.getElementById('returnToKwiveBtn').style.display = 'none';
+    showView('homeView');
+    loadHomeFeed();
+}
+
+function showStudioPage(page) {
+    document.querySelectorAll('.studio-page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('[data-studio-page]').forEach(b => b.classList.remove('active'));
+    document.getElementById(page + 'Page').classList.add('active');
+    document.querySelector(`[data-studio-page="${page}"]`)?.classList.add('active');
+}
+
+document.querySelectorAll('[data-studio-page]').forEach(btn => {
+    btn.addEventListener('click', () => showStudioPage(btn.dataset.studioPage));
+});
+
+async function loadStudioData() {
+    if (!userChannelId) return;
+    try {
+        const chDoc = await getDoc(doc(db,'channels',userChannelId));
+        const ch = chDoc.data() || {};
+        const vq = query(collection(db,'videos'), where('channelId','==',userChannelId));
+        const vSnap = await getDocs(vq);
+        const videos = [];
+        let totalViews = 0, totalLikes = 0;
+        vSnap.forEach(d => { const v = d.data(); videos.push({id:d.id,...v}); totalViews += v.views||0; totalLikes += v.likes||0; });
+
+        document.getElementById('dashSubs').textContent = fmtNum(ch.subscribers||0);
+        document.getElementById('dashViews').textContent = fmtNum(totalViews);
+        document.getElementById('dashVideos').textContent = videos.length;
+        document.getElementById('analyticsSubs').textContent = fmtNum(ch.subscribers||0);
+        document.getElementById('analyticsViews').textContent = fmtNum(totalViews);
+        document.getElementById('analyticsLikes').textContent = fmtNum(totalLikes);
+
+        // Customization previews
+        tempPfp = ch.photoURL || DEFAULT_PFP;
+        tempBanner = ch.banner || DEFAULT_BANNER;
+        document.getElementById('pfpPreview').style.backgroundImage = `url('${tempPfp}')`;
+        document.getElementById('bannerPreview').style.backgroundImage = `url('${tempBanner}')`;
+        document.getElementById('channelDescInput').value = ch.description || '';
+
+        // Content table
+        const list = document.getElementById('studioVideoList');
+        if (!videos.length) {
+            list.innerHTML = `<div class="empty-feed" style="padding:40px 0;"><span class="material-icons">videocam_off</span><h2>No videos yet</h2></div>`;
+            return;
+        }
+        let html = `<table class="studio-videos-table"><thead><tr><th>Video</th><th>Title</th><th>Date</th><th>Views</th><th>Likes</th></tr></thead><tbody>`;
+        videos.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0)).forEach(v => {
+            html += `<tr>
+                <td><img class="studio-video-thumb" src="${v.thumbnail||''}" onerror="this.style.display='none'" alt=""></td>
+                <td style="max-width:200px;word-break:break-word;">${escHtml(v.title)}</td>
+                <td style="white-space:nowrap;color:var(--text-secondary);">${timeAgo(v.createdAt)}</td>
+                <td>${fmtNum(v.views||0)}</td>
+                <td>${fmtNum(v.likes||0)}</td>
+            </tr>`;
         });
-        
-        // Profile tabs
-        document.querySelectorAll('.profile-tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                document.querySelectorAll('.profile-tab').forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                
-                const tabName = tab.getAttribute('data-tab');
-                document.getElementById('videosTab').style.display = tabName === 'videos' ? 'block' : 'none';
-                document.getElementById('aboutTab').style.display = tabName === 'about' ? 'block' : 'none';
+        html += '</tbody></table>';
+        list.innerHTML = html;
+    } catch(e) { console.error(e); }
+}
+
+// ===== CUSTOMIZATION =====
+document.getElementById('changePfpBtn').addEventListener('click', () => document.getElementById('pfpInput').click());
+document.getElementById('pfpInput').addEventListener('change', e => {
+    if (!e.target.files[0]) return;
+    const reader = new FileReader();
+    reader.onload = ev => { tempPfp = ev.target.result; document.getElementById('pfpPreview').style.backgroundImage = `url('${tempPfp}')`; };
+    reader.readAsDataURL(e.target.files[0]);
+});
+document.getElementById('removePfpBtn').addEventListener('click', () => {
+    tempPfp = DEFAULT_PFP;
+    document.getElementById('pfpPreview').style.backgroundImage = `url('${DEFAULT_PFP}')`;
+});
+document.getElementById('changeBannerBtn').addEventListener('click', () => document.getElementById('bannerInput').click());
+document.getElementById('bannerInput').addEventListener('change', e => {
+    if (!e.target.files[0]) return;
+    const reader = new FileReader();
+    reader.onload = ev => { tempBanner = ev.target.result; document.getElementById('bannerPreview').style.backgroundImage = `url('${tempBanner}')`; };
+    reader.readAsDataURL(e.target.files[0]);
+});
+document.getElementById('removeBannerBtn').addEventListener('click', () => {
+    tempBanner = DEFAULT_BANNER;
+    document.getElementById('bannerPreview').style.backgroundImage = `url('${DEFAULT_BANNER}')`;
+});
+
+document.getElementById('saveCustomizationBtn').addEventListener('click', async () => {
+    if (!userChannelId || !currentUser) return;
+    showLoading();
+    try {
+        let pfpURL = tempPfp;
+        let bannerURL = tempBanner;
+
+        // Upload pfp to storage if it's a data URL
+        if (pfpURL && pfpURL.startsWith('data:')) {
+            const blob = await (await fetch(pfpURL)).blob();
+            const pfpRef = ref(storage, `channels/${userChannelId}/pfp`);
+            await uploadBytesResumable(pfpRef, blob);
+            pfpURL = await getDownloadURL(pfpRef);
+        }
+        if (bannerURL && bannerURL.startsWith('data:')) {
+            const blob = await (await fetch(bannerURL)).blob();
+            const bannerRef = ref(storage, `channels/${userChannelId}/banner`);
+            await uploadBytesResumable(bannerRef, blob);
+            bannerURL = await getDownloadURL(bannerRef);
+        }
+
+        await updateDoc(doc(db,'channels',userChannelId), {
+            photoURL: pfpURL,
+            banner: bannerURL,
+            description: document.getElementById('channelDescInput').value.trim()
+        });
+        document.getElementById('headerAvatar').src = pfpURL;
+        document.getElementById('dropdownAvatar').src = pfpURL;
+        document.getElementById('studioProfilePic').src = pfpURL;
+        tempPfp = pfpURL;
+        tempBanner = bannerURL;
+        showSnack('Changes saved!');
+    } catch(e) { console.error(e); showSnack('Error saving changes'); }
+    hideLoading();
+});
+
+// ===== UPLOAD =====
+document.getElementById('uploadBtn').addEventListener('click', openUploadModal);
+function openUploadModal() {
+    if (!currentUser) { showSnack('Sign in to upload'); return; }
+    document.getElementById('uploadStep1').style.display = 'block';
+    document.getElementById('uploadStep2').style.display = 'none';
+    document.getElementById('publishBtn').style.display = 'none';
+    document.getElementById('videoTitle').value = '';
+    document.getElementById('videoDesc').value = '';
+    document.getElementById('thumbnailPicker').innerHTML = '';
+    document.getElementById('uploadProgress').style.display = 'none';
+    videoFile = null;
+    thumbnailOptions = [];
+    uploadedVideoURL = null;
+    document.getElementById('uploadModal').classList.add('show');
+}
+
+document.getElementById('closeUploadModal').addEventListener('click', closeUploadModal);
+document.getElementById('closeUploadBtn').addEventListener('click', closeUploadModal);
+function closeUploadModal() { document.getElementById('uploadModal').classList.remove('show'); }
+
+// Drag and drop
+const dropZone = document.getElementById('dropZone');
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+dropZone.addEventListener('drop', e => { e.preventDefault(); dropZone.classList.remove('drag-over'); const file = e.dataTransfer.files[0]; if (file && file.type.startsWith('video/')) handleVideoFile(file); });
+
+document.getElementById('videoFileInput').addEventListener('change', e => {
+    if (e.target.files[0]) handleVideoFile(e.target.files[0]);
+});
+
+async function handleVideoFile(file) {
+    videoFile = file;
+    document.getElementById('videoTitle').value = file.name.replace(/\.[^/.]+$/, '');
+    document.getElementById('uploadStep1').style.display = 'none';
+    document.getElementById('uploadStep2').style.display = 'block';
+    document.getElementById('uploadProgress').style.display = 'block';
+    document.getElementById('publishBtn').style.display = 'block';
+    document.getElementById('publishBtn').disabled = true;
+
+    // Generate thumbnail frames
+    generateThumbnails(file);
+
+    // Upload video
+    const videoRef = ref(storage, `videos/${userChannelId}/${Date.now()}_${file.name}`);
+    const uploadTask = uploadBytesResumable(videoRef, file);
+    uploadTask.on('state_changed',
+        snap => {
+            const pct = Math.round((snap.bytesTransferred / snap.totalBytes) * 100);
+            document.getElementById('progressBar').style.width = pct + '%';
+            document.getElementById('progressPercent').textContent = pct + '%';
+            document.getElementById('progressText').textContent = 'Uploading video...';
+        },
+        err => { showSnack('Upload failed: ' + err.message); },
+        async () => {
+            uploadedVideoURL = await getDownloadURL(uploadTask.snapshot.ref);
+            document.getElementById('progressText').textContent = 'Upload complete!';
+            document.getElementById('publishBtn').disabled = false;
+        }
+    );
+}
+
+function generateThumbnails(file) {
+    const video = document.createElement('video');
+    video.src = URL.createObjectURL(file);
+    video.crossOrigin = 'anonymous';
+    video.muted = true;
+    video.playsInline = true;
+
+    video.addEventListener('loadedmetadata', () => {
+        const duration = video.duration;
+        const times = [duration * 0.1, duration * 0.3, duration * 0.6];
+        thumbnailOptions = [];
+        const picker = document.getElementById('thumbnailPicker');
+        picker.innerHTML = '';
+
+        times.forEach((t, i) => {
+            const canvas = document.createElement('canvas');
+            canvas.width = 320;
+            canvas.height = 180;
+
+            const opt = document.createElement('div');
+            opt.className = 'thumb-option' + (i === 0 ? ' selected' : '');
+            opt.appendChild(canvas);
+            opt.addEventListener('click', () => {
+                document.querySelectorAll('.thumb-option').forEach(o => o.classList.remove('selected'));
+                opt.classList.add('selected');
+                selectedThumbIndex = i;
             });
+            picker.appendChild(opt);
+
+            video.currentTime = t;
+            video.addEventListener('seeked', function capture() {
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(video, 0, 0, 320, 180);
+                thumbnailOptions[i] = canvas.toDataURL('image/jpeg', 0.8);
+                video.removeEventListener('seeked', capture);
+                if (i < times.length - 1) video.currentTime = times[i + 1];
+            }, { once: true });
         });
-        
-        // Customize channel
-        document.getElementById('customizeChannelBtn').addEventListener('click', () => {
-            document.getElementById('createBtn').click();
-            setTimeout(() => {
-                document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
-                document.getElementById('customizationPage').classList.add('active');
-                document.getElementById('studioTitle').textContent = 'Customization';
-                document.querySelectorAll('.studio-sidebar-item').forEach(i => i.classList.remove('active'));
-                document.getElementById('customizationBtn').classList.add('active');
-            }, 2100);
+
+        video.currentTime = times[0];
+    });
+
+    video.load();
+}
+
+document.getElementById('publishBtn').addEventListener('click', async () => {
+    const title = document.getElementById('videoTitle').value.trim();
+    if (!title) { showSnack('Please add a title'); return; }
+    if (!uploadedVideoURL) { showSnack('Video still uploading...'); return; }
+    if (!userChannelId || !currentUser) { showSnack('Not signed in'); return; }
+
+    showLoading();
+    try {
+        // Upload thumbnail
+        let thumbnailURL = '';
+        const thumbData = thumbnailOptions[selectedThumbIndex];
+        if (thumbData) {
+            const blob = await (await fetch(thumbData)).blob();
+            const thumbRef = ref(storage, `thumbnails/${userChannelId}/${Date.now()}.jpg`);
+            await uploadBytesResumable(thumbRef, blob);
+            thumbnailURL = await getDownloadURL(thumbRef);
+        }
+
+        // Get channel info
+        const chDoc = await getDoc(doc(db,'channels',userChannelId));
+        const ch = chDoc.data() || {};
+
+        await addDoc(collection(db,'videos'), {
+            title,
+            description: document.getElementById('videoDesc').value.trim(),
+            videoURL: uploadedVideoURL,
+            thumbnail: thumbnailURL,
+            channelId: userChannelId,
+            channelName: ch.displayName || currentUser.displayName || 'User',
+            channelPhoto: ch.photoURL || currentUser.photoURL || DEFAULT_PFP,
+            views: 0,
+            likes: 0,
+            dislikes: 0,
+            likedBy: [],
+            dislikedBy: [],
+            createdAt: serverTimestamp()
         });
-        
-        // Subscribe button
-        document.getElementById('subscribeBtn').addEventListener('click', function() {
-            if (this.classList.contains('subscribed')) {
-                this.classList.remove('subscribed');
-                this.textContent = 'SUBSCRIBE';
-            } else {
-                this.classList.add('subscribed');
-                this.textContent = 'SUBSCRIBED';
-            }
-        });
-        
-        // Studio sidebar
-        document.getElementById('dashboardBtn').addEventListener('click', () => {
-            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
-            document.getElementById('dashboardPage').classList.add('active');
-            document.getElementById('studioTitle').textContent = 'Channel dashboard';
-            document.querySelectorAll('.studio-sidebar-item').forEach(i => i.classList.remove('active'));
-            document.getElementById('dashboardBtn').classList.add('active');
-        });
-        
-        document.getElementById('contentBtn').addEventListener('click', () => {
-            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
-            document.getElementById('contentPage').classList.add('active');
-            document.getElementById('studioTitle').textContent = 'Content';
-            document.querySelectorAll('.studio-sidebar-item').forEach(i => i.classList.remove('active'));
-            document.getElementById('contentBtn').classList.add('active');
-        });
-        
-        document.getElementById('analyticsBtn').addEventListener('click', () => {
-            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
-            document.getElementById('analyticsPage').classList.add('active');
-            document.getElementById('studioTitle').textContent = 'Analytics';
-            document.querySelectorAll('.studio-sidebar-item').forEach(i => i.classList.remove('active'));
-            document.getElementById('analyticsBtn').classList.add('active');
-        });
-        
-        document.getElementById('customizationBtn').addEventListener('click', () => {
-            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
-            document.getElementById('customizationPage').classList.add('active');
-            document.getElementById('studioTitle').textContent = 'Customization';
-            document.querySelectorAll('.studio-sidebar-item').forEach(i => i.classList.remove('active'));
-            document.getElementById('customizationBtn').classList.add('active');
-        });
-        
-        document.getElementById('uploadBtn').addEventListener('click', () => {
-            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
-            document.getElementById('uploadPage').classList.add('active');
-            document.getElementById('studioTitle').textContent = 'Upload';
-            document.querySelectorAll('.studio-sidebar-item').forEach(i => i.classList.remove('active'));
-            document.getElementById('uploadBtn').classList.add('active');
-        });
-        
-        document.getElementById('goToAnalyticsBtn').addEventListener('click', () => {
-            document.getElementById('analyticsBtn').click();
-        });
-        
-        document.getElementById('uploadFromDashboardBtn').addEventListener('click', () => {
-            document.getElementById('uploadBtn').click();
-        });
-        
-        // Customization - Profile Picture
-        document.getElementById('changePfpBtn').addEventListener('click', () => {
-            document.getElementById('pfpInput').click();
-        });
-        
-        document.getElementById('pfpInput').addEventListener('change', (e) => {
-            if (e.target.files[0]) {
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    tempPfp = event.target.result;
-                    document.getElementById('pfpPreview').style.backgroundImage = `url('${tempPfp}')`;
-                };
-                reader.readAsDataURL(e.target.files[0]);
-            }
-        });
-        
-        document.getElementById('removePfpBtn').addEventListener('click', () => {
-            tempPfp = defaultPfp;
-            document.getElementById('pfpPreview').style.backgroundImage = `url('${defaultPfp}')`;
-        });
-        
-        // Customization - Banner
-        document.getElementById('changeBannerBtn').addEventListener('click', () => {
-            document.getElementById('bannerInput').click();
-        });
-        
-        document.getElementById('bannerInput').addEventListener('change', (e) => {
-            if (e.target.files[0]) {
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    tempBanner = event.target.result;
-                    document.getElementById('bannerPreview').style.backgroundImage = `url('${tempBanner}')`;
-                };
-                reader.readAsDataURL(e.target.files[0]);
-            }
-        });
-        
-        document.getElementById('removeBannerBtn').addEventListener('click', () => {
-            tempBanner = defaultBanner;
-            document.getElementById('bannerPreview').style.backgroundImage = `url('${defaultBanner}')`;
-        });
-        
-        // Save changes
-        document.getElementById('saveChangesBtn').addEventListener('click', async () => {
-            if (!currentUser || !userChannelId) return;
-            
-            try {
-                await setDoc(doc(db, 'channels', userChannelId), {
-                    photoURL: tempPfp,
-                    banner: tempBanner,
-                    displayName: currentUser.displayName,
-                    email: currentUser.email
-                }, { merge: true });
-                
-                // Update the profile pic in header
-                document.getElementById('profilePic').src = tempPfp;
-                
-                // Update studio sidebar
-                document.getElementById('studioSidebarProfilePic').src = tempPfp;
-                
-                alert('Changes saved successfully!');
-            } catch (error) {
-                console.error('Error saving:', error);
-                alert('Failed to save changes');
-            }
-        });
-        
-        // Upload video
-        document.getElementById('uploadVideoBtn').addEventListener('click', () => {
-            document.getElementById('videoInput').click();
-        });
-        
-        document.getElementById('videoInput').addEventListener('change', (e) => {
-            if (e.target.files[0]) {
-                alert('Video selected: ' + e.target.files[0].name + '\n\nVideo upload functionality coming soon!');
-            }
-        });
-        
-        // Auth state
-        onAuthStateChanged(auth, async (user) => {
-            currentUser = user;
-            if (user) {
-                // Get or create permanent channel ID
-                try {
-                    const userDocRef = doc(db, 'users', user.uid);
-                    const userDoc = await getDoc(userDocRef);
-                    
-                    if (userDoc.exists() && userDoc.data().channelId) {
-                        userChannelId = userDoc.data().channelId;
-                    } else {
-                        userChannelId = generateChannelId();
-                        await setDoc(userDocRef, {
-                            channelId: userChannelId,
-                            uid: user.uid
-                        });
-                    }
-                    
-                    // Initialize channel data if it doesn't exist
-                    const channelDocRef = doc(db, 'channels', userChannelId);
-                    const channelDoc = await getDoc(channelDocRef);
-                    
-                    if (!channelDoc.exists()) {
-                        await setDoc(channelDocRef, {
-                            photoURL: user.photoURL || defaultPfp,
-                            banner: defaultBanner,
-                            displayName: user.displayName || 'User',
-                            email: user.email || ''
-                        });
-                    }
-                    
-                    console.log('Permanent Channel ID:', userChannelId);
-                } catch (error) {
-                    console.error('Error setting up channel:', error);
-                }
-                
-                document.getElementById('signInBtn').style.display = 'none';
-                document.getElementById('profileContainer').classList.add('active');
-                document.getElementById('profilePic').src = user.photoURL || defaultPfp;
-                document.getElementById('profileName').textContent = user.displayName || 'User';
-                document.getElementById('profileEmail').textContent = user.email || '';
-                
-                // Check if we need to load a specific channel from URL
-                if (window.channelToLoad) {
-                    loadProfile(window.channelToLoad, window.channelToLoad === userChannelId);
-                    window.channelToLoad = null;
-                }
-            } else {
-                document.getElementById('signInBtn').style.display = 'block';
-                document.getElementById('profileContainer').classList.remove('active');
-                userChannelId = null;
-            }
-        });
-    </script>
+
+        closeUploadModal();
+        showSnack('Video published!');
+        await loadHomeFeed();
+        if (isStudio) loadStudioData();
+    } catch(e) {
+        console.error(e);
+        showSnack('Failed to publish: ' + e.message);
+    }
+    hideLoading();
+});
+
+// ===== INIT =====
+loadHomeFeed();
+</script>
 </body>
 </html>
