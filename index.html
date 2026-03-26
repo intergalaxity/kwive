@@ -995,7 +995,7 @@
     </div>
     <div class="header-right">
         <button class="text-btn" id="signInBtn">Sign In</button>
-        <div id="authArea" style="display:none; display:flex; align-items:center; gap:8px;">
+        <div id="authArea" style="display:none; align-items:center; gap:8px;">
             <button class="outlined-btn" id="uploadBtn"><span class="material-icons" style="font-size:16px;vertical-align:middle;">video_call</span> Create</button>
             <div class="profile-dropdown">
                 <button class="avatar-btn" id="avatarBtn"><img src="" id="headerAvatar" alt=""></button>
@@ -1268,6 +1268,7 @@
                 <div class="form-field">
                     <label class="form-label">Thumbnail</label>
                     <div class="thumbnail-picker" id="thumbnailPicker"></div>
+                    <input type="file" id="customThumbInput" accept="image/*">
                 </div>
             </div>
         </div>
@@ -1856,10 +1857,18 @@ document.querySelectorAll('.channel-tab').forEach(tab => {
     });
 });
 
-document.getElementById('myChannelBtn').addEventListener('click', () => {
+document.getElementById('myChannelBtn').addEventListener('click', async () => {
     closeDropdown();
+    if (!currentUser) { showSnack('Sign in first'); return; }
+    // If channelId not loaded yet, fetch it
+    if (!userChannelId) {
+        try {
+            const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
+            if (userDoc.exists()) userChannelId = userDoc.data().channelId;
+        } catch(e) {}
+    }
     if (userChannelId) openChannel(userChannelId);
-    else showSnack('Sign in first');
+    else showSnack('Channel not ready yet, try again');
 });
 
 // ===== STUDIO =====
@@ -1868,7 +1877,7 @@ document.getElementById('studioBtn').addEventListener('click', () => {
     enterStudio('dashboard');
 });
 document.getElementById('returnToKwiveBtn').addEventListener('click', exitStudio);
-document.getElementById('dashUploadBtn').addEventListener('click', openUploadModal);
+document.getElementById('dashUploadBtn').addEventListener('click', () => openUploadModal());
 
 function enterStudio(page = 'dashboard') {
     if (!currentUser) { showSnack('Sign in first'); return; }
@@ -2015,7 +2024,12 @@ document.getElementById('saveCustomizationBtn').addEventListener('click', async 
 });
 
 // ===== UPLOAD =====
-document.getElementById('uploadBtn').addEventListener('click', openUploadModal);
+document.getElementById('uploadBtn').addEventListener('click', () => {
+    if (!currentUser) { showSnack('Sign in to upload'); return; }
+    enterStudio('dashboard');
+    // Small delay to let studio render, then open modal
+    setTimeout(() => openUploadModal(), 100);
+});
 function openUploadModal() {
     if (!currentUser) { showSnack('Sign in to upload'); return; }
     document.getElementById('uploadStep1').style.display = 'block';
@@ -2076,50 +2090,96 @@ async function handleVideoFile(file) {
     );
 }
 
-function generateThumbnails(file) {
+function seekTo(video, time) {
+    return new Promise(resolve => {
+        const onSeeked = () => { video.removeEventListener('seeked', onSeeked); resolve(); };
+        video.addEventListener('seeked', onSeeked);
+        video.currentTime = time;
+    });
+}
+
+async function generateThumbnails(file) {
+    const picker = document.getElementById('thumbnailPicker');
+    picker.innerHTML = '<span style="color:var(--text-hint);font-size:13px;">Generating thumbnails...</span>';
+    thumbnailOptions = [];
+    selectedThumbIndex = 0;
+
+    const url = URL.createObjectURL(file);
     const video = document.createElement('video');
-    video.src = URL.createObjectURL(file);
-    video.crossOrigin = 'anonymous';
+    video.src = url;
     video.muted = true;
     video.playsInline = true;
+    video.preload = 'auto';
 
-    video.addEventListener('loadedmetadata', () => {
-        const duration = video.duration;
-        const times = [duration * 0.1, duration * 0.3, duration * 0.6];
-        thumbnailOptions = [];
-        const picker = document.getElementById('thumbnailPicker');
-        picker.innerHTML = '';
-
-        times.forEach((t, i) => {
-            const canvas = document.createElement('canvas');
-            canvas.width = 320;
-            canvas.height = 180;
-
-            const opt = document.createElement('div');
-            opt.className = 'thumb-option' + (i === 0 ? ' selected' : '');
-            opt.appendChild(canvas);
-            opt.addEventListener('click', () => {
-                document.querySelectorAll('.thumb-option').forEach(o => o.classList.remove('selected'));
-                opt.classList.add('selected');
-                selectedThumbIndex = i;
-            });
-            picker.appendChild(opt);
-
-            video.currentTime = t;
-            video.addEventListener('seeked', function capture() {
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(video, 0, 0, 320, 180);
-                thumbnailOptions[i] = canvas.toDataURL('image/jpeg', 0.8);
-                video.removeEventListener('seeked', capture);
-                if (i < times.length - 1) video.currentTime = times[i + 1];
-            }, { once: true });
-        });
-
-        video.currentTime = times[0];
+    await new Promise(resolve => {
+        video.addEventListener('loadedmetadata', resolve, { once: true });
+        video.load();
     });
 
-    video.load();
+    // Brief play+pause so browser loads frames
+    try { await video.play(); video.pause(); } catch(e) {}
+
+    const duration = video.duration || 10;
+    const times = [duration * 0.1, duration * 0.35, duration * 0.65];
+
+    picker.innerHTML = '';
+
+    for (let i = 0; i < times.length; i++) {
+        await seekTo(video, times[i]);
+        await new Promise(r => setTimeout(r, 120));
+
+        const canvas = document.createElement('canvas');
+        canvas.width = 320;
+        canvas.height = 180;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(video, 0, 0, 320, 180);
+        const dataURL = canvas.toDataURL('image/jpeg', 0.85);
+        thumbnailOptions[i] = dataURL;
+
+        const opt = document.createElement('div');
+        opt.className = 'thumb-option' + (i === 0 ? ' selected' : '');
+        const img = document.createElement('img');
+        img.src = dataURL;
+        opt.appendChild(img);
+        const idx = i;
+        opt.addEventListener('click', () => {
+            document.querySelectorAll('.thumb-option').forEach(o => o.classList.remove('selected'));
+            opt.classList.add('selected');
+            selectedThumbIndex = idx;
+        });
+        picker.appendChild(opt);
+    }
+
+    // Custom thumbnail upload option
+    const customOpt = document.createElement('div');
+    customOpt.className = 'thumb-option';
+    customOpt.style.cssText = 'display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;';
+    customOpt.innerHTML = `<span class="material-icons" style="color:var(--text-hint);font-size:28px;">add_photo_alternate</span><span style="font-size:11px;color:var(--text-hint)">Custom</span>`;
+    customOpt.addEventListener('click', () => document.getElementById('customThumbInput').click());
+    picker.appendChild(customOpt);
+
+    URL.revokeObjectURL(url);
 }
+
+document.getElementById('customThumbInput').addEventListener('change', e => {
+    if (!e.target.files[0]) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+        const dataURL = ev.target.result;
+        const customIdx = thumbnailOptions.length;
+        thumbnailOptions[customIdx] = dataURL;
+        const opts = document.querySelectorAll('.thumb-option');
+        const last = opts[opts.length - 1];
+        last.innerHTML = '';
+        const img = document.createElement('img');
+        img.src = dataURL;
+        last.appendChild(img);
+        document.querySelectorAll('.thumb-option').forEach(o => o.classList.remove('selected'));
+        last.classList.add('selected');
+        selectedThumbIndex = customIdx;
+    };
+    reader.readAsDataURL(e.target.files[0]);
+});
 
 document.getElementById('publishBtn').addEventListener('click', async () => {
     const title = document.getElementById('videoTitle').value.trim();
@@ -2161,8 +2221,16 @@ document.getElementById('publishBtn').addEventListener('click', async () => {
 
         closeUploadModal();
         showSnack('Video published!');
-        await loadHomeFeed();
-        if (isStudio) loadStudioData();
+        // Reload home feed in background
+        loadHomeFeed();
+        // If already in studio, go to content tab; else enter studio on content tab
+        if (isStudio) {
+            await loadStudioData();
+            showStudioPage('content');
+        } else {
+            enterStudio('content');
+            setTimeout(() => loadStudioData(), 300);
+        }
     } catch(e) {
         console.error(e);
         showSnack('Failed to publish: ' + e.message);
